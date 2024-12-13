@@ -14,7 +14,11 @@ module Osem
 
     config.active_record.observers = :revision_observer
     config.encoding = 'utf-8'
-    config.filter_parameters += [:password]
+
+    # Configure sensitive parameters which will be filtered from the log file.
+    config.filter_parameters += [:password, :token]
+
+    # Enable escaping HTML in JSON.
     config.active_support.escape_html_entities_in_json = true
     config.assets.enabled = true
     config.assets.version = '1.0'

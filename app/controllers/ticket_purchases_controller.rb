@@ -10,7 +10,11 @@ class TicketPurchasesController < ApplicationController
     code_id = params[:code_id] || ''
     chosen_events = params[:chosen_events] || []
 
-    if tkts[0].blank?
+    unless verify_recaptcha
+      return redirect_to conference_tickets_path(@conference.short_title)
+    end
+
+    if tkts.map(&:values).flatten.map(&:to_i).sum.zero?
       return redirect_to conference_tickets_path(@conference.short_title),
       error: 'Please get at least one ticket to continue.'
     end
@@ -25,6 +29,7 @@ class TicketPurchasesController < ApplicationController
     current_user.ticket_purchases.by_conference(@conference).unpaid.destroy_all
     message = TicketPurchase.purchase(@conference, current_user, tkts[0],
                                       code_id, chosen_events, prices[0])
+    # this means that TicketPurchase.purchase returned no errors
     if message.blank?
       if current_user.ticket_purchases.by_conference(@conference).unpaid.any?
         redirect_to new_conference_payment_path,
@@ -32,9 +37,19 @@ class TicketPurchasesController < ApplicationController
       elsif current_user.ticket_purchases.by_conference(@conference).paid.any?
         # Trigger ahoy event
         ahoy.track 'Ticket purchase', title: 'New free purchase'
+        # unpaid ticket purchases were destroyed above; if we have paid purchases at this moment
+        # this means that .purchase method parked purchase as paid automatically
+        # this happens on zero payment amount only hence "free ticket message"
+        last_purchase = current_user.ticket_purchases.by_conference(@conference).paid.last
+
+        if last_purchase.code.present?
+          notice = "You have free tickets for the conference obtained via #{last_purchase.code.name}"
+        else
+          notice = 'You have free tickets for the conference.'
+        end
 
         redirect_to complete_conference_tickets_path,
-                    notice: 'You have free tickets for the conference.'
+                    notice: notice
       else
         redirect_to conference_tickets_path(@conference.short_title),
                     error: 'Please get at least one ticket to continue.'

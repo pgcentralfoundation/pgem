@@ -10,20 +10,31 @@
     %section.central-blocks
       .jumbotron
         %h1.text-center.uppercase.bold
-          - if request.domain=='postgresworld.org'
+          - from = request.params['from']
+          - if from == 'postgresworld'
             PostgresWorld
+          - elsif from == 'pgconf'
+            PgConf
           - else
             Postgres Conference
+
       .container-fluid
         .row
           - @meetups = Refinery::Meetups::Meetup.upcoming(10)
-          - @current = Conference.where('end_date >= ?', Date.current).reorder(sticky: :desc, start_date: :asc)
+          - @current = Conference.without_archived.where('end_date >= ?', Date.current).reorder(sticky: :desc, start_date: :asc)
           - @digital_events = @current.where({digital: true}).limit(5)
-          - @main_conference = @current.first || Conference.reorder(start_date: :asc).last
+          - @main_conference = @current.first || Conference.without_archived.reorder(start_date: :asc).last
           -# top card should have nearest digital event, or use 2nd upcoming conference as a fallback
           - @top_card = @digital_events.first || @current.second
           - @bottom_card = @meetups.first || @current.third
           .col-md-10.col-md-offset-1
+            - flash.each do |type, message|
+              %div{:class=>"alert alert-dismissable #{bootstrap_class_for(type)}", :id=>"flash"}
+                .button.close{"data-dismiss" => "alert", "aria-hidden"=>"true"}
+                  &times;
+                %p
+                  = message
+
             .row.wrapper-main-cards
               .col-md-7.col-sm-12.h-100
                 = render partial: "/refinery/conference_card_main", locals: { conference: @main_conference } if @main_conference
@@ -115,7 +126,10 @@
     %footer.footer
       .container-fluid
         .row
-          .col-lg-4.col-sm-12.col-lg-offset-4
+          .col-xs-2.col-xs-offset-4
+            %p
+              = link_to "Privacy Statement", '/privacy-statement', class: 'text-muted'
+          .col-xs-3
             .copyright-wrapper
               %p.text-muted
                 = "Copyright © #{Date.today.year} Postgres Conference"
@@ -131,3 +145,15 @@
         //we cant scroll the invisible element immediately, the timeout is to ensure the element is visible and DOM is recalculated
         setTimeout(function(){$(selector)[0].scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"})},10);
       })
+
+      $('#password_toggle').on('click', function(e) {
+        e.stopPropagation()
+        $('#login_form').show()
+        $('#passwordless_login_form').hide()
+      });
+
+      $('#passwordless_toggle').on('click', function(e) {
+        e.stopPropagation()
+        $('#login_form').hide()
+        $('#passwordless_login_form').show()
+      });

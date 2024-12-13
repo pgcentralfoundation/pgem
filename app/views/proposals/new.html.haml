@@ -1,3 +1,15 @@
+:javascript
+  var submitInvisibleRecaptchaForm = function () {
+    document.getElementById("new_event").submit();
+  };
+
+  var recapchaAttach = function() {
+    var element = document.getElementById('submit-proposal-btn').addEventListener('click', function (e) {
+      e.preventDefault();
+      grecaptcha.execute();
+    });
+  }
+
 .container
   .row
     .col-md-12
@@ -6,20 +18,24 @@
   .row
     .col-md-12
       = render partial: 'encouragement_text'
+      %br
   .row
     .col-md-8
       - unless current_user
-        %legend
+        %legend{style: 'padding-bottom: 5px'}
           %span
             =link_to('#signup', role: 'tab', 'aria-controls' => 'home', 'data-toggle' => 'tab') do
-              = ENV['OSEM_NAME'] || 'OSEM'
-              Account
+              Create Account
           %span.pull-right#account-already
-            =link_to('#signin', role: 'tab', 'aria-controls' => 'home', 'data-toggle' => 'tab') do
-              Already have an account?
+            Already have an account?
+            =link_to('#signin', role: 'tab', 'aria-controls' => 'home', 'data-toggle' => 'tab', 'class' => 'btn btn-warning btn-outline btn-sm') do
+              Sign In!
       .tab-content
         .tab-pane.active{role: 'tabpanel', id: 'signup'}
-
+          %p.text-muted
+            Thank you for participating in our call for papers. If you do not have an account please fill in the information below, otherwise please
+            =link_to('#signin', role: 'tab', 'aria-controls' => 'home', 'data-toggle' => 'tab') do
+              sign in
           = semantic_form_for(@event, url: @url) do |f|
 
             = render partial: 'devise/shared/sign_up_form_embedded'
@@ -74,7 +90,14 @@
                 = f.input :description, input_html: { rows: 5 }, label: 'Requirements', placeholder: 'Eg. Whiteboard, printer, or something like that.'
 
             %p.text-right
-              = f.submit 'Create Proposal', class: 'btn btn-success'
+              - unless current_user
+                = button_tag(type: 'button', id: 'submit-proposal-btn', class: 'btn btn-success') do
+                  Create Proposal
+                = invisible_recaptcha_tags ui: :invisible, callback: 'submitInvisibleRecaptchaForm'
+                :javascript
+                  recapchaAttach();
+              - else
+                = f.submit 'Create Proposal', class: 'btn btn-success'
 
         .tab-pane{role: 'tabpanel', id: 'signin'}
           = render partial: 'devise/shared/sign_in_form_embedded'

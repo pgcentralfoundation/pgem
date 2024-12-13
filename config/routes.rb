@@ -6,8 +6,12 @@ Osem::Application.routes.draw do
     devise_for :users,
                controllers: {
                    registrations: :registrations, confirmations: :confirmations,
-                   omniauth_callbacks: 'users/omniauth_callbacks' },
+               },
                path: 'accounts'
+    namespace "passwordless" do
+      devise_for :users,
+        controllers: { sessions: "devise/passwordless/sessions" }
+    end
   end
 
   # Use letter_opener_web to open mails in browser (e.g. necessary for Vagrant)
@@ -59,7 +63,8 @@ Osem::Application.routes.draw do
       get '/volunteers_list' => 'volunteers#show'
       get '/volunteers' => 'volunteers#index', as: 'volunteers_info'
       patch '/volunteers' => 'volunteers#update', as: 'volunteers_update'
-
+      get '/archive' => 'conferences#archive'
+      get '/unarchive' => 'conferences#unarchive'
       resources :registrations, except: [:create, :new] do
         member do
           patch :toggle_attendance
@@ -75,7 +80,7 @@ Osem::Application.routes.draw do
         get 'venue_commercial/render_commercial' => 'venue_commercials#render_commercial'
         resource :venue_commercial, only: [:create, :update, :destroy]
         resources :rooms, except: [:show]
-	resources :room_locations, except: [:show]
+	      resources :room_locations, except: [:show]
       end
       resource :registration_period
       resource :sponsorship_info
@@ -263,7 +268,7 @@ Osem::Application.routes.draw do
         get :room
         get :now
         get :today
-	get :sched
+	      get :sched
       end
     end
   end
@@ -293,6 +298,7 @@ Osem::Application.routes.draw do
   root to: 'refinery/pages#home'
   #root to: 'conferences#redirect_to_current'
 
+  get '/dynamicfields' => redirect('/refinery/dynamicfields')
   mount Refinery::Core::Engine, at: Refinery::Core.mounted_path
 
 end

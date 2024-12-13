@@ -2,7 +2,11 @@
   .row.h-100
     .col-md-5.col-md-push-7.h-100
       .col-flex.h-100
-        %img.img-responsive.poster{:alt => "Conference poster", :src => "#{conference.picture.url}"}
+        - if conference.splashpage && conference.splashpage.public
+          = link_to main_app.conference_path(conference.short_title) do
+            %img.img-responsive.poster{:alt => "Conference poster", :src => "#{conference.picture.url}"}
+        -else
+          %img.img-responsive.poster{:alt => "Conference poster", :src => "#{conference.picture.url}"}
         .btn-wrapper-bottom.hidden-xs.hidden-sm
           - if conference.splashpage && conference.splashpage.public
             - if conference.registration_open? && conference.tickets.any?
@@ -11,11 +15,11 @@
               - if conference.splashpage.include_sponsors && !conference.ended?
                 = link_to "Sponsor!", main_app.conference_sponsorships_path(conference.short_title), class: "btn cta-btn bold uppercase"
               - if conference.program.cfp_open? and conference.splashpage.include_cfp
-                = link_to "CFP", main_app.conference_program_proposals_path(conference.short_title), class: 'btn cta-btn bold uppercase'
+                = link_to "CFP", main_app.new_conference_program_proposal_path(conference.short_title), class: 'btn cta-btn bold uppercase'
     .col-md-7.col-md-pull-5.h-100
       %h1.bold
         - if conference.splashpage && conference.splashpage.public
-          = link_to conference.title, main_app.conference_path(conference.short_title)
+          = link_to conference.title, main_app.conference_path(conference.short_title), class: 'link-effect'
         - else
           = conference.title
       %h4
@@ -34,4 +38,4 @@
             - if conference.splashpage.include_sponsors && !conference.ended?
               = link_to "Sponsor!", main_app.conference_sponsorships_path(conference.short_title), class: "btn cta-btn cta-btn-half bold uppercase"
             - if conference.program.cfp_open? and conference.splashpage.include_cfp
-              = link_to "CFP", main_app.conference_program_proposals_path(conference.short_title), class: 'btn cta-btn cta-btn-half bold uppercase'
+              = link_to "CFP", main_app.new_conference_program_proposal_path(conference.short_title), class: 'btn cta-btn cta-btn-half bold uppercase'

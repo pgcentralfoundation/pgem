@@ -3,9 +3,9 @@ module Users
     skip_before_action :verify_authenticity_token , raise: false
     skip_authorization_check
 
-    User.omniauth_providers.each do |provider|
-      define_method(provider) { handle(provider) }
-    end
+    #User.omniauth_providers.each do |provider|
+    #  define_method(provider) { handle(provider) }
+    #end
 
     private
 

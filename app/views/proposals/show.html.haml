@@ -46,7 +46,7 @@
               = image_tag speaker.avatar_url(version: 'large'), class: "img-responsive img-rounded"
             .col-md-9
               %h4
-                = link_to speaker.name, user_path(speaker.id)
+                = link_to speaker.name, user_path(speaker.friendly_id)
               - if speaker.affiliation?
                 .text-muted
                   = speaker.affiliation

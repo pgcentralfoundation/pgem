@@ -40,6 +40,7 @@ gem 'rails-i18n', '~> 6.0'
 # as authentification framework
 gem 'devise',  '>= 4.8.0'
 gem 'devise_ichain_authenticatable'
+gem 'devise-passwordless'
 # prevent bot registrations
 gem "recaptcha", require: "recaptcha/rails"
 
@@ -95,6 +96,9 @@ gem 'iso-639'
 
 #website pagination
 gem 'will_paginate-bootstrap'
+
+#conference archival
+gem 'soft_deletion'
 
 #for automated RSS blog impoprt
 gem 'feedjira', '~> 2.2'
@@ -316,7 +320,7 @@ end
 
 group :development, :test do
   # as debugger
-  gem 'byebug'
+  gem 'byebug', '~> 11.1.3'
   gem "better_errors"
   # dependency
   gem "binding_of_caller"
