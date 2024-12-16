@@ -144,12 +144,6 @@ class ApplicationController < ActionController::Base
      guest_user if with_retry
   end
 
-  def track_spammer
-    ahoy.track 'Spam', {remote_ip: request.remote_ip, data: request.params}
-    logger.warn "[SPAM]: rejected positive honeytrap from #{request.remote_ip}"
-    redirect_to root_path
-  end
-
   private
 
   # called (once) when the user logs in, insert any code your application needs

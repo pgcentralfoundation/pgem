@@ -348,8 +348,6 @@ GEM
     icalendar (2.4.1)
     inversion (1.1.1)
       loggability (~> 0.12)
-    invisible_captcha (1.1.0)
-      rails (>= 4.2)
     invoice_printer (0.0.9)
       json
       prawn
@@ -850,7 +848,6 @@ DEPENDENCIES
   httpclient (~> 2.8, >= 2.8.3)
   humanize
   icalendar
-  invisible_captcha
   invoice_printer
   iso-639
   jquery-datatables-rails (~> 2.2.1)

@@ -1,7 +1,6 @@
 class RegistrationsController < Devise::RegistrationsController
   before_action :configure_permitted_parameters, if: :devise_controller?
   prepend_before_action :check_captcha, only: [:create, :update]
-  invisible_captcha only: [:create, :update], honeypot: :subtitle, prepend: true, scope: :user, on_spam: :track_spammer
 
   def edit
     @openids = Openid.where(user_id: current_user.id).order(:provider)
@@ -34,7 +33,7 @@ class RegistrationsController < Devise::RegistrationsController
     end
     devise_parameter_sanitizer.permit(:sign_up) do |u|
       u.
-          permit(:first_name, :last_name, :title, :affiliation, :mobile, :email, :password, :password_confirmation, :name, :username, keys:[:subtitle])
+          permit(:first_name, :last_name, :title, :affiliation, :mobile, :email, :password, :password_confirmation, :name, :username)
     end
   end
 end

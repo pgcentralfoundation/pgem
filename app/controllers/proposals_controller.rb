@@ -7,7 +7,6 @@ class ProposalsController < ApplicationController
   # We authorize manually in these actions
   skip_authorize_resource :event, only: [:confirm, :restart, :withdraw, :comment, :vote, :invite, :accept_invitation]
   skip_authorization_check :only => [:comment, :vote, :my_proposals, :invite, :accept_invitation]
-  invisible_captcha only: [:create], honeypot: :subtitle, prepend: true, scope: :user, on_spam: :track_spammer
 
   def index
     @event = @program.events.new

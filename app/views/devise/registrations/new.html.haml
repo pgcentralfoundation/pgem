@@ -23,7 +23,6 @@
             = f.input :last_name, :required => true, :label => "Last Name"
             = f.input :affiliation, :required => true, :hint => "This could be a company, a user group, or organization."
             = f.input :title, :required => true, :label => "Job Title"
-            = f.invisible_captcha :subtitle
             = f.input :mobile, :as => :phone, :label => "Phone Number (Optional)"
             = f.input :email, :as => :email, :required => true
             = f.input :password, :as => :password, :required => true, input_html: { required: 'required', autocomplete: 'off', id: 'password_inline' }
@@ -35,6 +34,7 @@
             = invisible_recaptcha_tags ui: :invisible, callback: 'submitInvisibleRecaptchaForm'
             :javascript
               recapchaAttach();
+
 
           = render partial: 'devise/shared/openid'
           = render partial: 'devise/shared/help'
