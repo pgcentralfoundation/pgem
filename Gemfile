@@ -42,6 +42,8 @@ gem 'devise_ichain_authenticatable'
 gem 'devise-passwordless'
 # prevent bot registrations
 gem "recaptcha", require: "recaptcha/rails"
+# honeytrap for human-bots
+gem 'invisible_captcha'
 
 # for openID authentication
 gem 'omniauth', '2.0.4'
