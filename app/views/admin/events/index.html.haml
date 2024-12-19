@@ -143,15 +143,13 @@
               %td{'data-order' => "#{event.average_rating}", style:'min-width: 110px'}
                 = render partial: 'voting_index', locals: { event: event }
 
-            - if event.submitter && event.submitter.registrations && event.submitter.registrations.count < 1
-              - bgcolor="#F7819F"
-            - else
-              - bgcolor=""
-            %td{:style=>"background-color: #{bgcolor}"}
+            - unregistered = event.state == 'confirmed' && event.submitter && event.submitter.registrations && event.submitter.registrations.count < 1
+
+            %td{style: "background-color: #{unregistered ? '#F7819F' : ''}"}
               - if @program.show_voting?
                 - unless event.submitter.nil?
                   =link_to event.submitter.name, admin_user_path(event.submitter)
-                  - if event.submitter.registrations.count < 1
+                  - if unregistered
                     (Unregistered!)
                 - else
                   Unknown submitter
