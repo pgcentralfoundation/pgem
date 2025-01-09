@@ -1,0 +1,8 @@
+- headers = ['Last Name',
+             'First Name',
+             'Affiliation',
+             'Job Title',
+             'Email']
+= CSV.generate_line(headers, row_sep: ?\r)
+- @unregistered_speakers.each do |user|
+  = CSV.generate_line([user.last_name, user.first_name, user.affiliation, user.title, user.email], row_sep: ?\r).html_safe

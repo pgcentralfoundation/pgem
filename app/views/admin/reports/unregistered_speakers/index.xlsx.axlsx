@@ -1,0 +1,16 @@
+wb = xlsx_package.workbook
+wb.add_worksheet(name: "Unregistered speakers for #{@conference.short_title}".truncate(31,omission:'')) do |sheet|
+  bold_style = wb.styles.add_style(b: true)
+  row = ['Last Name', 'First Name', 'Affiliation', 'Job Title', 'Email']
+  sheet.add_row row, style: bold_style
+
+  @unregistered_speakers.each do |user|
+    row = []
+    row << user.last_name
+    row << user.first_name
+    row << (user.affiliation.present? ? user.affiliation : '')
+    row << (user.title.present? ? user.title : '')
+    row << user.email
+    sheet.add_row row
+  end
+end

@@ -204,6 +204,8 @@
           = link_to 'Tickets', admin_conference_reports_tickets_path(@conference.short_title)
         %li{class: active_nav_li(admin_conference_reports_purchases_path(@conference.short_title))}
           = link_to 'Purchases', admin_conference_reports_purchases_path(@conference.short_title)
+        %li{class: active_nav_li(admin_conference_reports_unregistered_speakers_path(@conference.short_title))}
+          = link_to 'Unregistered Speakers', admin_conference_reports_unregistered_speakers_path(@conference.short_title)
 
 
   - if can? :manage, @conference.integrations.build

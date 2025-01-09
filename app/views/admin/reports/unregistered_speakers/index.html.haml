@@ -1,0 +1,38 @@
+.row
+  .col-md-12
+    .page-header
+      %h1
+        Unregistered speakers
+        .btn-group.pull-right.export-buttons
+          = link_to 'Export PDF', admin_conference_reports_unregistered_speakers_path(@conference.short_title, format: :pdf), class: 'btn btn-success'
+          = link_to 'Export CSV', admin_conference_reports_unregistered_speakers_path(@conference.short_title, format: :csv), class: 'btn btn-success'
+          = link_to 'Export XLS', admin_conference_reports_unregistered_speakers_path(@conference.short_title, format: :xlsx), class: 'btn btn-success'
+
+      %p.text-muted
+        People who participate in presentations but do not have a conference ticket
+
+.row
+  .col-md-12
+    %table.table.table-hover.datatable
+      %thead
+        %th #
+        %th Last Name
+        %th First Name
+        %th Company
+        %th Title
+        %th E-Mail
+      %tbody
+        - @unregistered_speakers.each_with_index do |user, index|
+          %tr
+            %td
+              = index + 1
+            %td
+              = user.last_name
+            %td
+              = user.first_name
+            %td
+              = user.affiliation
+            %td
+              = user.title
+            %td
+              = user.email

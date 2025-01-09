@@ -197,6 +197,7 @@ Osem::Application.routes.draw do
         resources :poll_results, only: [:index]
         resources :tickets, only: [:index]
         resources :purchases, only: [:index]
+        resources :unregistered_speakers, only: [:index]
       end
     end
 
