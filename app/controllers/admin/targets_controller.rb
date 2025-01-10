@@ -11,7 +11,7 @@ module Admin
 
     def create
       @target = @conference.targets.new(target_params)
-      if @target.save(target_params)
+      if @target.save
         redirect_to admin_conference_targets_path(conference_id: @conference.short_title),
                     notice: 'Target successfully created.'
       else
