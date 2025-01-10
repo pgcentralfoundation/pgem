@@ -149,7 +149,7 @@ gem 'leaflet-rails'
 gem 'gravtastic'
 
 # for country selects
-gem 'country_select'
+gem 'country_select', '3.1.1'
 
 # as PDF generator
 gem 'prawn', '~> 1.3.0'
