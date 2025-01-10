@@ -18,7 +18,7 @@ Refinery::Resources.configure do |config|
   # config.s3_region = ENV['S3_REGION']
 
   # Configure Dragonfly
-  # config.dragonfly_verify_urls = true
+  config.dragonfly_verify_urls = false
   # config.dragonfly_secret = "20c426d757544e7bbabcc99606fd3fcad4a5e8dbc6344506"
   # config.dragonfly_url_format = "/system/resources/:job/:basename.:ext"
   # config.dragonfly_url_host = ""
