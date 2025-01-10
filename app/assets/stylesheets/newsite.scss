@@ -311,7 +311,17 @@ a:focus {
 
     .alert {
         &-info {
-            @include alert-variant(rgba(0, 135, 255, 0.1), rgba($alert-info-border,.2), $color_central_blocks);
+            @include alert-variant(rgba(0, 135, 255, 0.4), rgba($alert-warning-border,.4), $color_central_blocks);
+            .close {
+                color: white;
+                opacity: .5;
+            }
+            .close:hover {
+                opacity: 1;
+            }
+        }
+        &-warning {
+            @include alert-variant(#ffa7004f, rgba($alert-warning-border,.4), $color_central_blocks);
             .close {
                 color: white;
                 opacity: .5;

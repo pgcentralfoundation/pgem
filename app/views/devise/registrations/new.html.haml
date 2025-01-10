@@ -27,9 +27,15 @@
             = f.input :email, :as => :email, :required => true
             = f.input :password, :as => :password, :required => true, input_html: { required: 'required', autocomplete: 'off', id: 'password_inline' }
             = f.input :password_confirmation, :as => :password, :required => true, :label => "Password Confirmation"
-            %p.text-right
-              = button_tag(type: 'button', id: 'submit-registration-btn', class: 'btn btn-success') do
-                Sign Up
+            .row
+              .col-md-9 
+                %p.text-left
+                  Already have an account?
+                  = link_to 'Sign In', new_user_session_path
+              .col-md-3 
+                %p.text-right
+                  = button_tag(type: 'button', id: 'submit-registration-btn', class: 'btn btn-success') do
+                    Sign Up
 
             = invisible_recaptcha_tags ui: :invisible, callback: 'submitInvisibleRecaptchaForm'
             :javascript
