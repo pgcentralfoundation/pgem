@@ -39,12 +39,8 @@ class TicketPdf < Prawn::Document
   end
 
   def draw_second_square
-    if @conference.picture?
-      if 7 * @conference.picture.image[:width] > 12 * @conference.picture.image[:height]
-        image "#{Rails.root}/public#{@conference.picture_url}", at: [@mid_horizontal + 30, cursor], width: 120
-      else
-        image "#{Rails.root}/public#{@conference.picture_url}", at: [@mid_horizontal + 30, cursor], height: 70
-      end
+    if @conference.picture.large.file.exists?
+      image @conference.picture.large.file.path, at: [@mid_horizontal + 30, cursor], fit: [200, 70]
     else
       image "#{Rails.root}/public/img/osem-logo.png", at: [@mid_horizontal + 30, cursor], height: 70
     end
