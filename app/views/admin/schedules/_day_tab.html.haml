@@ -9,7 +9,9 @@
 - date_event_schedules = @event_schedules.where(start_time: d_start..d_end)
 .row
   - @rooms.each do |room|
-    - if room.start_date.nil? || room.start_date.nil? || (date >= room.start_date && date <= room.end_date)
+    - room_start_date = room.start_date || @conference.start_date 
+    - room_end_date = room.end_date || @conference.end_date
+    - if date.between?(room_start_date, room_end_date)
       .col-md-1.col-xs-6.room-col
         .room-name
           - room_date_event_schedules = date_event_schedules.select{ |e| e.room == room }
