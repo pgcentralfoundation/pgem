@@ -81,17 +81,17 @@ class PictureUploader < CarrierWave::Uploader::Base
 
   version :first, if: :sponsor?
   version :first do
-    process resize_and_pad: [320, 180, 'white']
+    process resize_and_pad: [320, 200, 'white']
   end
 
   version :second, if: :sponsor?
   version :second, from_version: :first do
-    process resize_and_pad: [320, 150, 'white']
+    process resize_and_pad: [320, 160, 'white']
   end
 
   version :others, if: :sponsor?
   version :others, from_version: :second do
-    process resize_and_pad: [320, 120, 'white']
+    process resize_and_pad: [320, 140, 'white']
   end
 
   # Add a white list of extensions which are allowed to be uploaded.
