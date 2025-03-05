@@ -29,17 +29,17 @@
                 = image_tag(@conference.picture_url, class: 'img-responsive img-center', id: 'splash-logo') if @conference.picture?
               .col-md-8
                 .row
-                  .col-md-8
+                  .col-lg-7
                     %h1
                       = @conference.title
-                  .col-md-4
+                  .col-lg-5.col-md-8
                     - if @conference.registration_open? && @conference.tickets.any?
-                      = link_to "Register", conference_buytickets_path(@conference.short_title), class: "btn btn-primary btn-lg btn-block btn-cta pull-right", disabled: @conference.registration_limit_exceeded?
+                      = link_to "Register", conference_buytickets_path(@conference.short_title), class: "btn btn-primary btn-lg btn-block pull-right", disabled: @conference.registration_limit_exceeded?
                       - if @conference.registration_limit_exceeded?
                         Sorry, no places left
 
                     - if @conference.program.cfp_open? and @conference.splashpage.include_cfp
-                      = link_to "Submit your paper now", new_conference_program_proposal_path(@conference.short_title), class: 'btn btn-warning btn-lg text-center'
+                      = link_to "Submit your paper", new_conference_program_proposal_path(@conference.short_title), class: 'btn btn-warning btn-lg btn-block pull-right'
                 %p.lead
                   - if @conference.venue
                     = "#{@conference.venue.city} / #{@conference.venue.country_name}"
