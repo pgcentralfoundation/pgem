@@ -48,7 +48,7 @@ private
       end
   end
 
-  BLOCKED_COUNTRY_CODES = %w(VN PK BD RU BY)
+  BLOCKED_COUNTRY_CODES = %w(VN PK BD RU BY DZ VE UA MN)
 
   def check_geoip
     country_code = request.location.country_code
