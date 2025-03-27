@@ -13,6 +13,8 @@ class Code < ActiveRecord::Base
   validates :max_uses, numericality: { greater_than_or_equal_to: 0 }
   validates :discount, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 100}
 
+  before_save :strip_name
+
   def self.sponsor_codes(conference, sponsor)
     Code.where(conference_id: conference.id, sponsor_id: sponsor.id)
   end
@@ -29,5 +31,10 @@ class Code < ActiveRecord::Base
       discount = ''
     end
     discount
+  end
+
+  private
+  def strip_name
+    self.name.strip!
   end
 end

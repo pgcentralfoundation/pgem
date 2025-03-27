@@ -148,7 +148,7 @@ module Admin
 
     def create
       @url = admin_conference_program_events_path(@conference.short_title, @event)
-      @users = User.all.order(:name)
+      @users = User.speakers_only.order(:name)
       @languages = @program.languages_list
       @event.submitter = current_user
 

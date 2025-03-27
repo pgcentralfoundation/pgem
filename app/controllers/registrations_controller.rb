@@ -1,6 +1,7 @@
 class RegistrationsController < Devise::RegistrationsController
   before_action :configure_permitted_parameters, if: :devise_controller?
   prepend_before_action :check_captcha, only: [:create, :update]
+  prepend_before_action :check_geoip, only: [:create, :update]
 
   def edit
     @openids = Openid.where(user_id: current_user.id).order(:provider)
@@ -45,4 +46,14 @@ private
           resource.validate
           respond_with_navigational(resource) { render :new }
       end
+  end
+
+  BLOCKED_COUNTRY_CODES = %w(VN PK BD RU BY DZ VE UA MN)
+
+  def check_geoip
+    country_code = request.location.country_code
+    if BLOCKED_COUNTRY_CODES.include? country_code
+      Rails.logger.warn "[DENY] registration from #{country_code}: #{request.params}"
+      redirect_to root_path
+    end
   end

@@ -10,7 +10,7 @@ class TicketsController < ApplicationController
   @tix = params['ticket']
 
     if ticket_params.present?
-      applied_code = ticket_params[:promo_code][:pcode]
+      applied_code = ticket_params[:promo_code][:pcode].strip
       code = @conference.get_valid_code(applied_code)
       @discount_pct = 0.0
 

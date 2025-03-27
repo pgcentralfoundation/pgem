@@ -268,11 +268,15 @@
       max-height: 200px;
     }
     .img-sponsor-2 {
-      max-height: 150px;
+      max-height: 160px;
     }
     .img-sponsor-3 {
-      max-height: 120px;
+      max-height: 150px;
     }
+    .img-sponsor-4 {
+      max-height: 140px;
+    }
+    
     @include breakpoint(xs) {
       .img-sponsor, .img-sponsor-1, .img-sponsor-3, .img-sponsor-3{
         max-height: unset;

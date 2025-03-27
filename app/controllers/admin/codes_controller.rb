@@ -19,7 +19,7 @@ module Admin
       authorize! :create, @code
 
       if @conference.save
-        redirect_to admin_conference_codes_path, notice: 'Promo Code was successfully created.'
+        redirect_to admin_conference_codes_path,  notice: "Promo Code '#{@code.name}' for #{@conference.short_title} successfully created."
       else
         flash.now[:error] = "Oops, couldn't save Promo Code. #{@code.errors.full_messages.join('. ')}"
         render :new

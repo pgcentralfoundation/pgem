@@ -265,6 +265,11 @@ class User < ActiveRecord::Base
     active_plugins.in_menu.first_url_in_menu
   end
 
+  def sign_in_country
+    ip = self.last_sign_in_ip || self.current_sign_in_ip
+    Geocoder.search(ip).first.try(:country_code)
+  end
+
   private
 
   def setup_role
