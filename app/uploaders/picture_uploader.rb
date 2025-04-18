@@ -109,4 +109,8 @@ class PictureUploader < CarrierWave::Uploader::Base
   def sponsor?(_picture)
     object_class_name == 'sponsors'
   end
+  
+  def default_url(*args)
+    ActionController::Base.helpers.asset_path("placeholder.png")
+  end
 end
