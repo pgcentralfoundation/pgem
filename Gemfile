@@ -183,7 +183,10 @@ gem 'yajl-ruby', '~> 1.2', '>= 1.2.1'
 gem 'rdoc-generator-fivefish', '~> 0.4.0'
 
 # for visitor tracking
-gem 'ahoy_matey', '~> 2'
+gem 'ahoy_matey', '~> 5'
+
+#visitor geocoding
+gem 'geocoder'
 
 # offline geoip database for ahoy
 gem 'maxminddb'
