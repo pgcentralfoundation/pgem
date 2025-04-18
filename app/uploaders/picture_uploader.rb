@@ -111,6 +111,6 @@ class PictureUploader < CarrierWave::Uploader::Base
   end
   
   def default_url(*args)
-    ActionController::Base.helpers.asset_path("placeholder.png")
+    '/system/placeholder.png'
   end
 end
