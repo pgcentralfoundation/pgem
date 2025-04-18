@@ -1,0 +1,85 @@
+
+#dump initial supposedly non-spammer users from db to csv
+require 'csv'
+
+file = "#{Rails.root}/public/users_data.csv"
+users = User.where(%q{last_sign_in_at - created_at > interval '10 days'}).where({sign_in_count: 4..1000})
+headers = ['email', 'username', 'first_name', 'last_name', 'affiliation', 'title', 'biography']
+
+CSV.open(file, 'w', write_headers: true, headers: headers) do |writer|
+  users.each do |u|
+    writer << [u.email, u.username, u.first_name, u.last_name, u.affiliation, u.title, u.biography]
+  end
+end
+
+#create the userdata table, import the csv and manually clean up spammer records
+# update all records with type "ham"
+
+# now fetch bad users
+users = User.where(%q{last_sign_in_at - created_at < interval '1 days'}).where({sign_in_count: 1..2}).where('id > ?', 30000).limit(1085)
+CSV.open(file, 'w', write_headers: true, headers: headers) do |writer|
+  users.each do |u|
+    writer << [u.email, u.username, u.first_name, u.last_name, u.affiliation, u.title, u.biography]
+  end
+end
+# import this csv and set type "spam" for the new records
+
+
+
+# used to cleanup user biography field from mardown characters and punctuation so we have cleaner word tokens
+def cleanstr(str)
+  str.gsub(/(\*|\[|\]|\)|\(|\,\\n)/, ' ').gsub(/\\"/, '"').gsub(/\r\n/, " ").split(' ').join(' ')
+end
+
+
+docs = labels = []
+
+# userdata table was created based on csv obtained above
+res = ActiveRecord::Base.connection.execute 'select biography, type from userdata'
+
+res.each do |r|
+  docs << cleanstr(r['biography'])
+  labels << r['type']
+end
+
+# model.fit(docs, labels)
+
+
+res.each do |r|
+  classifier.train r['type'], cleanstr(r['biography'])
+end
+
+tst.each do |t|
+  classifier.train t.first, t.last
+end
+
+User.last(100).each do |u|
+  cls = trained_classifier.classify cleanstr(u.biography||'')
+  p u.biography if cls == "Ham"
+  # p cls
+end
+
+# extend our dataset with some generic spam/ham messages
+tsv_file_path = "SMSSpamCollection.tsv"
+data = File.read(tsv_file_path).force_encoding("utf-8").split("\n")
+
+data.each do |line|
+  tst << line.strip.split("\t")
+end
+
+# train our bayes classifier
+classifier = ClassifierReborn::Bayes.new 'ham', 'spam'
+tst.each do |r|
+  classifier.train t.first, t.last
+end
+
+# save and load classifier
+classifier_snapshot = Marshal.dump classifier
+File.open("classifier.dat", "wb") {|f| f.write(classifier_snapshot) }
+
+loaded = File.read("classifier.dat")
+trained_classifier = Marshal.load loaded
+
+# validate
+include ClassifierReborn::ClassifierValidator
+cross_validate("Bayes", tst)

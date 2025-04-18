@@ -188,6 +188,9 @@ gem 'ahoy_matey', '~> 2'
 # offline geoip database for ahoy
 gem 'maxminddb'
 
+# spam detection
+gem 'classifier-reborn'
+
 # gem 'activeuuid'
 gem 'uuidtools'
 gem 'piwik_analytics', '~> 1.0.1'

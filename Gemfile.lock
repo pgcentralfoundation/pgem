@@ -344,6 +344,9 @@ GEM
       logger (~> 1.5)
     chronic (0.10.2)
     chunky_png (1.4.0)
+    classifier-reborn (2.3.0)
+      fast-stemmer (~> 1.0)
+      matrix (~> 0.4)
     cliver (0.3.2)
     cloudinary (1.29.0)
       aws_cf_signer
@@ -454,6 +457,7 @@ GEM
     faraday-retry (1.0.3)
     faraday_middleware (1.2.1)
       faraday (~> 1.0)
+    fast-stemmer (1.0.2)
     fastimage (2.3.1)
     feedjira (2.2.0)
       faraday (>= 0.9)
@@ -1016,6 +1020,7 @@ DEPENDENCIES
   caxlsx
   caxlsx_rails
   chartkick
+  classifier-reborn
   cloudinary
   cocoon
   country_select (= 6.0.0)
