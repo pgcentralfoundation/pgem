@@ -53,8 +53,8 @@
     - else
       %p= t('.no_blog_articles_yet')
 - content_for :side_body_prepend do
-  = raw @page.content_for(Refinery::Pages.default_parts.second[:slug].to_sym)
-- end if Refinery::Pages.default_parts.many?
+  - if Refinery::Pages.default_parts.many?
+    = raw @page.content_for(Refinery::Pages.default_parts.second[:slug].to_sym)
 
 = render '/refinery/content_page'
 - content_for :stylesheets, stylesheet_link_tag('refinery/blog/frontend')
