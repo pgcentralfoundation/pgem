@@ -2,7 +2,7 @@
 - row.each do |entry|
   -# Print the row header if it is a new row
   - if i == 0
-    - row_time = DateTime.parse(entry[1]).in_time_zone(@conference.timezone)
+    - row_time = entry[1].to_datetime.in_time_zone(@conference.timezone)
     - current_block = false
     - unless @current_time.blank?
       - if @current_time >= row_time and @current_time < (row_time + (EventType::LENGTH_STEP*60))
@@ -17,7 +17,7 @@
   - span = entry[4].to_i
   - room_id = entry[2]
   - event_id = entry[3]
-  - interval_start = DateTime.parse(entry[1])
+  - interval_start = entry[1].to_datetime
 
   - if event_id.blank?
     - if span == 0
