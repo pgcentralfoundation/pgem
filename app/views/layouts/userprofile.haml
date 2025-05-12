@@ -1,0 +1,60 @@
+%html{:xmlns => "http://www.w3.org/1999/html"}
+  %head
+    %meta{:charset => "utf-8"}
+    %meta{:name => "viewport", :content => "width=device-width, initial-scale=1, maximum-scale=1"}
+    %title= content_for?(:title) ? yield(:title) : (ENV['OSEM_NAME'] || 'OSEM')
+    %meta{content: content_for?(:meta_description) ? yield(:meta_description) : "Postgres Conference, the largest PostgreSQL education and advocacy platform.", name: "description"}
+    %meta{:content => "", :name => "author"}
+    = stylesheet_link_tag "application", :media => "all"
+    = javascript_include_tag "application"
+
+    = csrf_meta_tags
+    = content_for(:script_head)
+
+    - unless Rails.application.secrets.google_analytics_id.blank?
+      %script{:async => '', :src => "https://www.googletagmanager.com/gtag/js?id=#{Rails.application.secrets.google_analytics_id}"}
+
+      :javascript
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', '#{Rails.application.secrets.google_analytics_id}');
+
+    %link{:href => "https://fonts.googleapis.com/css?family=Muli:300,400,700&display=swap", :rel => "stylesheet"}/
+    = yield(:head)
+  %body.user
+    = render 'layouts/navigation'
+    #messages
+      .container
+        = render 'layouts/messages'
+    #content
+      = yield
+    #footer{class: 'navbar-static-bottom' }
+      .muted.text-center
+        - if @conference
+          - if @conference.policies.any?
+            .policy
+              - @conference.policies.each_slice(6) do |slice|
+                - slice.each do |policy|
+                  %a{ href: '#', data: { toggle: 'modal', target: "##{policy.code}" }, class: 'policy' }
+                    = policy.title
+
+                  .modal.fade{ id: "#{policy.code}" }
+                    .modal-dialog
+                      .modal-content
+                        .modal-header
+                          %button.close{ data: { dismiss: 'modal' } }
+                            x
+                        .modal-body.text-center
+                          = render partial: 'layouts/policy_listing', locals: { policy: policy }
+
+            %br
+        %small
+          This tool is
+          =link_to "free software,", "http://www.gnu.org/philosophy/free-sw.html"
+          released under the
+          =link_to "MIT license.", "http://opensource.org/licenses/MIT"
+          You can run, copy, distribute, study, change and improve it.
+          The source code and the developers are on
+          =link_to "github.", "https://github.com/PostgresConf/pgem"
+    = content_for(:script_body)

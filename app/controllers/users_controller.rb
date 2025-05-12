@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   load_and_authorize_resource
+  layout 'userprofile', only: :show
 
   # GET /users/1
   def show

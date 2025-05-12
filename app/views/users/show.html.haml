@@ -1,71 +1,114 @@
 .container
   .row
-    .col-md-12
-      .page-header
-        = image_tag(@user.avatar_url(version: 'large'), title: "Yo #{@user.first_name}!", :alt => '', class: 'img-circle')
-        %h1
-          = @user.name
-          - if @user.nickname.present?
-            %small
-              = link_to "@#{@user.nickname}", "https://twitter.com/#{@user.nickname}", class: 'text-muted'
-        %h4
-          = @user.title
-          - if @user.affiliation.present?
-            at
-            = @user.affiliation
-      %h3
-        About
-      %p
-        = markdown(@user.biography)
-      %hr
-  .row
-    .col-md-12
-      - presented_events = @user.presented_events.confirmed.order(id: :desc)
-      - if presented_events.any?
-        %h2
-          = "#{@user.name} has presented the following presentations"
-        %ul.list-unstyled
-          - presented_events.each do |event|
-            .panel.panel-default.eventblock
-              .panel-body
-                - event.speakers_ordered.each do |speaker|
-                  = image_tag speaker.avatar_url(version: 'medium'), :class => "img-circle pull-right all-speaker-pic", |
-                                                    :alt => speaker.name, |
-                                                    :title => speaker.name |
-                %span.h3
-                  = link_to event.title, conference_program_proposal_path(event.program.conference.short_title, event), class: 'unstyled-link'
-                  %span.text-muted.h4
-                    at
-                    = event.program.conference.title
-                  %br
-                  %small
-                    = event.subtitle
-                %h4
-                  presented by #{event.speaker_names}
+    .col-md-10.col-lg-8.col-md-offset-1.col-lg-offset-2
+      .row.user-header
+        .col-xs-12.visible-xs-block
+          = image_tag(@user.avatar_url(version: 'large'), title: "Yo #{@user.first_name}!", :alt => '', class: 'img-circle user-avatar')
+        .col-sm-8
+          %h1{class: 'user-name'}
+            = @user.name
+            - if @user.nickname.present?
+              .user-social
+                %a{:href=>"https://twitter.com/#{@user.nickname}", class: 'social-link'}
+                  %span{class: 'fa fa-twitter'}
+          %h4{class: 'user-affiliation'}
+            = @user.title
+            - if @user.affiliation.present?
+              at
+              = @user.affiliation
+          %p
+          = markdown(@user.biography)
 
-                - if !defined? signage
-                  - if event.commercials.present?
-                    %br
-                    %span.fa.fa-video-camera
-                    = link_to 'video', conference_program_proposal_path(event.program.conference.short_title, event)
+        .col-md-4.hidden-xs
+          = image_tag(@user.avatar_url(version: 'large'), title: "Yo #{@user.first_name}!", :alt => '', class: 'img-circle user-avatar')
+
+  .row
+    .col-md-10.col-lg-8.col-md-offset-1.col-lg-offset-2
+      - presented_events = @user.presented_events.confirmed.joins(:program).order(id: :desc )
+      - upcoming_events = presented_events.select {|e| e.program.conference.start_date >= DateTime.now}
+      - past_events = presented_events.select {|e| e.program.conference.end_date < DateTime.now}
+      %h2{class: 'user-main-title'}
+        Upcoming presentations
+      - event = @user.presented_events.first
+      - if upcoming_events.any?
+        .panel.panel-default.eventblock.panel-upcoming
+          .d-flex.panel-inner
+            .col-main
+              .panel-header
+                %div
+                  %h3{class: 'title'}
+                    = link_to event.title, conference_program_proposal_path(event.program.conference.short_title, event)
+                  %h4
+                    = event.subtitle
+
+              .panel-body
                 %p
                   = markdown(truncate(event.abstract, :length => 400))
-                  - if !defined? signage
-                    = link_to 'more', conference_program_proposal_path(event.program.conference.short_title, event) if event.abstract.length > 400
 
+            .col-additional
+              .h4{class: 'conference-title'}
+                @ #{event.program.conference.title}
+              .speakers
+                - event.speakers_ordered.each do |speaker|
+                  = image_tag speaker.avatar_url(version: 'medium'), :class => "speakers-avatar",
+                                                :alt => speaker.name,
+                                                :title => speaker.name
+              - if event.active_schedule.present?
+                %p
+                  %span.fa.fa-calendar
+                  = event.active_schedule.start_time.in_time_zone(event.program.conference.timezone).strftime('%b %-d %Y')
+              - if event.commercials.present?
+                %div
+                  %span.fa.fa-video-camera
+                  = link_to 'Media', conference_program_proposal_path(event.program.conference.short_title, event), class: 'conference-media'
+              - if event.track
+                %div.track{ style: "border-color: #{event.track.color};" }
+                  = event.track.name
+      - else
+        %h3.text-muted
+          No upcoming presentations...
 
-                - if event.active_schedule.present?
-                  %span.track
-                    %span.fa.fa-clock-o
-                    %span.label{ style: "background-color: grey" }
-                      = event.active_schedule.start_time.in_time_zone(event.program.conference.timezone).strftime('%a %-d %Y')
+      %h2{class: 'user-main-title'}
+        Past presentations
 
-                - if event.track
-                  %span.track
-                    %span.fa.fa-road
-                    %span.label{ style: "background-color: #{event.track.color}; color: #{ contrast_color(event.track.color) }" }
+      - if past_events.any?
+        %ul.list-unstyled
+          - past_events.each do |event|
+            .panel.panel-default.eventblock
+              .d-flex.panel-inner
+                .col-main
+                  .panel-header
+                    %div
+                      %h3{class: 'title'}
+                        = link_to event.title, conference_program_proposal_path(event.program.conference.short_title, event)
+                      %h4
+                        = event.subtitle
+
+                  .panel-body
+                    %p
+                      = markdown(truncate(event.abstract, :length => 400))
+
+                .col-additional
+                  .h4{class: 'conference-title'}
+                    @ #{event.program.conference.title}
+                  .speakers
+                    - event.speakers_ordered.each do |speaker|
+                      = link_to user_path(speaker.friendly_id), :class => "speakers-avatar__link" do
+                        = image_tag speaker.avatar_url(version: 'medium'), :class => "speakers-avatar",
+                                                      :alt => speaker.name,
+                                                      :title => speaker.name
+                  - if event.active_schedule.present?
+                    %p
+                      %span.fa.fa-calendar
+                      = event.active_schedule.start_time.in_time_zone(event.program.conference.timezone).strftime('%b %-d %Y')
+                  - if event.commercials.present?
+                    %div
+                      %span.fa.fa-video-camera
+                      = link_to 'Media', conference_program_proposal_path(event.program.conference.short_title, event), class: 'conference-media'
+                  - if event.track
+                    %div.track{ style: "border-color: #{event.track.color};" }
                       = event.track.name
 
       - else
-        %h4
-          = "#{@user.name} does not have any confirmed presentations..."
+        %h3.text-muted
+          No past presentaions...
