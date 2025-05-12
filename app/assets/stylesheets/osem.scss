@@ -476,9 +476,10 @@ p.comment-body {
 }
 
 //user profile page
-.user {
+body.user {
   font-family: 'Muli', sans-serif;
   background-color: #111e34;
+  font-size: 1.75rem;
   color: #FFFFFF;
   .navbar-static-bottom {
     background-color: #111e34;
@@ -493,7 +494,8 @@ p.comment-body {
     }
 
     .navbar-nav > li > a {
-      color: #fff             ;
+      color: #fff;
+      background-color: transparent;
     }
   }
 
