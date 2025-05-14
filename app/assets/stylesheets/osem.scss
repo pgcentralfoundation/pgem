@@ -67,6 +67,7 @@ body {
 
 .navbar-static-bottom {
   background-color: #2F2F2F;
+  position: absolute;
 }
 
 .container {
@@ -476,7 +477,7 @@ p.comment-body {
 }
 
 //user profile page
-body.user {
+.user-profile {
   font-family: 'Muli', sans-serif;
   background-color: #111e34;
   font-size: 1.75rem;
@@ -499,7 +500,7 @@ body.user {
     }
   }
 
-  &-main-title {
+  &__main-title {
     margin: 60px 0 20px;
 
     &:nth-of-type(1) {
@@ -507,8 +508,10 @@ body.user {
     }
   }
 
-  &-avatar {
+  &__avatar {
     border: 2px solid #fff;
+    width: 124px;
+    height: 124px;
   }
 
   .d-flex {
@@ -519,11 +522,11 @@ body.user {
     margin-top: 60px;
   }
 
-  &-header {
+  &__header {
     margin-bottom: 60px;
   }
 
-  &-info {
+  &__info {
     align-content: center;
   }
 
@@ -531,19 +534,19 @@ body.user {
     margin-right: 20px;
   }
 
-  &-name {
+  &__name {
     display: flex;
     align-items: center;
     color: #ffcd85;
     margin: 0;
   }
 
-  &-affiliation {
+  &__affiliation {
     font-style: italic;
     margin-bottom: 30px;
   }
 
-  &-social {
+  &__social {
     position: relative;
     margin-left: 20px;
  

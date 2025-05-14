@@ -1,17 +1,17 @@
 .container
   .row
     .col-md-10.col-lg-8.col-md-offset-1.col-lg-offset-2
-      .row.user-header
+      .row.user-profile__header
         .col-xs-12.visible-xs-block
-          = image_tag(@user.avatar_url(version: 'large'), title: "Yo #{@user.first_name}!", :alt => '', class: 'img-circle user-avatar')
+          = image_tag(@user.avatar_url(version: 'large'), title: "Yo #{@user.first_name}!", :alt => '', class: 'img-circle user-profile__avatar')
         .col-sm-8
-          %h1{class: 'user-name'}
+          %h1{class: 'user-profile__name'}
             = @user.name
             - if @user.nickname.present?
-              .user-social
+              .user-profile__social
                 %a{:href=>"https://twitter.com/#{@user.nickname}", class: 'social-link'}
                   %span{class: 'fa fa-twitter'}
-          %h4{class: 'user-affiliation'}
+          %h4{class: 'user-profile__affiliation'}
             = @user.title
             - if @user.affiliation.present?
               at
@@ -20,14 +20,14 @@
           = markdown(@user.biography)
 
         .col-md-4.hidden-xs
-          = image_tag(@user.avatar_url(version: 'large'), title: "Yo #{@user.first_name}!", :alt => '', class: 'img-circle user-avatar')
+          = image_tag(@user.avatar_url(version: 'large'), title: "Yo #{@user.first_name}!", :alt => '', class: 'img-circle user-profile__avatar')
 
   .row
     .col-md-10.col-lg-8.col-md-offset-1.col-lg-offset-2
       - presented_events = @user.presented_events.confirmed.joins(:program).order(id: :desc )
       - upcoming_events = presented_events.select {|e| e.program.conference.start_date >= DateTime.now}
       - past_events = presented_events.select {|e| e.program.conference.end_date < DateTime.now}
-      %h2{class: 'user-main-title'}
+      %h2{class: 'user-profile__main-title'}
         Upcoming presentations
       - event = @user.presented_events.first
       - if upcoming_events.any?
@@ -68,7 +68,7 @@
         %h3.text-muted
           No upcoming presentations...
 
-      %h2{class: 'user-main-title'}
+      %h2{class: 'user-profile__main-title'}
         Past presentations
 
       - if past_events.any?
