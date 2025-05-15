@@ -51,15 +51,3 @@
       #antiquated
         - @antiquated.each do |conference|
           = render partial: 'conference_details', locals: { conference: conference, conference_class: 'conference-archive'}
-
-:javascript
-  $(function () {
-    $(document).ready(function() {
-      //override background if conference has one
-      var banner_bg = "#{::Refinery::Setting.find_or_set(:banner_background, '')}"
-      console.log(banner_bg)
-      if(banner_bg !== '') {
-        $('section.active').css('background', banner_bg);
-      }
-    });
-  });

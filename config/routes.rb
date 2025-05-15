@@ -143,13 +143,6 @@ Osem::Application.routes.draw do
         end
       end
 
-      resources :conference_team_members, except: [:show, :update] do
-        member do
-          patch :up
-          patch :down
-        end
-      end
-
       resources :ticket_groups, except: [:show] do
         member do
           patch :up
@@ -294,12 +287,8 @@ Osem::Application.routes.draw do
   get '/portal' => redirect('/portal/sponsors')
 
   get '/conferences' => 'conferences#index'
-  get '/2017' => 'conferences#show'
   get '/my_proposals' => 'proposals#my_proposals'
-  root to: 'refinery/pages#home'
-  #root to: 'conferences#redirect_to_current'
-
-  get '/dynamicfields' => redirect('/refinery/dynamicfields')
-  mount Refinery::Core::Engine, at: Refinery::Core.mounted_path
+  
+  root to: 'conferences#index', via: [:get, :options]
 
 end

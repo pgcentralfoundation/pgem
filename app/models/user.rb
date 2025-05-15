@@ -248,23 +248,6 @@ class User < ActiveRecord::Base
   end
 
 
-  def active_plugins
-    Refinery::Plugins.registered
-    # @active_plugins ||= Refinery::Plugins.new(
-    #   Refinery::Plugins.registered.select do |plugin|
-    #     has_role?(:admin)
-    #   end
-    # )
-  end
-
-  def has_plugin?(name)
-    active_plugins.names.include?(name)
-  end
-
-  def landing_url
-    active_plugins.in_menu.first_url_in_menu
-  end
-
   def sign_in_country
     ip = self.last_sign_in_ip || self.current_sign_in_ip
     Geocoder.search(ip).first.try(:country_code)
