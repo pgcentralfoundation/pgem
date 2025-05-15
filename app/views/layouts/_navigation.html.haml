@@ -8,7 +8,7 @@
         %span.icon-bar
         %span.icon-bar
       /- if content_for? :splash_nav
-      = link_to image_tag(ENV['OSEM_NAVBAR_LOGO'].presence || 'brand.png'), root_path, class: 'navbar-brand', title: 'PostgresConf'
+      = link_to image_tag(ENV['OSEM_NAVBAR_LOGO'].presence || 'brand.png'), root_path, class: 'navbar-brand', title: 'conference logo'
       /-else
       /  = link_to (ENV['OSEM_NAME'] || 'OSEM'), root_path, class: 'navbar-brand', title: 'Open Source Event Manager'
     .collapse.navbar-collapse
