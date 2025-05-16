@@ -39,38 +39,9 @@
                       %h3.text-center
                         = conf.title
 
-
-  %section.about-section.team
-    .h2.text-center
-      Our Team
-    - @team_members = @conference.conference_team_members
-      - @team_members.each_slice(3) do |slice|
-      .row.row-centered
-        - slice.each do |team_member|
-          .col-md-4.col-centered.col-top.team-member.text-center
-            .member-photo
-              -unless team_member.photo.blank?
-                =image_fu team_member.photo, '200x200'
-            .team-detail
-              %h4
-                =team_member.fullname
-              %span.text-muted
-                =team_member.role
-              .social
-                - if team_member.twitter.present?
-                  = link_to team_member.twitter, target: '_blank' do
-                    %i.fa.fa-twitter.fa-lg
-                &nbsp;&nbsp;
-                - if team_member.linkedin.present?
-                  = link_to team_member.linkedin, target: '_blank' do
-                    %i.fa.fa-linkedin.fa-lg
-              %span
-                =raw team_member.description
-
-    - if @conference.contact.has_social_media? and @conference.splashpage.include_social_media
-      %section#social-media
-        = render 'conferences/social_media'
-
+  - if @conference.contact.has_social_media? and @conference.splashpage.include_social_media
+    %section#social-media
+      = render 'conferences/social_media'
 
 #splash
   = yield :about_base
