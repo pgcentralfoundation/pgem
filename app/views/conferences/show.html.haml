@@ -10,20 +10,13 @@
 = content_for :meta_description do
   = @conference.description
 = content_for :title do
-  = "Postgres Conference - #{@conference.title}"
+  = {@conference.title}
 = content_for :splash_base do
   - if @conference.splashpage
     #banner
       .container
         .row
           .col-md-8.col-md-offset-2#header
-            .center
-              %h2.text-center.uppercase.bold
-                - if request.domain=='postgresworld.org'
-                  PostgresWorld
-                - else
-                  Postgres Conference
-
             .row
               .col-md-4
                 = image_tag(@conference.picture_url, class: 'img-responsive img-center', id: 'splash-logo') if @conference.picture?
