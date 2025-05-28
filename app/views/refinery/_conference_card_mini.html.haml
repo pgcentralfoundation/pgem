@@ -4,9 +4,9 @@
       .poster-button-wrapper.h-100
         - if item.splashpage && item.splashpage.public
           = link_to main_app.conference_path(item.short_title) do
-            %img.img-responsive.poster-small{:alt => "Conference poster", :src => "#{item.picture.url}"}
+            %img.img-responsive.poster-small{:alt => "Conference poster", :src => "#{item.picture_url(:large)}"}
         - else
-          %img.img-responsive.poster-small{:alt => "Conference poster", :src => "#{item.picture.url}"}
+          %img.img-responsive.poster-small{:alt => "Conference poster", :src => "#{item.picture.url(:large)}"}
         .card-footer.hidden-sm
 
     .col-md-8.col-md-pull-4.col-flex

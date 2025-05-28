@@ -4,9 +4,9 @@
       .col-flex.h-100
         - if conference.splashpage && conference.splashpage.public
           = link_to main_app.conference_path(conference.short_title) do
-            %img.img-responsive.poster{:alt => "Conference poster", :src => "#{conference.picture.url}"}
+            %img.img-responsive.poster{:alt => "Conference poster", :src => "#{conference.picture_url(:large)}"}
         -else
-          %img.img-responsive.poster{:alt => "Conference poster", :src => "#{conference.picture.url}"}
+          %img.img-responsive.poster{:alt => "Conference poster", :src => "#{conference.picture_url(:large)}"}
         .btn-wrapper-bottom.hidden-xs.hidden-sm
           - if conference.splashpage && conference.splashpage.public
             - if conference.registration_open? && conference.tickets.any?
