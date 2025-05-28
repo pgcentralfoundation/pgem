@@ -157,3 +157,9 @@
         $('#login_form').hide()
         $('#passwordless_login_form').show()
       });
+
+      $('#user_password_dd').on('keyup', function(e) {
+        if (e.which === 13) {
+            $('#login_form').submit();
+        }
+      });
