@@ -8,7 +8,8 @@
       = semantic_form_for(@user, url: user_path(@user.id)) do |f|
         = f.input :first_name, as: :string, :required => true, :label => "First Name"
         = f.input :last_name, as: :string, :required => true, :label => "Last Name"
-        = f.input :nickname, as: :string, :label => "Twitter Handle"
+        = f.input :nickname, as: :string, :label => "Social Media Handle", hint: 'Nickname part from your social profile URL: https://x.com/nickname ; https://github.com/nickname etc. '
+        = f.input :nickname_type, as: :select, collection: User.nickname_types.keys, :label => "Social Media Type"
         = f.input :mobile, :as => :phone, :label => "Phone Number"
         = f.input :country, :as => :country, :include_blank => 'Please choose...', :label => "Country"
         = f.input :state, :label => "State"

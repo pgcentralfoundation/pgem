@@ -9,8 +9,8 @@
             = @user.name
             - if @user.nickname.present?
               .user-profile__social
-                %a{:href=>"https://twitter.com/#{@user.nickname}", class: 'social-link'}
-                  %span{class: 'fa fa-twitter'}
+                = link_to social_url(@user), class: 'social-link' do
+                  %span{class: social_icon_class(@user)}
           %h4{class: 'user-profile__affiliation'}
             = @user.title
             - if @user.affiliation.present?

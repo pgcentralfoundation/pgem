@@ -72,6 +72,9 @@ class User < ActiveRecord::Base
   validates :email, presence: true
 
   validate :biography_limit
+  validates :nickname, format: {with: /\A[a-zA-Z0-9_]{1,15}\z/, message: 'use only the nickname part of the url'}, allow_blank: true
+
+  enum nickname_type: [:twitter, :linkedin, :github, :facebook ]
 
   ##
   # Checkes if the user attended the event
@@ -246,7 +249,6 @@ class User < ActiveRecord::Base
       gravatar_url(size: size_map[version])
     end
   end
-
 
   def active_plugins
     Refinery::Plugins.registered
