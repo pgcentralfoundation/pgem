@@ -1068,19 +1068,19 @@ class Conference < ActiveRecord::Base
     result = {}
     if active_user > 0
       result['Active'] = {
-        'color' => 'green',
+        'color' => '#59A14F',
         'value' => active_user
       }
     end
     if unconfirmed_user > 0
       result['Unconfirmed'] = {
-        'color' => 'red',
+        'color' => '#E15759',
         'value' => unconfirmed_user
       }
     end
     if dead_user > 0
       result['Dead'] = {
-        'color' => 'black',
+        'color' => '#999999',
         'value' => dead_user
       }
     end

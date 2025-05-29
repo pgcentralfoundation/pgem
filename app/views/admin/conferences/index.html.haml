@@ -47,7 +47,7 @@
                                                x: @registration_weeks,
                                                unit: 'weeks' }
   .col-md-4
-    = render partial: 'doughnut_chart', locals: { title: 'Events',data: @event_distribution }
+    = render partial: 'doughnut_chart', locals: { title: 'Events', data: @event_distribution }
 .row#submissions
   .col-md-8
     = render partial: 'line_chart', locals: { title: 'Submissions over time',

@@ -190,13 +190,14 @@ class Event < ActiveRecord::Base
   end
 
   def self.get_state_color(state)
+    # https://observablehq.com/@d3/color-schemes?collection=@d3/d3-scale-chromatic -> tableau10
     color = {
-      new:         '#0000FF', # blue
-      withdrawn:   '#FF8000', # orange
-      confirmed:   '#00FF00', # green
-      unconfirmed: '#FFFF00', # yellow
-      rejected:    '#FF0000', # red
-      canceled:    '#848484'  # grey
+      new:         '#4E79A7', # blue
+      withdrawn:   '#F28E2C', # orange
+      confirmed:   '#59A14F', # green
+      unconfirmed: '#EDC949', # yellow
+      rejected:    '#E15759', # red
+      canceled:    '#999999'  # grey
     }[state.to_sym]
 
     color || '#00FFFF' # azure
