@@ -14,7 +14,7 @@ Refinery::Images.configure do |config|
   # config.pages_per_admin_index = 20
 
   # Configure image sizes
-  # config.user_image_sizes = {:small=>"110x110>", :medium=>"225x255>", :large=>"450x450>"}
+  config.user_image_sizes = {:small=>"110x110>", :medium=>"225x255>", :large=>"450x450>"}
 
   # Configure white-listed mime types for validation
   # config.whitelisted_mime_types = ["image/jpeg", "image/png", "image/gif", "image/tiff"]
@@ -36,7 +36,7 @@ Refinery::Images.configure do |config|
   # Configure Dragonfly
   # config.dragonfly_verify_urls = true
   config.dragonfly_secret = "af712ed43b0ac3a2e90e6848e68388df5734fb5cfbb4ef68"
-  # config.dragonfly_url_format = "/system/images/:job/:basename.:ext"
+  config.dragonfly_url_format = "/system/images/:job/:basename.:ext"
   # config.dragonfly_url_host = ""
   # config.datastore_root_path = "/home/eugend/cmd/osem_gh/public/system/refinery/images"
 
@@ -46,3 +46,10 @@ Refinery::Images.configure do |config|
   # config.custom_backend_opts = {}
 
 end
+
+# Refinery::Admin::ImagesController.class_eval do
+#   private
+#   def permitted_image_params
+#     [:image_size, :image_title, :image_alt, image: []]
+#   end
+# end
