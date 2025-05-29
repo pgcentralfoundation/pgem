@@ -1,7 +1,4 @@
 .text-center
   %h4 #{title}
-  .doughnut-wrapper{"style"=>"height:150px"}
+  .doughnut-wrapper{"style"=>"height:250px"}
     %canvas.doughnut_chart{"data-chart"=>data.to_json}
-- if data
-  - data.each do |key, value|
-    %span{"style"=>"border-bottom: 3px solid #{value['color']}"} #{key}: #{value['value']}

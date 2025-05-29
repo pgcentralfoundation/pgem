@@ -56,11 +56,20 @@ $(function() {
 
                 },
                 options: {
-                    legend: {
-                        display: false
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'bottom',
+                            labels:{
+                                usePointStyle: true,
+                                pointStyle: 'rectRounded'
+                            },
+                        },
                     },
                     responsive: true,
                     maintainAspectRatio: false,
+                    borderRadius: 5,
+                    borderWidth: 1,
                     animation: animation
                 }
             }
