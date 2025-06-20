@@ -28,13 +28,13 @@
               Create Account
           %span.pull-right#account-already
             Already have an account?
-            =link_to('#signin', role: 'tab', 'aria-controls' => 'home', 'data-toggle' => 'tab', 'class' => 'btn btn-warning btn-outline btn-sm') do
+            =link_to('#signin-form', role: 'tab', 'aria-controls' => 'home', 'data-toggle' => 'tab', 'class' => 'btn btn-warning btn-outline btn-sm') do
               Sign In!
       .tab-content
         .tab-pane.active{role: 'tabpanel', id: 'signup'}
           %p.text-muted
             Thank you for participating in our call for papers. If you do not have an account please fill in the information below, otherwise please
-            =link_to('#signin', role: 'tab', 'aria-controls' => 'home', 'data-toggle' => 'tab') do
+            =link_to('#signin-form', role: 'tab', 'aria-controls' => 'home', 'data-toggle' => 'tab') do
               sign in
           = semantic_form_for(@event, url: @url) do |f|
 
@@ -99,5 +99,5 @@
               - else
                 = f.submit 'Create Proposal', class: 'btn btn-success'
 
-        .tab-pane{role: 'tabpanel', id: 'signin'}
+        .tab-pane{role: 'tabpanel', id: 'signin-form'}
           = render partial: 'devise/shared/sign_in_form_embedded'
