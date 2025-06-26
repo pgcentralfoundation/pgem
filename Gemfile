@@ -101,7 +101,7 @@ gem 'will_paginate-bootstrap'
 gem 'soft_deletion'
 
 #for automated RSS blog impoprt
-gem 'feedjira', '~> 2.2'
+gem 'feedjira', '~> 3.2.5'
 
 # frontend javascripts
 source 'https://rails-assets.org' do
