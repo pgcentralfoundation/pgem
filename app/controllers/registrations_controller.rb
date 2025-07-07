@@ -13,6 +13,17 @@ class RegistrationsController < Devise::RegistrationsController
     super
   end
 
+  def create
+    u = build_resource sign_up_params
+    u.current_sign_in_ip = request.ip
+    result = UserClassifier.instance.check u
+    if result[:score] >= 0.3
+      Rails.logger.warn "[DENY] registration from potential spammer: #{request.params}, test results: #{result}"
+      render plain: 'Service Unavailable', status: 503 and return
+    end
+    super
+  end
+
   protected
 
   def after_update_path_for(resource)

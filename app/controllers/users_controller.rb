@@ -14,6 +14,11 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1
   def update
     if @user.update(user_params)
+      result = UserClassifier.instance.check @user
+      if result[:score] >= 0.4
+        Rails.logger.warn "[DENY] profile update from potential spammer: #{request.params}, test results: #{result}"
+        render plain: 'Service Unavailable', status: 503 and return
+      end
       if params[:remove_avatar]
         @user.remove_avatar!
         @user.save
