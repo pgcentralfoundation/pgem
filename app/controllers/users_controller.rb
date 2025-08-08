@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   load_and_authorize_resource
+  before_action :check_public_profile, only: :show
   layout 'userprofile', only: :show
 
   # GET /users/1
@@ -40,5 +41,15 @@ class UsersController < ApplicationController
       params.require(:user).permit(:first_name, :last_name, :biography, :nickname,
         :nickname_type, :affiliation, :avatar, :remove_avatar, :title, :mobile,
         :country, :state, :city)
+    end
+
+    def check_public_profile
+      return if current_user && current_user.is_admin
+      if current_user != @user
+        unless @user.roles.any? || @user.registrations.any? || @user.events.any?
+          Rails.logger.warn "[DENY] access to dummy profile: #{@user.friendly_id}"
+          not_found
+        end
+      end
     end
 end
