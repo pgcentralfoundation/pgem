@@ -272,6 +272,11 @@ class User < ActiveRecord::Base
     Geocoder.search(ip).first.try(:country_code)
   end
 
+  # used to determine if user can fill in the profile, dummy users/spammers can't
+  def participated_in_anything?
+    events.any? || registrations.any? || tickets.any?
+  end
+
   private
 
   def setup_role

@@ -82,7 +82,11 @@ class ProposalsController < ApplicationController
       if @event.speakers_pending
         redirect_to edit_conference_program_proposal_path(@conference.short_title, @event), notice: 'Proposal was successfully submitted but there are no speakers yet. You can send some speaker invitations below.'
       else
-        redirect_to conference_program_proposals_path(@conference.short_title), notice: 'Proposal was successfully submitted.'
+        if current_user.biography.blank?
+          redirect_to edit_user_path(current_user), notice: 'Proposal was successfully submitted. Please complete your user profile here'
+        else
+          redirect_to conference_program_proposals_path(@conference.short_title), notice: 'Proposal was successfully submitted.'
+        end
       end
     else
       flash.now[:error] = "Could not submit proposal: #{@event.errors.full_messages.join(', ')}"

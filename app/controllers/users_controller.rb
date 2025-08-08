@@ -22,6 +22,11 @@ class UsersController < ApplicationController
       render plain: 'Service Unavailable', status: 503 and return
     end
 
+    unless @user.participated_in_anything?
+      Rails.logger.warn "[DENY] profile edit from non-participating user: #{request.params}"
+      render plain: 'Service Unavailable', status: 503 and return
+    end
+
     if @user.update(user_params)
       if params[:remove_avatar]
         @user.remove_avatar!
