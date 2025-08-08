@@ -32,6 +32,7 @@
     = yield(:head)
   %body
     = render 'layouts/navigation'
+
     -# Admin area
     - if controller.class.name.split("::").first=="Admin"
       = render 'layouts/admin'
@@ -44,33 +45,34 @@
             = render 'layouts/messages'
       #content
         = yield
-    #footer{class: content_for?(:splash_base) ? 'navbar-static-bottom splash-footer' : 'navbar-static-bottom' }
-      .muted.text-center
-        - if @conference
-          - if @conference.policies.any?
-            .policy
-              - @conference.policies.each_slice(6) do |slice|
-                - slice.each do |policy|
-                  %a{ href: '#', data: { toggle: 'modal', target: "##{policy.code}" }, class: 'policy' }
-                    = policy.title
+    - if controller.class.name.split("::").first!="Admin"
+      #footer{class: content_for?(:splash_base) ? 'navbar-static-bottom splash-footer' : 'navbar-static-bottom' }
+        .muted.text-center
+          - if @conference
+            - if @conference.policies.any?
+              .policy
+                - @conference.policies.each_slice(6) do |slice|
+                  - slice.each do |policy|
+                    %a{ href: '#', data: { toggle: 'modal', target: "##{policy.code}" }, class: 'policy' }
+                      = policy.title
 
-                  .modal.fade{ id: "#{policy.code}" }
-                    .modal-dialog
-                      .modal-content
-                        .modal-header
-                          %button.close{ data: { dismiss: 'modal' } }
-                            x
-                        .modal-body.text-center
-                          = render partial: 'layouts/policy_listing', locals: { policy: policy }
+                    .modal.fade{ id: "#{policy.code}" }
+                      .modal-dialog
+                        .modal-content
+                          .modal-header
+                            %button.close{ data: { dismiss: 'modal' } }
+                              x
+                          .modal-body.text-center
+                            = render partial: 'layouts/policy_listing', locals: { policy: policy }
 
-            %br
-        %small
-          This tool is
-          =link_to "free software,", "http://www.gnu.org/philosophy/free-sw.html"
-          released under the
-          =link_to "MIT license.", "http://opensource.org/licenses/MIT"
-          You can run, copy, distribute, study, change and improve it.
-          The source code and the developers are on
-          =link_to "github.", "https://github.com/PostgresConf/pgem"
+              %br
+          %small
+            This tool is
+            =link_to "free software,", "http://www.gnu.org/philosophy/free-sw.html"
+            released under the
+            =link_to "MIT license.", "http://opensource.org/licenses/MIT"
+            You can run, copy, distribute, study, change and improve it.
+            The source code and the developers are on
+            =link_to "github.", "https://github.com/PostgresConf/pgem"
     = content_for(:script_body)
     / = piwik_tracking_tag
