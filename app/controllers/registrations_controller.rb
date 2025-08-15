@@ -2,6 +2,7 @@ class RegistrationsController < Devise::RegistrationsController
   before_action :configure_permitted_parameters, if: :devise_controller?
   prepend_before_action :check_captcha, only: [:create, :update]
   prepend_before_action :check_geoip, only: [:create, :update]
+  prepend_before_action :check_stopforumspam, only: [:create, :update] 
 
   def edit
     @openids = Openid.where(user_id: current_user.id).order(:provider)
@@ -66,5 +67,31 @@ private
     if BLOCKED_COUNTRY_CODES.include? country_code
       Rails.logger.warn "[DENY] registration from #{country_code}: #{request.params}"
       redirect_to root_path
+    end
+  end
+
+  def check_stopforumspam
+    Rails.logger.info "Querying StopForumSpam: #{request.params}"
+    begin
+      ip_address = request.remote_ip
+      uri = URI.parse("https://api.stopforumspam.org/api?f=json&ip=#{ip_address}")
+      http = Net::HTTP.new(uri.host, uri.port)
+      http.use_ssl = true
+      http.open_timeout = 2
+      http.read_timeout = 2
+
+      req = Net::HTTP::Get.new(uri.request_uri)
+      response_raw = http.request(req)
+      response = JSON.parse(response_raw.body)
+      if response['success']
+        if response['ip']['appears'] != 0
+          Rails.logger.warn "[DENY] registration because of failed stomforumspam check: #{response}"
+          redirect_to root_path
+        end
+      end
+    rescue Net::OpenTimeout
+      Rails.logger.warn "StopForumSpam request timed out"
+    rescue StandardError => e
+      Rails.logger.warn "Couldn't validate against StopForumSpam: + #{e.message}"
     end
   end
