@@ -2,7 +2,7 @@ class RegistrationsController < Devise::RegistrationsController
   before_action :configure_permitted_parameters, if: :devise_controller?
   prepend_before_action :check_captcha, only: [:create, :update]
   prepend_before_action :check_geoip, only: [:create, :update]
-  prepend_before_action :check_stopforumspam, only: [:create, :update] 
+  prepend_before_action :check_stopforumspam, only: [:create] 
 
   def edit
     @openids = Openid.where(user_id: current_user.id).order(:provider)
@@ -74,7 +74,8 @@ private
     Rails.logger.info "Querying StopForumSpam: #{request.params}"
     begin
       ip_address = request.remote_ip
-      uri = URI.parse("https://api.stopforumspam.org/api?f=json&ip=#{ip_address}")
+      email = request.params['user']['email']
+      uri = URI.parse("https://api.stopforumspam.org/api?f=json&ip=#{ip_address}&email=#{email}")
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = true
       http.open_timeout = 2
@@ -84,8 +85,8 @@ private
       response_raw = http.request(req)
       response = JSON.parse(response_raw.body)
       if response['success']
-        if response['ip']['appears'] != 0
-          Rails.logger.warn "[DENY] registration because of failed stomforumspam check: #{response}"
+        if response['ip']['appears'] != 0 || response['email']['appears'] != 0
+          Rails.logger.warn "[DENY] registration because of failed stopforumspam check: #{response}"
           redirect_to root_path
         end
       end
