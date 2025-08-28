@@ -10,7 +10,7 @@ module Admin
     end
 
     def update
-      unless speaker_params[:is_highlight].nil?
+      if speaker_params[:is_highlight].present?
         EventUser.set_is_highlight(@program, @speaker, speaker_params[:is_highlight])
       end
 
@@ -33,8 +33,8 @@ module Admin
                     error: 'Error! Could not find speaker!'
         return
       end
-  @event
-end
+      @event
+    end
 
   end
 end
