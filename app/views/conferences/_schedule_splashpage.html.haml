@@ -15,15 +15,17 @@
       - @conference.program.tracks.each_slice(3) do |slice|
         .row.row-centered
           - slice.each do |track|
-            .col-md-4.col-sm-12.col-centered.col-top
-              .program-card{'style'=>"border-left-color: #{track.color}"}
-                %h3.program-card_title
-                  = track.name
-                - track.events.joins(:event_type).where(state: 'confirmed').each do |event|
-                  - unless event.event_type.internal_event?
-                    %p.text-left.program-card_event
-                      = link_to event.title, conference_program_proposal_path(@conference.short_title, event)
-                      = "by #{event.speakers_ordered.first.try(:name) || 'Unknown Speaker'}"
+            - track_events = track.events.joins(:event_type).where({state: 'confirmed'}).where("internal_event = 'False'")
+            - if track_events.present?
+              .col-md-4.col-sm-12.col-centered.col-top
+                .program-card{'style'=>"border-left-color: #{track.color}"}
+                  %h3.program-card_title
+                    = track.name
+                  - track_events.each do |event|
+                    - unless event.event_type.internal_event?
+                      %p.text-left.program-card_event
+                        = link_to event.title, conference_program_proposal_path(@conference.short_title, event)
+                        = "by #{event.speakers_ordered.first.try(:name) || 'Unknown Speaker'}"
 
   - if @conference.program and @conference.program.schedule_public
     .row
