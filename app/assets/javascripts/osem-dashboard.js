@@ -73,7 +73,10 @@ $(function() {
                     animation: animation
                 }
             }
-            new Chart($this, config);
+            let chart_instance = Chart.getChart($this)
+            if(!chart_instance) {
+                new Chart($this, config);
+            }
         }
     }
 
@@ -97,16 +100,24 @@ $(function() {
                 datasets: chart_data
             },
             options: {
-                legend: {
-                    display: false
+                plugins: {
+                    legend: {
+                        display: false
+                    },
                 },
                 responsive: true,
                 maintainAspectRatio: false,
                 animation: animation
             }
         }
+        let chart_instance = Chart.getChart($canvas)
+        if(chart_instance) {
+            chart_instance.data = data;
+            chart_instance.update();
+        } else {
+            new Chart($canvas, config);
+        }
 
-        new Chart($canvas, config);
     }
 
     function create_dataset($canvas){
@@ -158,10 +169,6 @@ $(function() {
         var chart_name = $(this).parent().data('chart');
         var $canvas = $('#line_chart_' + chart_name);
         draw_line_chart(false, $canvas);
-    });
-
-    $(window).on('resize', function(){
-        size(false);
     });
 
     $('#doughnut_tabs a').click(function (e) {
