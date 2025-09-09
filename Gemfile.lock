@@ -310,13 +310,12 @@ GEM
       rack-test (>= 0.6.3)
       regexp_parser (>= 1.5, < 3.0)
       xpath (~> 3.2)
-    carrierwave (2.2.2)
-      activemodel (>= 5.0.0)
-      activesupport (>= 5.0.0)
+    carrierwave (3.1.2)
+      activemodel (>= 6.0.0)
+      activesupport (>= 6.0.0)
       addressable (~> 2.6)
       image_processing (~> 1.1)
       marcel (~> 1.0.0)
-      mini_mime (>= 0.1.3)
       ssrf_filter (~> 1.0)
     carrierwave-bombshelter (0.2.2)
       activesupport (>= 3.2.0)
@@ -533,8 +532,8 @@ GEM
       ice_cube (~> 0.16)
       ostruct
     ice_cube (0.17.0)
-    image_processing (1.13.0)
-      mini_magick (>= 4.9.5, < 5)
+    image_processing (1.14.0)
+      mini_magick (>= 4.9.5, < 6)
       ruby-vips (>= 2.0.17, < 3)
     inversion (1.5.0)
       gli (~> 2.21)
@@ -845,7 +844,7 @@ GEM
     ruby-oembed (0.14.1)
     ruby-openid (2.9.2)
     ruby-progressbar (1.13.0)
-    ruby-vips (2.2.2)
+    ruby-vips (2.2.5)
       ffi (~> 1.12)
       logger
     ruby2_keywords (0.0.5)
@@ -903,7 +902,7 @@ GEM
       actionpack (>= 6.1)
       activesupport (>= 6.1)
       sprockets (>= 3.0.0)
-    ssrf_filter (1.2.0)
+    ssrf_filter (1.3.0)
     stringex (2.8.6)
     stringio (3.1.2)
     stripe (11.7.0)
@@ -1002,7 +1001,7 @@ DEPENDENCIES
   byebug (~> 11.1.3)
   cancancan
   capybara
-  carrierwave (= 2.2.2)
+  carrierwave (= 3.1.2)
   carrierwave-bombshelter
   caxlsx
   caxlsx_rails
