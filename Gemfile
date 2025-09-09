@@ -29,7 +29,7 @@ gem 'rails-observers'
 gem 'paper_trail'
 
 # for upload management
-gem 'carrierwave', '2.2.2'
+gem 'carrierwave', '3.1.2'
 gem 'mini_magick', '>= 4.9.4'
 gem 'carrierwave-bombshelter'
 gem 'better_tempfile'
