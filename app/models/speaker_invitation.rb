@@ -25,7 +25,7 @@ class SpeakerInvitation < ActiveRecord::Base
       event = self.event
       if event.speakers_pending?
         # remove submitter from the speakers list
-        event.speakers = event.speakers.to_a.reject! {|speaker| speaker==event.submitter}
+        event.speakers = event.speakers.to_a.reject {|speaker| speaker==event.submitter}
         event.speakers_pending = false
       end
       if event.speaker_ids.include? invitee.id
