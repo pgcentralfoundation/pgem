@@ -19,7 +19,13 @@ class PictureUploader < CarrierWave::Uploader::Base
 
   after :store, :try_deinterlace
 
+  def image?(file)
+    file && file.content_type && file.content_type.start_with?('image/')
+  end
+
   def try_deinterlace(file)
+    return unless image?(file)
+    cache! unless cached?
     manipulate! do |img|
       img.interlace('none')
     end
