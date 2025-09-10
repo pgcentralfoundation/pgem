@@ -1009,6 +1009,7 @@ DEPENDENCIES
   classifier-reborn
   cloudinary
   cocoon
+  concurrent-ruby (= 1.3.4)
   country_select (= 6.0.0)
   coveralls
   daemons
