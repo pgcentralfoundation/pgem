@@ -8,6 +8,8 @@ end
 # as web framework
 gem 'rails', '~> 6.1.7'
 gem 'zeitwerk', '~> 2.5.4'
+# required by sprockets, pinned because newer versions were breaking assets:precompile
+gem 'concurrent-ruby', '1.3.4'
 
 gem 'braintree'
 gem 'gon', '~> 6.4.0'
