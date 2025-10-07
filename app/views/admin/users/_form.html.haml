@@ -22,8 +22,6 @@
     = f.input :name, :as => :string
     = f.input :first_name, :as => :string
     = f.input :last_name, :as => :string
-    = f.input :nickname, as: :string, :label => "Social Media Handle", hint: 'Nickname part from your social profile URL: https://x.com/nickname ; https://github.com/nickname etc. '
-    = f.input :nickname_type, as: :select, collection: User.nickname_types.keys, :label => "Social Media Type"
     = f.input :title, :as => :string
     = f.input :username, :as => :string
     = f.input :email
