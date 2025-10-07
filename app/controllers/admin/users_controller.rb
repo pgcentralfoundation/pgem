@@ -68,9 +68,9 @@ module Admin
     def user_params
       params[:user].delete(:password) unless params[:user][:password].present?
 
-      params.require(:user).permit(:email, :name, :first_name, :last_name, :password, :email_public, :biography,
-                                   :mobile, :nickname, :affiliation, :avatar, :remove_avatar,:title, :is_admin, :username, :login, :is_disabled,
-                                   :tshirt, :mobile, :volunteer_experience, :languages, :to_confirm, role_ids: [])
+      params.require(:user).permit(:email, :name, :first_name, :last_name, :password, :email_public, :biography, :mobile, 
+                                   :nickname, :nickname_type, :affiliation, :avatar, :remove_avatar,:title, :is_admin, :username, 
+                                   :login, :is_disabled, :tshirt, :mobile, :volunteer_experience, :languages, :to_confirm, role_ids: [])
     end
   end
 end
