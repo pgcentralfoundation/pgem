@@ -27,7 +27,6 @@ class Conference < ActiveRecord::Base
   has_one :program, dependent: :destroy
   has_one :poll, dependent: :destroy
   has_one :venue, dependent: :destroy
-  has_many :sponsorship_levels_benefits, through: :sponsorship_levels
   has_many :ticket_purchases, dependent: :destroy
   has_many :physical_tickets, through: :ticket_purchases
   has_many :payments, dependent: :destroy
@@ -46,6 +45,7 @@ class Conference < ActiveRecord::Base
   has_many :vdays, dependent: :destroy
   has_many :vpositions, dependent: :destroy
   has_many :sponsorship_levels, -> { order('position ASC') }, dependent: :destroy
+  has_many :sponsorship_levels_benefits, through: :sponsorship_levels
   has_many :sponsorships, dependent: :destroy
   has_many :targets, dependent: :destroy
   has_many :campaigns, dependent: :destroy
