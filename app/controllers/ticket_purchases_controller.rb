@@ -60,6 +60,10 @@ class TicketPurchasesController < ApplicationController
     end
   end
 
+  def index
+    @unpaid_ticket_purchases = current_user.ticket_purchases.by_conference(@conference).unpaid
+  end
+  
   def recreate
     render layout: false
   end
