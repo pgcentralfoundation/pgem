@@ -225,7 +225,7 @@ Osem::Application.routes.draw do
         get :complete
       end
     end
-    resources :ticket_purchases, only: [:create, :destroy]
+    resources :ticket_purchases, only: [:create, :destroy, :index]
 
     get 'ticket_purchases/recreate' => 'ticket_purchases#recreate'
     get 'ticket_purchases/quickbuy/:event_id' => 'ticket_purchases#quickbuy', as: :event_quickbuy
