@@ -10,9 +10,12 @@ class TicketPurchasesController < ApplicationController
     code_id = params[:code_id] || ''
     chosen_events = params[:chosen_events] || []
 
-    unless verify_recaptcha
+    unless session[:skip_captcha] || verify_recaptcha
       return redirect_to conference_tickets_path(@conference.short_title)
     end
+
+    # delete skip captcha flag if any
+    session.delete(:skip_captcha)
 
     if tkts.map(&:values).flatten.map(&:to_i).sum.zero?
       return redirect_to conference_tickets_path(@conference.short_title),
@@ -105,6 +108,8 @@ class TicketPurchasesController < ApplicationController
       session[:purchase_params_purchase_prices] = params[:purchase_prices]
       session[:purchase_params_chosen_events] = params[:chosen_events]
       session[:purchase_params_code_id] = params[:code_id] if params[:code_id]
+      # don't check captcha again during purchase recreate
+      session[:skip_captcha] = true
       session[:return_to] = conference_ticket_purchases_recreate_path(@conference.short_title)
     end
   end
