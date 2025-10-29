@@ -23,6 +23,8 @@ class ApplicationController < ActionController::Base
   def store_location
     # store last url - this is needed for post-login redirect to whatever the user last visited.
     return unless request.get?
+    # don't save location for static files
+    return if request.path.starts_with? '/system'
     if (request.path != '/accounts/sign_in' &&
         request.path != '/accounts/sign_up' &&
         request.path != '/accounts/password/new' &&
@@ -44,7 +46,7 @@ class ApplicationController < ActionController::Base
       session[:return_to] == root_path)
       admin_conferences_path
     else
-      session[:pending_invitation_url] || session[:return_to] || root_path
+      session[:pending_invitation_url] || session[:tickets_recreate_url] || session[:return_to] || root_path
     end
   end
 

@@ -68,6 +68,7 @@ class TicketPurchasesController < ApplicationController
   end
   
   def recreate
+    session.delete(:tickets_recreate_url)
     render layout: false
   end
 
@@ -110,7 +111,7 @@ class TicketPurchasesController < ApplicationController
       session[:purchase_params_code_id] = params[:code_id] if params[:code_id]
       # don't check captcha again during purchase recreate
       session[:skip_captcha] = true
-      session[:return_to] = conference_ticket_purchases_recreate_path(@conference.short_title)
+      session[:tickets_recreate_url] = conference_ticket_purchases_recreate_path(@conference.short_title)
     end
   end
 end
