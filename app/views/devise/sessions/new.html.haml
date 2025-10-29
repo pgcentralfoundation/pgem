@@ -30,8 +30,7 @@
             .tab-pane.active{role: 'tabpanel', id: 'signin-email'}
               = link_to('#signin', role: 'tab', 'aria-controls' => 'home', 'data-toggle' => 'tab', 'class' => 'text-info') do
                 Sign-in with password
-
-              = semantic_form_for(resource, as: resource_name, url: passwordless_user_session_path) do |f|
+              = semantic_form_for(resource, as: :passwordless_user, url: passwordless_user_session_path) do |f|
                 = f.input :email
                 .row
                   .col-md-9
