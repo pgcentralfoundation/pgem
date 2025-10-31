@@ -1,10 +1,10 @@
 function update_price($this){
-    var id = $this.data('id');
+    var ticket_id = $this.data('id');
     // Calculate price for row
     var value = $this.val();
-    var price = $('#price_' + id).data().price;
+    var price = $('#price_' + ticket_id).data().price;
     var row_total = accounting.formatMoney(value * price, parent.currency_symbol, 0, parent.currency_delimiter, parent.currency_separator);
-    $('#total_row_' + id).text(row_total);
+    $('#total_row_' + ticket_id).text(row_total);
 
     // Calculate total price
     var total = 0;
@@ -14,30 +14,6 @@ function update_price($this){
     });
     total = accounting.formatMoney(total, parent.currency_symbol, 0, parent.currency_delimiter, parent.currency_separator);
     $('#total_price').text(total);
-}
-
-function update_quantity(chk_bx, ticket_id){
-    if(chk_bx.checked) {
-        document.getElementById('tickets__' + ticket_id).value = '1';
-    } else {
-        document.getElementById('tickets__' + ticket_id).value = '0';
-        var elems = document.querySelectorAll('input[id^="chosen_events__' + ticket_id + '_"]');
-        for (var i = 0, len = elems.length; i < len; i++){
-            elems[i].checked = false;
-        }
-    }
-    document.getElementById('tickets__' + ticket_id).dispatchEvent(new Event('change'));
-}
-
-function update_event(sb, ticket_id){
-	var tt = 0;
-    var evs = document.querySelectorAll('*[id^="chosen_events_' + ticket_id + '_"]');
-    for (var i = 0; i < evs.length; ++i) {
-      tt = +tt + +evs[i].value;
-    }
-
-    document.getElementById('tickets__' + ticket_id).value = tt;
-    document.getElementById('tickets__' + ticket_id).dispatchEvent(new Event('change'));
 }
 
 function save_state() {

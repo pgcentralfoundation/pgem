@@ -25,8 +25,10 @@
       - if event.present?
         - available = event.purchase_quantity_available
         - if available > 0
-          = select_tag("chosen_events[#{ticket.id}][#{event.id}]", options_for_select((0..available).to_a), class: "selectpicker form-control",
-                                  onchange: "update_event(this, #{ticket.id});")
+          = select_tag("chosen_events[#{ticket.id}][#{event.id}]", options_for_select((0..available).to_a),
+            class: "selectpicker form-control quantity",
+            'data-id' => ticket.id,
+            onchange: "update_event(this, #{ticket.id})")
         - else
           %h5
             Sold Out
@@ -41,4 +43,5 @@
                 = render partial: 'event_listing', locals: { event: event }
 
       - else
-        = select_tag("tickets[][#{ticket.id}]", options_for_select((0..ticket.purchase_quantity_available).to_a), class: "selectpicker form-control quantity", 'data-id' => ticket.id)
+        = select_tag("tickets[][#{ticket.id}]", options_for_select((0..ticket.purchase_quantity_available).to_a),
+          class: "selectpicker form-control quantity", 'data-id' => ticket.id)
