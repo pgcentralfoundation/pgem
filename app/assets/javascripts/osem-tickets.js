@@ -16,6 +16,30 @@ function update_price($this){
     $('#total_price').text(total);
 }
 
+function update_quantity(chk_bx, ticket_id){
+    if(chk_bx.checked) {
+        document.getElementById('tickets__' + ticket_id).value = '1';
+    } else {
+        document.getElementById('tickets__' + ticket_id).value = '0';
+        var elems = document.querySelectorAll('input[id^="chosen_events__' + ticket_id + '_"]');
+        for (var i = 0, len = elems.length; i < len; i++){
+            elems[i].checked = false;
+        }
+    }
+    document.getElementById('tickets__' + ticket_id).dispatchEvent(new Event('change'));
+}
+
+function update_event(sb, ticket_id){
+	var tt = 0;
+    var evs = document.querySelectorAll('*[id^="chosen_events_' + ticket_id + '_"]');
+    for (var i = 0; i < evs.length; ++i) {
+      tt = +tt + +evs[i].value;
+    }
+
+    document.getElementById('tickets__' + ticket_id).value = tt;
+    document.getElementById('tickets__' + ticket_id).dispatchEvent(new Event('change'));
+}
+
 function save_state() {
     form_inputs = $('select')
     var input_states = []
