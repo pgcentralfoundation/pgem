@@ -9,15 +9,18 @@
     = javascript_include_tag "application"
 
     = csrf_meta_tags
-    :javascript
-      window.liveSettings = {
-        api_key: "#{ENV['OSEM_TRANSIFEX_APIKEY']}",
-        picker: "bottom-right",
-        detectlang: true,
-        autocollect: true
-      };
     = content_for(:script_head)
-    = javascript_include_tag "//cdn.transifex.com/live.js"
+    - if ENV.fetch('OSEM_TRANSIFEX_APIKEY', nil)
+      :javascript
+        window.liveSettings = {
+          api_key: "#{ENV['OSEM_TRANSIFEX_APIKEY']}",
+          picker: "bottom-right",
+          detectlang: true,
+          autocollect: true
+        };
+    = content_for(:script_head)
+    - unless ENV['OSEM_TRANSIFEX_APIKEY'].blank?
+      = javascript_include_tag "//cdn.transifex.com/live.js"
 
     - unless Rails.application.secrets.google_analytics_id.blank?
       %script{:async => '', :src => "https://www.googletagmanager.com/gtag/js?id=#{Rails.application.secrets.google_analytics_id}"}
