@@ -4,10 +4,8 @@ module Admin
     load_and_authorize_resource through: :conference, except: [:new, :create]
 
     def index
-      authorize! :index, Policy.new(conference_id: @conference.id)
-      @policies = Policy.where(global: true) | @conference.policies
-      @policies_conference = @conference.policies
-      @new_policy = @conference.policies.new
+      globals = Policy.where(global: true)
+      @policies = globals | Policy.where(conference_id: @conference.id) | @conference.policies
     end
 
     def show
@@ -15,12 +13,11 @@ module Admin
 
     def new
       @policy = Policy.new(conference_id: @conference.id)
-      authorize! :create, @policy
     end
 
     def create
       @policy = @conference.policies.new(policy_params)
-      @policy.conference_id = @conference.id
+      @policy.conference_id = @conference.id unless @policy.global?
       authorize! :create, @policy
 
       respond_to do |format|
@@ -35,16 +32,18 @@ module Admin
     # GET policies/1/edit
     def edit
       if @policy.global
-        redirect_to admin_conference_policies_path(conference_id: @conference.short_title), error: 'Sorry, you cannot edit global policies. Create a new one.'
+        flash[:warning] = 'Warning: You are trying to edit a global policy. Your updates will affect all conferences using it.'
       end
     end
 
     # PUT policies/1
     def update
       if @policy.update(policy_params)
-        redirect_to admin_conference_policies_path(conference_id: @conference.short_title), notice: "Policy '#{@policy.title}' for #{@conference.short_title} successfully updated."
+        redirect_to admin_conference_policies_path(conference_id: @conference.short_title),
+          notice: "Policy '#{@policy.title}' for #{@conference.short_title} successfully updated."
       else
-        redirect_to admin_conference_policies_path(conference_id: @conference.short_title), notice: "Update of policies for #{@conference.short_title} failed. #{@policy.errors.full_messages.join('. ')}"
+        redirect_to admin_conference_policies_path(conference_id: @conference.short_title),
+          error: "Update of policies for #{@conference.short_title} failed. #{@policy.errors.full_messages.join('. ')}"
       end
     end
 
@@ -52,35 +51,23 @@ module Admin
     def update_conference
       authorize! :update, Policy.new(conference_id: @conference.id)
       if @conference.update(conference_params)
-        redirect_to admin_conference_policies_path(conference_id: @conference.short_title), notice: "Policies for #{@conference.short_title} successfully updated."
+        redirect_to admin_conference_policies_path(conference_id: @conference.short_title),
+          notice: "Policies for #{@conference.short_title} successfully updated."
       else
-        redirect_to admin_conference_policies_path(conference_id: @conference.short_title), notice: "Update of policies for #{@conference.short_title} failed."
+        redirect_to admin_conference_policies_path(conference_id: @conference.short_title),
+          error: "Update of policies for #{@conference.short_title} failed."
       end
     end
 
     # DELETE policies/1
     def destroy
-      if can? :destroy, @policy
-        # Do not delete global policies
-        if @policy.global
-          flash[:error] = 'You cannot delete global policies.'
-        else
-          # Delete policy
-          begin
-            Policy.transaction do
-              @policy.destroy
-              flash[:notice] = "Deleted policy: #{@policy.title}"
-            end
-          rescue ActiveRecord::RecordInvalid
-            flash[:error] = 'Could not delete policy.'
-          end
-        end
+      if @policy.destroy
+        redirect_to admin_conference_policies_path(conference_id: @conference.short_title),
+          notice: "Deleted policy: #{@policy.title}"
       else
-        flash[:error] = 'You must be an admin to delete a policy.'
+        redirect_to admin_conference_policies_path(conference_id: @conference.short_title),
+          error: "Policy couldn't be deleted. #{@track.errors.full_messages.join('. ')}."
       end
-
-      @policies = Policy.where(global: true).all | Policy.where(conference_id: @conference.id)
-      @policies_conference = @conference.policies
     end
 
     private
