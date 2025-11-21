@@ -8,8 +8,7 @@
     .col-md-12
       = markdown(@policy.description)
 
-.row
-  .col-md-10.text-left
-    - if can? :update, @policy
-      = link_to 'Edit', edit_admin_conference_policy_path, class: 'btn btn-primary'
-
+  - if can? :update, @policy
+    .row
+      .col-md-12
+        = link_to 'Edit', edit_admin_conference_policy_path, class: 'btn btn-primary'
