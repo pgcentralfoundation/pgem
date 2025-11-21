@@ -1,14 +1,13 @@
-.container
+.row
+  .col-md-12
+    .page-header
+      %h1= @policy.title
+
+.row
+  .col-md-12
+    = markdown(@policy.description)
+
+- if can? :update, @policy
   .row
     .col-md-12
-      .page-header
-        %h1= @policy.title
-
-  .row
-    .col-md-12
-      = markdown(@policy.description)
-
-  - if can? :update, @policy
-    .row
-      .col-md-12
-        = link_to 'Edit', edit_admin_conference_policy_path, class: 'btn btn-primary'
+      = link_to 'Edit', edit_admin_conference_policy_path, class: 'btn btn-primary'
