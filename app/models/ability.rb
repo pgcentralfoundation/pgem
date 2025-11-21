@@ -181,6 +181,7 @@ class Ability
     can :manage, Code do |code|
       !(code.conferences.pluck(:id) & conf_ids_for_organizer).empty?
     end
+    
     can :manage, Vposition, conference_id: conf_ids_for_organizer
     can :manage, Vday, conference_id: conf_ids_for_organizer
     can :manage, Program, conference_id: conf_ids_for_organizer
@@ -242,6 +243,12 @@ class Ability
 
     # Abilities for Role (Conference resource)
     can [:index, :show], Role
+
+    can :manage, Policy do |policy|
+      # the "global" case is covered by can manage :all defined for admin user
+      # not global AND policy conference ids intersect with conf_ids_for_organizer
+      !policy.global & (policy.conference_ids & conf_ids_for_cfp).any? or policy.new_record?
+    end
 
     # Can add or remove users from role, when user has that same role for the conference
     # Eg. If you are member of the CfP team, you can add more CfP team members (add users to the role 'CfP')

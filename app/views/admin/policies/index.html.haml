@@ -1,37 +1,41 @@
 .row
-  .col-md-6
+  .col-md-12
     .page-header
-      %h1 Policies 
+      %h1 
+        Policies 
+        .pull-right
+          - if can? :create, Policy.new(conference_id: @conference.id)
+            = link_to 'New Policy', new_admin_conference_policy_path(@conference.short_title), class: 'btn btn-success'
       %p.text-muted
-        Conference policies and procedures
-        - if can? :create, Policy.new(conference_id: @conference.id)
-          = link_to 'Create New Policy','#', 'data-toggle' => 'modal',
-            'data-target' => '#new-policy', class: 'btn btn-success pull-right'
-      %p.text-muted
-        These will show up in the footer of the conference
+        Conference policies and procedures. These will show up in the footer of the conference
 
 .row
-  .col-md-6
-    - if @policies.count > 0
+  .col-md-12
+    - if @policies.any?
       = semantic_form_for(@conference, url: update_conference_admin_conference_policies_path(@conference.short_title)) do |f|
-        .policies{id: 'mypolicies'}
-          = render partial: 'policies'
+        %table.table.table-hover#policies
+          %th Show in this conference
+          %th Global
+          %th Policy
+          %th Actions
+          - @policies.each do |policy|
+            %tr
+              %td
+                = hidden_field_tag "conference[policy_ids][]", nil
+                = check_box_tag "conference[policy_ids][]", policy.id,
+                                @conference.policy_ids.include?(policy.id), id: dom_id(policy)
+              %td
+                = policy.global
+              %td
+                = policy.title
+              %td
+                .btn-group
+                  = link_to 'Show', admin_conference_policy_path(@conference.short_title, policy), class: 'btn btn-success'
+                  = link_to 'Edit', edit_admin_conference_policy_path(@conference.short_title, policy),
+                            class: 'btn btn-primary', disabled: !(can? :update, policy)
+                  = link_to 'Delete', admin_conference_policy_path(@conference.short_title, policy),
+                    method: :delete, class: 'btn btn-danger', disabled: !(can? :update, policy),
+                    data: { confirm: "Do you really want to delete #{policy.title}?" }
+
         - if can? :update, Policy.new(conference_id: @conference.id)
-          = f.submit "Save Policies", class: 'btn btn-primary pull-right',
-                      confirm: 'Are you sure you want to make these changes?'
-
-    .modal.fade{id: 'new-policy', 'role' => 'dialog', 'aria-hidden' => 'true'}
-      .modal-dialog
-        .modal-content
-          .modal-header
-            %h3{id: 'new-policy-header'}
-              Add new policy
-          .modal-body
-            = semantic_form_for(@new_policy, url: admin_conference_policies_path(@conference.short_title), method: :post) do |f|
-              = render partial: 'form', locals: {f: f}
-              %button{class: 'btn btn-primary'}
-                Save
-              .pull-right
-                %button{class: 'btn btn-danger', 'data-dismiss'=> 'modal', 'aria-hidden'=>'true'}
-                  Cancel
-
+          = f.submit "Save Policy Selection", class: 'btn btn-secondary pull-left'
