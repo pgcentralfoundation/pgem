@@ -22,3 +22,12 @@ Refinery::Core::Engine.routes.append do
     get 'author/:author_id', :to => 'posts#author', :as => 'author_feed'
   end
 end
+
+Refinery::Blog::PostsController.class_eval do
+  rescue_from ArgumentError, with: :around_exception_handler
+
+  def around_exception_handler(e)
+    logger.error "Rescued ArgumentError in #{self.class.name}: #{e.message}"
+    raise ActiveRecord::RecordNotFound
+  end
+end
