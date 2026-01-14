@@ -39,7 +39,7 @@
               .modal-header
                 %button.close{ data: { dismiss: 'modal' } }
                   x
-              .modal-body.text-center
+              .modal-body
                 = render partial: 'event_listing', locals: { event: event }
 
       - else
