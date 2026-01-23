@@ -15,6 +15,8 @@ module Admin
     def new
       @room = @venue.rooms.new
       @room_locations = @venue.room_locations
+      @room.start_date = @conference.start_date
+      @room.end_date = @conference.end_date
     end
 
     def create
