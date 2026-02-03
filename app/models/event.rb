@@ -242,7 +242,7 @@ class Event < ActiveRecord::Base
   #
   # Returns +Hash+
   def progress_status
-    {
+    ret = {
       registered:       speakers.all? { |speaker| program.conference.user_registered? speaker },
       biographies:      speakers.all? { |speaker| !speaker.biography.blank? },
       subtitle:         !self.subtitle.blank?,
@@ -251,6 +251,8 @@ class Event < ActiveRecord::Base
       title: true,
       abstract: true
     }.with_indifferent_access
+    ret.delete(:registered) if state != 'confirmed'
+    ret
   end
 
   ##

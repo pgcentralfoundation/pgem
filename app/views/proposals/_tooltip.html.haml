@@ -32,9 +32,10 @@
   %li{class: 'todolist-optional'}
     %span{class: 'fa fa-circle fa-lg'}
     = link_to 'Add media (optional)', edit_conference_program_proposal_path(event.program.conference.short_title, event)
-  %li{'class'=>class_for_todo(progress_status['registered'])}
-    %span{'class'=>icon_for_todo(progress_status['registered'])}
-    - if progress_status['registered']
-      All speakers registered
-    - else
-      All speakers should be registered
+  - if progress_status.has_key? 'registered'
+    %li{'class'=>class_for_todo(progress_status['registered'])}
+      %span{'class'=>icon_for_todo(progress_status['registered'])}
+      - if progress_status['registered']
+        All speakers registered
+      - else
+        All speakers should be registered
