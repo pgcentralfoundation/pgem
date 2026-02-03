@@ -121,22 +121,32 @@
 
 - content_for :script_head do
   :javascript
-
-    var triangle_tcs = tinycolor("#ffffff").monochromatic();
+    var triangle_tcs = tinycolor("#{h(@conference.color)}").monochromatic();
     var triangle_colors = triangle_tcs.map(function(t) { return t.toHexString(); });
     $(function () {
       $(document).ready(function() {
         var triangle_width = document.body.clientWidth;
-        var triangle_height = ($( "#callforpapers" ).height() + 200 );
-        var pattern = Trianglify({ width: triangle_width,
+        if($('#callforpapers').length) {
+          var triangle_height = ($( "#callforpapers" ).height() + 200 );
+          var pattern = Trianglify({ width: triangle_width,
                                    height: triangle_height,
                                    cell_size: 100,
                                    x_colors: triangle_colors
                                   });
-        $('#callforpapers').css('background-image', 'url("' + pattern.png() + '")');
+          $('#callforpapers').css('background-image', 'url("' + pattern.png() + '")');
+        }
+
         //override background if conference has one
-        if("#{@conference.background_url}" !== '') {
+        if("#{@conference.background_url}" == '') {
           $('#banner').css('background-image', 'url(#{@conference.background_url})');
+        } else {
+          var triangle_height = ($( "#banner" ).height() + 200 );
+          var pattern = Trianglify({ width: triangle_width,
+                                   height: triangle_height,
+                                   cell_size: 100,
+                                   x_colors: triangle_colors
+                                  });
+          $('#banner').css('background-image', 'url("' + pattern.png() + '")');
         }
 
         $('a.policy').each(function(){
