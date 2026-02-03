@@ -29,41 +29,41 @@
       - past_events = presented_events.select {|e| e.program.conference.end_date < DateTime.now}
       %h2{class: 'user-profile__main-title'}
         Upcoming presentations
-      - event = @user.presented_events.first
       - if upcoming_events.any?
-        .panel.panel-default.eventblock.panel-upcoming
-          .d-flex.panel-inner
-            .col-main
-              .panel-header
-                %div
-                  %h3{class: 'title'}
-                    = link_to event.title, conference_program_proposal_path(event.program.conference.short_title, event)
-                  %h4
-                    = event.subtitle
+        - upcoming_events.each do |event|
+          .panel.panel-default.eventblock.panel-upcoming
+            .d-flex.panel-inner
+              .col-main
+                .panel-header
+                  %div
+                    %h3{class: 'title'}
+                      = link_to event.title, conference_program_proposal_path(event.program.conference.short_title, event)
+                    %h4
+                      = event.subtitle
 
-              .panel-body
-                %p
-                  = markdown(truncate(event.abstract, :length => 400))
+                .panel-body
+                  %p
+                    = markdown(truncate(event.abstract, :length => 400))
 
-            .col-additional
-              .h4{class: 'conference-title'}
-                @ #{event.program.conference.title}
-              .speakers
-                - event.speakers_ordered.each do |speaker|
-                  = image_tag speaker.avatar_url(version: 'medium'), :class => "speakers-avatar",
-                                                :alt => speaker.name,
-                                                :title => speaker.name
-              - if event.active_schedule.present?
-                %p
-                  %span.fa.fa-calendar
-                  = event.active_schedule.start_time.in_time_zone(event.program.conference.timezone).strftime('%b %-d %Y')
-              - if event.commercials.present?
-                %div
-                  %span.fa.fa-video-camera
-                  = link_to 'Media', conference_program_proposal_path(event.program.conference.short_title, event), class: 'conference-media'
-              - if event.track
-                %div.track{ style: "border-color: #{event.track.color};" }
-                  = event.track.name
+              .col-additional
+                .h4{class: 'conference-title'}
+                  @ #{event.program.conference.title}
+                .speakers
+                  - event.speakers_ordered.each do |speaker|
+                    = image_tag speaker.avatar_url(version: 'medium'), :class => "speakers-avatar",
+                                                  :alt => speaker.name,
+                                                  :title => speaker.name
+                - if event.active_schedule.present?
+                  %p
+                    %span.fa.fa-calendar
+                    = event.active_schedule.start_time.in_time_zone(event.program.conference.timezone).strftime('%b %-d %Y')
+                - if event.commercials.present?
+                  %div
+                    %span.fa.fa-video-camera
+                    = link_to 'Media', conference_program_proposal_path(event.program.conference.short_title, event), class: 'conference-media'
+                - if event.track
+                  %div.track{ style: "border-color: #{event.track.color};" }
+                    = event.track.name
       - else
         %h3.text-muted
           No upcoming presentations...
