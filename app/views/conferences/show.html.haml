@@ -137,7 +137,7 @@
         }
 
         //override background if conference has one
-        if("#{@conference.background_url}" == '') {
+        if("#{@conference.background_url}" !== '') {
           $('#banner').css('background-image', 'url(#{@conference.background_url})');
         } else {
           var triangle_height = ($( "#banner" ).height() + 200 );
