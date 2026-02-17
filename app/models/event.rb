@@ -11,7 +11,7 @@ class Event < ActiveRecord::Base
   has_many :users, through: :event_users
 
   has_many :speaker_event_users, -> { where(event_role: 'speaker') }, class_name: 'EventUser'
-  has_many :speakers, through: :speaker_event_users, source: :user
+  has_many :speakers, through: :speaker_event_users, source: :user, validate: false
 
   has_one :submitter_event_user, -> { where(event_role: 'submitter') }, class_name: 'EventUser'
   has_one  :submitter, through: :submitter_event_user, source: :user
