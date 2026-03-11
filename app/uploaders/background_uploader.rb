@@ -6,6 +6,10 @@ class BackgroundUploader < CarrierWave::Uploader::Base
   include CarrierWave::Compatibility::Paperclip
   include CarrierWave::BombShelter
 
+  def deduplicated_filename
+    filename
+  end
+  
   # use cloudinary if it's configured
   if Cloudinary.config.cloud_name
     # use https by default
