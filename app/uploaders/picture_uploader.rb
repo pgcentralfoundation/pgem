@@ -95,13 +95,27 @@ class PictureUploader < CarrierWave::Uploader::Base
   end
 
   version :second, if: :sponsor?
-  version :second, from_version: :first do
-    process resize_and_pad: [320, 160, 'white']
+  version :second do
+    process resize_to_fit: [260, 160]
+    process pad_and_sharpen: [320, 160, 'white']
   end
 
   version :others, if: :sponsor?
-  version :others, from_version: :second do
-    process resize_and_pad: [320, 140, 'white']
+  version :others do
+    process resize_to_fit: [240, 150]
+    process pad_and_sharpen: [320, 160, 'white']
+  end
+
+  def pad_and_sharpen(width, height, background)
+    manipulate! do |img|
+      img.combine_options do |c|
+        c.background background
+        c.gravity 'Center'
+        c.extent "#{width}x#{height}"
+        c.sharpen '0x0.8'
+      end
+      img
+    end
   end
 
   # Add a white list of extensions which are allowed to be uploaded.
