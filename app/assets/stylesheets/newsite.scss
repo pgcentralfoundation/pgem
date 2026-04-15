@@ -321,7 +321,17 @@ a:focus {
             }
         }
         &-warning {
-            @include alert-variant(#ffa7004f, rgba($alert-warning-border,.4), $color_central_blocks);
+            @include alert-variant(#ff9b004f, rgba($alert-warning-border,.4), $color_central_blocks);
+            .close {
+                color: white;
+                opacity: .5;
+            }
+            .close:hover {
+                opacity: 1;
+            }
+        }
+        &-danger {
+            @include alert-variant(#FF000066, rgba($alert-danger-border,.4), $color_central_blocks);
             .close {
                 color: white;
                 opacity: .5;

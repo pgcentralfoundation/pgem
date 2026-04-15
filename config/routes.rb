@@ -10,7 +10,7 @@ Osem::Application.routes.draw do
                path: 'accounts'
     namespace "passwordless" do
       devise_for :users,
-        controllers: { sessions: "devise/passwordless/sessions" }
+        controllers: { sessions: "users/passwordless_sessions" }
     end
   end
 
