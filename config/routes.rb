@@ -25,6 +25,10 @@ Osem::Application.routes.draw do
     match "/500", :to => "errors#internal_server_error", :via => :all
   end
 
+  authenticated :user, -> user { user.is_admin? }  do
+    mount DelayedJobWeb, at: "/delayed_job", as: :delayed_job
+  end
+
   resources :users, except: [:new, :index, :create, :destroy]
 
   namespace :portal do

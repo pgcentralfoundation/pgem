@@ -61,9 +61,14 @@
     %li
       = link_to refinery.admin_root_path do
         %span.fa.fa-wrench
-        Manage
-        %span.notranslate
-          Website
+        Manage Website
+  
+  -if DelayedJobWeb and current_user.is_admin?
+    %li
+      = link_to '/delayed_job' do
+        %span.fa.fa-gears
+        Job Queue
+
 - if can? :manage, User.new
   %li
     = link_to(main_app.admin_users_path) do

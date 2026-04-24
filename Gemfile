@@ -339,6 +339,8 @@ group :production do
   gem 'exception_notification'
 end
 
+gem "delayed_job_web"
+
 # IMPORTANT - refinery stuff should come last in gemfile
 gem 'refinerycms-i18n', git: 'https://github.com/anitagraham/refinerycms-i18n'
 gem 'refinerycms', git: 'https://github.com/anitagraham/refinerycms', ref: 'd1d981e156f7ba1bc966d29ba0df086eb7a0081a'
