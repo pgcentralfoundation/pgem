@@ -23,7 +23,7 @@ class PaymentsController < ApplicationController
   end
 
   def create
-   if @conference.payment_method.gateway == 'braintree'
+    if @conference.payment_method.gateway == 'braintree'
       nonce = params[:payment_method_nonce]
 
       result = Braintree::Transaction.sale(
@@ -38,8 +38,8 @@ class PaymentsController < ApplicationController
         :options => {
             :submit_for_settlement => true
         }
+      )
 
-     )
       if result.success? == true
         @payment = Payment.new payment_params
         @payment.authorization_code = result.transaction.id
@@ -64,96 +64,93 @@ class PaymentsController < ApplicationController
         flash[:notice] = result.message 
         render "new"
       end
-   elsif @conference.payment_method.gateway == 'payu'
-     request = @client.request('setTransaction') 
 
-     request.header.__node__ << @wsse.to_xml
+    elsif @conference.payment_method.gateway == 'payu'
+      request = @client.request('setTransaction') 
 
-     req = ActionDispatch::Request.new 'HTTP_HOST'
-     base = req.protocol + req.host_with_port()
+      request.header.__node__ << @wsse.to_xml
 
-     amt = Ticket.total_price(@conference, current_user, paid: false).cents
+      amt = Ticket.total_price(@conference, current_user, paid: false).cents
 
-     request.body do |b|
-       b.Api 'ONE_ZERO'
-       b.Safekey @conference.payment_method.payu_signature_key
-       b.TransactionType 'PAYMENT'
-       b.AdditionalInformation do |ai|
-         ai.merchantReference @conference.payment_method.payu_store_name
-         ai.supportedPaymentMethods 'CREDITCARD,MASTERPASS,EFT,EFT_PRO'
-         ai.returnUrl url_for :controller => 'payments', :action => 'confirm'
-         ai.cancelUrl url_for :controller => 'payments', :action => 'cancel'
-       end
-       b.Customer do |c|
-         c.firstName current_user.first_name
-         c.lastName current_user.last_name
-         c.email current_user.email
-         c.merchantUserId current_user.id
-       end
-       b.Basket do |bk|
-         bk.amountInCents amt
-         bk.currencyCode @conference.default_currency
-       end
-     end
+      request.body do |b|
+        b.Api 'ONE_ZERO'
+        b.Safekey @conference.payment_method.payu_signature_key
+        b.TransactionType 'PAYMENT'
+        b.AdditionalInformation do |ai|
+          ai.merchantReference @conference.payment_method.payu_store_name
+          ai.supportedPaymentMethods 'CREDITCARD,MASTERPASS,EFT,EFT_PRO'
+          ai.returnUrl url_for :controller => 'payments', :action => 'confirm'
+          ai.cancelUrl url_for :controller => 'payments', :action => 'cancel'
+        end
+        b.Customer do |c|
+          c.firstName current_user.first_name
+          c.lastName current_user.last_name
+          c.email current_user.email
+          c.merchantUserId current_user.id
+        end
+        b.Basket do |bk|
+          bk.amountInCents amt
+          bk.currencyCode @conference.default_currency
+        end
+      end
 
-    http_msg = @http.post(request.url, request.content)
-    http_msg = @http.post(request.url, request.content)
-    response = @client.response(request, http_msg.content)
+      http_msg = @http.post(request.url, request.content)
+      http_msg = @http.post(request.url, request.content)
+      response = @client.response(request, http_msg.content)
 
-   rh = response.body_hash
-   success = true
+      rh = response.body_hash
+      success = true
    
-   if rh.key?("faultstring")
-     success = false
-     err = rh.fetch("faultstring") 
-   end
+      if rh.key?("faultstring")
+        success = false
+        err = rh.fetch("faultstring") 
+      end
    
-   ref = ''
-   if rh.key?("return")
-     ret = rh.fetch("return")
-     if ret.fetch("successful") == "false"
-       success = false
-       err = ret.fetch("displayMessage")
-     else
-       success = true
-       ref = ret.fetch("payUReference")
-     end
-   end
+      ref = ''
+      if rh.key?("return")
+        ret = rh.fetch("return")
+        if ret.fetch("successful") == "false"
+          success = false
+          err = ret.fetch("displayMessage")
+        else
+          success = true
+          ref = ret.fetch("payUReference")
+        end
+      end
    
-   if success == false
-     @total_amount_to_pay = Ticket.total_price(@conference, current_user, paid: false)
-     @unpaid_quantity = Ticket.total_quantity(@conference, current_user, paid: false)
-     @unpaid_ticket_purchases = current_user.ticket_purchases.unpaid.by_conference(@conference)
+      if success == false
+        @total_amount_to_pay = Ticket.total_price(@conference, current_user, paid: false)
+        @unpaid_quantity = Ticket.total_quantity(@conference, current_user, paid: false)
+        @unpaid_ticket_purchases = current_user.ticket_purchases.unpaid.by_conference(@conference)
 
-     flash[:error] = "Server error: " + err 
-     render "new"
-   else
-     @payment = Payment.new payment_params
-     @payment.amount = amt
-     @payment.status = 'pending'
-     @payment.user_id = current_user.id
-     @payment.reference = ref
-     @payment.save
+        flash[:error] = "Server error: " + err 
+        render "new"
+      else
+        @payment = Payment.new payment_params
+        @payment.amount = amt
+        @payment.status = 'pending'
+        @payment.user_id = current_user.id
+        @payment.reference = ref
+        @payment.save
 
-     @base_url = 'https://' + @conference.payment_method.payu_service_domain
-     redirect_url = @base_url + '/rpp.do?PayUReference=' + ref
-     redirect_to redirect_url
-   end
+        @base_url = 'https://' + @conference.payment_method.payu_service_domain
+        redirect_url = @base_url + '/rpp.do?PayUReference=' + ref
+        redirect_to redirect_url
+      end
+    else
+      @payment = Payment.new payment_params
 
-   else
-     @payment = Payment.new payment_params
-
-     if @payment.purchase && @payment.save
-       update_purchased_ticket_purchases
-       Mailbot.purchase_confirmation_mail(@payment).deliver_later if @conference.contact.email.present?
-       redirect_to complete_conference_tickets_path,
-                   notice: 'Thanks! Your ticket is booked successfully.'
-     else
-       @total_amount_to_pay = Ticket.total_price(@conference, current_user, paid: false)
-       @unpaid_quantity = Ticket.total_quantity(@conference, current_user, paid: false)
-       @unpaid_ticket_purchases = current_user.ticket_purchases.unpaid.by_conference(@conference)
-       flash[:error] = @payment.errors.full_messages.to_sentence + ' Please try again with correct credentials.'
-     end
+      if @payment.purchase && @payment.save
+        update_purchased_ticket_purchases
+        Mailbot.purchase_confirmation_mail(@payment).deliver_later if @conference.contact.email.present?
+        redirect_to complete_conference_tickets_path,
+                    notice: 'Thanks! Your ticket is booked successfully.'
+      else
+        @total_amount_to_pay = Ticket.total_price(@conference, current_user, paid: false)
+        @unpaid_quantity = Ticket.total_quantity(@conference, current_user, paid: false)
+        @unpaid_ticket_purchases = current_user.ticket_purchases.unpaid.by_conference(@conference)
+        flash[:error] = @payment.errors.full_messages.to_sentence + ' Please try again with correct credentials.'
+      end
     end
   end
 

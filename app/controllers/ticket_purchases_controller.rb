@@ -22,13 +22,6 @@ class TicketPurchasesController < ApplicationController
       error: 'Please get at least one ticket to continue.'
     end
 
-    max_qty = 0
-    tkts[0].each do |tkt, qty|
-      if qty.to_i > max_qty.to_i
-        max_qty = qty
-      end
-    end
-
     current_user.ticket_purchases.by_conference(@conference).unpaid.destroy_all
     message = TicketPurchase.purchase(@conference, current_user, tkts[0],
                                       code_id, chosen_events, prices[0])
@@ -41,8 +34,8 @@ class TicketPurchasesController < ApplicationController
         # Trigger ahoy event
         ahoy.track 'Ticket purchase', title: 'New free purchase'
         # unpaid ticket purchases were destroyed above; if we have paid purchases at this moment
-        # this means that .purchase method parked purchase as paid automatically
-        # this happens on zero payment amount only hence "free ticket message"
+        # this means that .purchase method marked purchase as paid automatically
+        # this happens on zero payment amount only, hence "free ticket message"
         last_purchase = current_user.ticket_purchases.by_conference(@conference).paid.last
 
         if last_purchase.code.present?
