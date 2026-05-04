@@ -18,10 +18,10 @@ FactoryBot.define do
     sequence(:email) { |n| "example#{n}@example.com" }
     sequence(:name) { |n| "name#{n}" }
     sequence(:username) { |n| "username#{n}" }
-    password 'changeme'
-    password_confirmation 'changeme'
+    password { 'changeme' }
+    password_confirmation { 'changeme' }
     confirmed_at { Time.now }
-    biography <<-EOS
+    biography { <<-EOS }
       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus enim
       nunc, venenatis non sapien convallis, dictum suscipit purus. Vestibulum
       sed tincidunt tortor. Fusce viverra nisi nisi, quis congue dui faucibus

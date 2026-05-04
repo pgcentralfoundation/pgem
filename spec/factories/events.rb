@@ -28,6 +28,7 @@ FactoryBot.define do
       end
 
       factory :event_scheduled do
+        hour { nil }
         after(:build) do |event|
           event.state = 'confirmed'
           event.event_schedules << build(:event_schedule, event: event)

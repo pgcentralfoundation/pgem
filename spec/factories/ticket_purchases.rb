@@ -3,6 +3,6 @@ FactoryBot.define do
     user
     conference
     ticket
-    quantity 10
+    quantity { 10 }
   end
 end

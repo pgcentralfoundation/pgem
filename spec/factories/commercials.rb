@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :commercial do
-    url 'https://www.youtube.com/watch?v=BTTygyxuGj8'
+    url { 'https://www.youtube.com/watch?v=BTTygyxuGj8' }
 
     factory :conference_commercial do
       association :commercialable, factory: :conference

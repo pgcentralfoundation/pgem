@@ -2,6 +2,6 @@ FactoryBot.define do
   factory :payment do
     user
     conference
-    status 'unpaid'
+    status { 'unpaid' }
   end
 end
