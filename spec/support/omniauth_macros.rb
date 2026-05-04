@@ -2,10 +2,10 @@ module OmniauthMacros
   # The mock_auth configuration allows you to set per-provider (or default)
   # authentication hashes to return during integration testing.
 
-  Rails.application.secrets.google_key = 'test key google'
-  Rails.application.secrets.google_secret = 'test secret google'
-  Rails.application.secrets.facebook_key = 'test key facebook'
-  Rails.application.secrets.facebook_secret = 'test secret facebook'
+  Rails.application.credentials.google_key = 'test key google'
+  Rails.application.credentials.google_secret = 'test secret google'
+  Rails.application.credentials.facebook_key = 'test key facebook'
+  Rails.application.credentials.facebook_secret = 'test secret facebook'
 
   def mock_auth_new_user
     OmniAuth.config.mock_auth[:google] =

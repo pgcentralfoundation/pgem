@@ -94,7 +94,7 @@ class Registration < ActiveRecord::Base
   end
 
   def register_with_lead_retrieval
-    unless Rails.application.secrets.eventhero_access_key.blank?
+    unless Rails.application.credentials.eventhero_access_key.blank?
       EventheroAttendeeRegisterJob.perform_later(self)
     end
 

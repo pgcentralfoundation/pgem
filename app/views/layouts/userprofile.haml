@@ -11,14 +11,14 @@
     = csrf_meta_tags
     = content_for(:script_head)
 
-    - unless Rails.application.secrets.google_analytics_id.blank?
-      %script{:async => '', :src => "https://www.googletagmanager.com/gtag/js?id=#{Rails.application.secrets.google_analytics_id}"}
+    - unless Rails.application.credentials.google_analytics_id.blank?
+      %script{:async => '', :src => "https://www.googletagmanager.com/gtag/js?id=#{Rails.application.credentials.google_analytics_id}"}
 
       :javascript
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-        gtag('config', '#{Rails.application.secrets.google_analytics_id}');
+        gtag('config', '#{Rails.application.credentials.google_analytics_id}');
 
     %link{:href => "https://fonts.googleapis.com/css?family=Muli:300,400,700&display=swap", :rel => "stylesheet"}/
     = yield(:head)

@@ -282,7 +282,7 @@ module ApplicationHelper
     Devise.omniauth_providers.each do |provider|
       provider_key = "#{provider}_key"
       provider_secret = "#{provider}_secret"
-      unless Rails.application.secrets.send(provider_key).blank? || Rails.application.secrets.send(provider_secret).blank?
+      unless Rails.application.credentials.send(provider_key).blank? || Rails.application.credentials.send(provider_secret).blank?
         providers << provider
       end
       providers << provider if !ENV["OSEM_#{provider.upcase}_KEY"].blank? && !ENV["OSEM_#{provider.upcase}_SECRET"].blank?

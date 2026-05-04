@@ -5,10 +5,10 @@ class EventheroAttendeeRegisterJob < ActiveJob::Base
   queue_as :default
 
   def perform(registration)
-    if Rails.application.secrets.eventhero_access_key.blank?
+    if Rails.application.credentials.eventhero_access_key.blank?
       raise RuntimeError, "Access Key missing"
     else
-      access_key = Rails.application.secrets.eventhero_access_key
+      access_key = Rails.application.credentials.eventhero_access_key
     end
 
     url = "https://app.eventhero.io/api/registrations"
