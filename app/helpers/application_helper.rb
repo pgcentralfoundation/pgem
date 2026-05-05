@@ -527,7 +527,7 @@ module ApplicationHelper
     if version.event == 'create'
       version.previous.nil? ? 'commented on' : "re-added #{user.name}'s comment on"
     else
-      "deleted #{user.name}'s comment on"
+      "deleted #{user&.name.presence}'s comment on"
     end
   end
 

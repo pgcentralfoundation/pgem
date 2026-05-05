@@ -16,9 +16,9 @@
           - else
             -if activity.website_link.present?
               = link_to(activity.website_link, class: 'thumbnail') do
-                = image_tag activity.picture.thumb, class: 'img-responsive img-activity'
+                = image_tag activity.picture.url, class: 'img-responsive img-activity'
             - else
-              = image_tag activity.picture.thumb, class: 'img-responsive img-activity'
+              = image_tag activity.picture.thumb.url, class: 'img-responsive img-activity'
           .caption
             %h3.text-center
               = activity.name
