@@ -1,6 +1,19 @@
 require_relative 'boot'
 
-require 'rails/all'
+require 'rails'
+# Pick the frameworks you want:
+require 'active_model/railtie'
+# require 'active_job/railtie'
+require 'active_record/railtie'
+# require 'active_storage/engine'
+require 'action_controller/railtie'
+require 'action_mailer/railtie'
+# require 'action_mailbox/engine'
+# require 'action_text/engine'
+require 'action_view/railtie'
+# require 'action_cable/engine'
+require 'rails/test_unit/railtie'
+
 include ActionView::Helpers::NumberHelper
 
 # Require the gems listed in Gemfile, including any gems
@@ -10,7 +23,7 @@ Bundler.require(*Rails.groups)
 module Osem
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    # config.load_defaults 5.0
+    config.load_defaults 8.0
 
     config.active_record.observers = :revision_observer
     config.encoding = 'utf-8'
@@ -30,6 +43,7 @@ module Osem
     config.autoload_paths << "#{Rails.root}/app/classes"
     config.exceptions_app = self.routes
 
+    config.generators.system_tests = nil
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded after loading

@@ -7,8 +7,8 @@ class Benefit < ActiveRecord::Base
 
   validates :name, presence: true
 
-  enum category: [:general, :digital, :physical]
-  enum value_type: [:main_url, :main_logo, :main_description, :promo_code, :text, :file, :boolean]
+  enum :category, [:general, :digital, :physical]
+  enum :value_type, [:main_url, :main_logo, :main_description, :promo_code, :text, :file, :boolean]
 
   def self.find_by_parameterize_name(conference, name)
     lower_name = name.humanize.downcase

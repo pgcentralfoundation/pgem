@@ -1,7 +1,7 @@
 class Integration < ActiveRecord::Base
   belongs_to :conference
 
-  enum integration_type: [:boomset, :mailchimp, :sched]
+  enum :integration_type, [:boomset, :mailchimp, :sched]
 
   validates :integration_type, presence: true
 

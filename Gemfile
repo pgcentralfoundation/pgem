@@ -6,8 +6,8 @@ if Gem::Version.new(Bundler::VERSION) < Gem::Version.new('1.8.4')
 end
 
 # as web framework
-gem 'rails', '~> 6.1.7'
-gem 'zeitwerk', '~> 2.5.4'
+gem 'rails', '~> 8.0'
+
 # required by sprockets, pinned because newer versions were breaking assets:precompile
 gem 'concurrent-ruby', '1.3.4'
 
@@ -37,7 +37,7 @@ gem 'carrierwave-bombshelter'
 gem 'better_tempfile'
 
 # for internationalizing
-gem 'rails-i18n', '~> 6.0'
+gem 'rails-i18n'
 
 # as authentification framework
 gem 'devise',  '>= 4.8.0'
@@ -47,12 +47,12 @@ gem 'devise-passwordless'
 gem "recaptcha", require: "recaptcha/rails"
 
 # for openID authentication
-gem 'omniauth', '2.0.4'
-gem 'omniauth-facebook', '8.0.0'
-gem 'omniauth-openid', '2.0.1'
-gem 'omniauth-google-oauth2', '1.0.0'
-gem 'omniauth-github', '2.0.0'
-gem 'omniauth-rails_csrf_protection', '~> 1.0'
+gem 'omniauth'
+gem 'omniauth-facebook'
+gem 'omniauth-github'
+gem 'omniauth-google-oauth2'
+gem 'omniauth-openid'
+gem 'omniauth-rails_csrf_protection'
 
 # as authorization framework
 gem 'cancancan'
@@ -85,7 +85,7 @@ gem 'uglifier', '>= 1.3.0'
 gem 'bootstrap-sass', '~> 3.4.1'
 gem 'autoprefixer-rails'
 gem 'formtastic-bootstrap', git: 'https://github.com/NickYudin/formtastic-bootstrap', ref: 'bd2a62213252a104721f24646502468bb4309b37'
-gem 'formtastic', '~> 5.0.0'
+gem 'formtastic', '~> 6.0.0'
 gem 'cocoon'
 # gem 'pdfjs_viewer-rails'#, :git => 'https://github.com/TinderBox/pdfjs_viewer-rails.git', :branch => 'pdfjs-1.5.188'
 
@@ -151,13 +151,14 @@ gem 'leaflet-rails'
 gem 'gravtastic'
 
 # for country selects
-gem 'country_select', '6.0.0'
+gem "countries", "~> 5.7" 
+gem "country_select", "~> 8.0" 
 
 # as PDF generator
-gem 'prawn', '~> 1.3.0'
 gem 'prawn_rails'
 gem 'rqrcode'
-gem 'prawn-qrcode', '~> 0.5.2'
+gem 'prawn-qrcode'
+gem 'matrix', '~> 0.4'
 gem 'invoice_printer'
 
 # to render XLS spreadsheets
@@ -229,7 +230,7 @@ gem 'dotenv-rails'
 # for fake data
 gem 'faker'
 # for seeds
-gem 'factory_bot_rails', '~> 4.11.1'
+gem 'factory_bot_rails', '~> 6.5.1'
 
 # for integrating Stripe payment gateway
 gem 'stripe'
@@ -341,18 +342,3 @@ end
 
 gem "delayed_job_web"
 
-# IMPORTANT - refinery stuff should come last in gemfile
-gem 'refinerycms-i18n', git: 'https://github.com/anitagraham/refinerycms-i18n'
-gem 'refinerycms', git: 'https://github.com/anitagraham/refinerycms', ref: 'd1d981e156f7ba1bc966d29ba0df086eb7a0081a'
-gem 'refinerycms-acts-as-indexed', git: 'https://github.com/refinery/refinerycms-acts-as-indexed', ref: 'f866ca2'
-gem 'refinerycms-search', git: 'https://github.com/anitagraham/refinerycms-search', ref: '36fd8a39be5909c2a83e5faee93a5fb46d1b3fb2'
-gem 'refinerycms-settings', git: 'https://github.com/wested/refinerycms-settings', ref: 'e044eb253e18ed788251994de8805063f099b72d'
-gem 'refinerycms-blog', git: 'https://github.com/AIDCVT/refinerycms-blog', ref: 'd6932e437bbc0d250f49f13e64e4fec0e45d3247'
-gem 'refinerycms-dynamicfields', :git => 'https://github.com/rozsnyai/refinerycms-dynamicfields', branch: 'update-dependencies'
-gem 'refinerycms-tinymce', git: 'https://github.com/ghoppe/refinerycms-tinymce', ref: '1042b0b83541116ec86adfc7360c017e9f0cd0b2'
-
-# PGEM custom extensions
-gem 'refinerycms-team_members', path: 'vendor/extensions'
-gem 'refinerycms-sponsors', path: 'vendor/extensions'
-gem 'refinerycms-meetups', path: 'vendor/extensions'
-gem 'refinerycms-community_events', path: 'vendor/extensions'

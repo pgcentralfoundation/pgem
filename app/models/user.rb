@@ -74,7 +74,7 @@ class User < ActiveRecord::Base
   validate :biography_limit
   validates :nickname, format: {with: /\A[a-zA-Z0-9_]{1,15}\z/, message: 'should use only the nickname part of social media profile url'}, allow_blank: true
 
-  enum nickname_type: [:twitter, :linkedin, :github, :facebook ]
+  enum :nickname_type, [:twitter, :linkedin, :github, :facebook ]
 
   ##
   # Checkes if the user attended the event

@@ -55,7 +55,7 @@ Osem::Application.routes.draw do
     resources :sponsors
     resources :comments, only: [:index]
     resources :conferences do
-      resource :contact, except: [:index, :new, :create, :show, :destroy]
+      resource :contact, except: [:new, :create, :show, :destroy]
       resources :schedules, except: [:new] do
         collection do
           patch :sync_all
@@ -300,10 +300,7 @@ Osem::Application.routes.draw do
   get '/conferences' => 'conferences#index'
   get '/2017' => 'conferences#show'
   get '/my_proposals' => 'proposals#my_proposals'
-  root to: 'refinery/pages#home'
-  #root to: 'conferences#redirect_to_current'
 
-  get '/dynamicfields' => redirect('/refinery/dynamicfields')
-  mount Refinery::Core::Engine, at: Refinery::Core.mounted_path
+  root to: 'conferences#redirect_to_current'
 
 end
