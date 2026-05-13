@@ -300,7 +300,7 @@ Osem::Application.routes.draw do
   get '/conferences' => 'conferences#index'
   get '/2017' => 'conferences#show'
   get '/my_proposals' => 'proposals#my_proposals'
-
-  root to: 'conferences#redirect_to_current'
-
+  
+  mount Spina::Engine => '/'
+ 
 end

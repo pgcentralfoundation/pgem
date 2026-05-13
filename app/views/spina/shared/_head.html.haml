@@ -1,0 +1,24 @@
+%meta{:charset => "#{Rails.application.config.encoding}"}/
+%meta{:content => "Postgres Conference, the largest PostgreSQL education and advocacy platform.", :name => "description"}
+%meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
+%meta{:content => "width=device-width, initial-scale=1, shrink-to-fit=no", :name => "viewport"}/
+%meta{:content => "ie=edge", "http-equiv" => "x-ua-compatible"}/
+
+-# %link{:href => "PostgresConf.css", :rel => "stylesheet", :type => "text/css"}/
+%link{:href => "https://fonts.googleapis.com/css?family=Muli:300,400,700&display=swap", :rel => "stylesheet"}/
+%link{:crossorigin => "anonymous", :href => "https://cdn.jsdelivr.net/npm/fork-awesome@1.1.7/css/fork-awesome.min.css", :integrity => "sha256-gsmEoJAws/Kd3CjuOQzLie5Q3yshhvmo7YNtBG7aaEY=", :rel => "stylesheet"}/
+
+= csrf_meta_tags
+= yield :meta
+= stylesheet_link_tag "spina/spina-custom"
+= yield :stylesheets
+
+
+- unless Rails.application.credentials.google_analytics_id.blank?
+  %script{:async => '', :src => "https://www.googletagmanager.com/gtag/js?id=#{Rails.application.credentials.google_analytics_id}"}
+
+  :javascript
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', '#{Rails.application.credentials.google_analytics_id}');

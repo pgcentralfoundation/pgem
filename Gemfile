@@ -35,6 +35,8 @@ gem 'carrierwave', '3.1.2'
 gem 'mini_magick', '>= 4.9.4'
 gem 'carrierwave-bombshelter'
 gem 'better_tempfile'
+#mini magic compatibility for active_storage
+gem 'image_processing', '~> 1.2'
 
 # for internationalizing
 gem 'rails-i18n'
@@ -341,4 +343,7 @@ group :production do
 end
 
 gem "delayed_job_web"
+
+gem 'spina', '~> 2.20.0'
+
 
