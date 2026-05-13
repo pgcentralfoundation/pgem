@@ -112,10 +112,9 @@
             .col-md-8.col-xs-12.no-gutter
               %h2.bold.section-title Blog
               .blog-wrapper.border-custom
-                -# - @blog_posts = Refinery::Blog::Post.recent(4)
-                - @blog_posts = []
+                - @blog_posts = Spina::Blog::Post.recent(4)
                 - @blog_posts.each do |item|
-                  = render partial: '/refinery/blog_post', locals: { item: item }
+                  = render partial: '/spina/shared/home/blog_post', locals: { item: item }
                 = link_to "All Blog Posts", '/blog', class: 'learn-more link-effect'
             .col-md-4.col-xs-12.no-gutter
               %h2.bold.section-title.community-title Community Content

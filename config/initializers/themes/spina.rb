@@ -59,7 +59,7 @@ Spina::Theme.register do |theme|
   theme.resources = []
 
   # Plugins (optional)
-  theme.plugins = []
+  theme.plugins = ['blog']
 
   # Embeds (optional)
   theme.embeds = []
