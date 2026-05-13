@@ -51,7 +51,7 @@
                           .h4.media-hading
                             = link_to blog_post.title, spina.blog_post_url(blog_post)
                           .text-muted
-                            = truncate(strip_tags(blog_post.content), length: 200)
+                            = sanitize(blog_post.content, :tags=>[]).truncate(200, :separator => " ").html_safe
         -# TODO: implement archive links
         -# = blog_archive_widget
 

@@ -4,5 +4,6 @@
 
   %p
     = item.published_at.strftime("%B %d, %Y")
+
   %p
-    = truncate(strip_tags(item.content), length: 350)
+    = sanitize(item.content, :tags=>[]).truncate(350, :separator => " ").html_safe
