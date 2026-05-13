@@ -51,7 +51,7 @@
           .col-md-10.col-md-offset-1
             %h2.bold.section-title Conferences
             - @current.each do |conference|
-              = render partial: '/refinery/conference_item', locals: { conference: conference }
+              = render partial: '/spina/shared/home/conference_item', locals: { conference: conference }
             = link_to "All Conferences", main_app.conferences_path, class: 'learn-more link-effect'
 
     / Digital Events
