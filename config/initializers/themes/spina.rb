@@ -45,6 +45,7 @@ Spina::Theme.register do |theme|
   # navigations.
   theme.navigations = [
     {name: 'main', label: 'Main navigation'},
+    {name: 'home', label: 'Homepage navigation'},
     {name: 'footer', label: 'Footer navigation'},
   ]
   

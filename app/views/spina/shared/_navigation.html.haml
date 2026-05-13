@@ -9,20 +9,10 @@
 
         #bs-example-navbar-collapse-1.collapse.navbar-collapse
           %ul.nav.navbar-nav.navbar-custom
-            %li.uppercase.link-effect
-              %a{:href => "#Conferences"} Conferences
-            %li.uppercase.link-effect
-              %a{:href => "#Digital Events"} Digital events
-            %li.uppercase.link-effect
-              %a{:href => "#Meetups"} Meetups
-            %li.uppercase.link-effect
-              %a{:href => "#Blog"} Blog
-            %li.uppercase.link-effect
-              %a{:href => "/about"} About
+            - if content_for? :navbar_items
+              = yield :navbar_items
 
-            %li.uppercase.link-effect
-              %a{:href => "https://postgresworld.substack.com/", :target => '_blank'} Newsletter
-
+          / common dropdown menus
           %ul.nav.navbar-nav.navbar-right.navbar-custom
             -if user_signed_in?
               %li.dropdown
@@ -82,6 +72,3 @@
                       %label.pull-left.checkbox-inline
                         = check_box_tag 'user[remember_me]'
                         Remember me
-
-- presenter = Spina::MenuPresenter.new(Spina::Page.all)
-= presenter.to_html

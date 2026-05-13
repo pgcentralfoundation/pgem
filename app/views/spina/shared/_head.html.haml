@@ -13,6 +13,10 @@
 = stylesheet_link_tag "spina/spina-custom"
 = yield :stylesheets
 
+%script{:src => "https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"}
+%script{:src => "https://cdnjs.cloudflare.com/ajax/libs/jquery-ujs/1.2.2/rails.min.js"}
+%script{:crossorigin => "anonymous", :integrity => "sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa", :src => "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"}
+
 
 - unless Rails.application.credentials.google_analytics_id.blank?
   %script{:async => '', :src => "https://www.googletagmanager.com/gtag/js?id=#{Rails.application.credentials.google_analytics_id}"}
