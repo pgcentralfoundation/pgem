@@ -14,7 +14,11 @@ class ApplicationController < ActionController::Base
   before_action :store_location
   helper_method :date_string
   # Ensure every controller authorizes resource or skips authorization (skip_authorization_check)
-  check_authorization unless: :devise_controller?
+  check_authorization unless: :unauthable_controller?
+
+  # helps will_paginate to find routes in spina-blog
+  helper  Spina::Engine.routes.url_helpers
+  include Spina::Engine.routes.url_helpers
 
   def root_path
     '/'
@@ -166,4 +170,12 @@ class ApplicationController < ActionController::Base
     u
   end
 
+  def unauthable_controller?
+    devise_controller? || spina_controller?
+  end
+
+  def spina_controller?
+    self.class.name.start_with?("Spina::")
+  end
+  
 end

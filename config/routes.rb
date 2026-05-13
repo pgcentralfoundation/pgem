@@ -300,7 +300,17 @@ Osem::Application.routes.draw do
   get '/conferences' => 'conferences#index'
   get '/2017' => 'conferences#show'
   get '/my_proposals' => 'proposals#my_proposals'
-  
+
+  Spina::Engine.routes.draw do
+    # These routes are now part of the Spina namespace
+    scope module: 'blog', path: 'blog' do
+      # moves atom feed above other spina routes, by default posts#show tries to handle it
+      get 'feed', to: 'posts#index', defaults: { format: 'atom' }, as: :blog_feed
+
+      get 'tagged/:id/:tag', to: 'posts#tagged', as: :blog_tagged_posts
+    end
+  end
+
   mount Spina::Engine => '/'
  
 end

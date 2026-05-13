@@ -1,0 +1,33 @@
+
+%article.card
+  -unless post.image.blank?
+    %img.img-responsive.card-img-top{alt: post.image.alt, src: post.image.url}
+
+  .card-block
+    %h2.card-title
+      = link_to post.title, spina.blog_post_url(post)
+  .card-block
+    .card-text
+    - if post.excerpt.present?
+      = post.excerpt.html_safe
+      = link_to spina.blog_post_url(post), class: 'btn btn-primary btn-outline btn-sm' do
+        Read more
+        %span.fa.fa-chevron-right
+    - else
+      %p
+        = post.content&.html_safe
+  .card-header.text-muted
+    %span.fa.fa-user
+    = post.user&.name
+    &nbsp;&nbsp;&nbsp;
+    %span.fa.fa-clock-o
+    = post.published_at.strftime("%B %d, %Y")
+
+    - if post.tags.any?
+      &nbsp;&nbsp;&nbsp;
+      %span.fa.fa-tags
+      - post.tags.each_with_index do |tag, index|
+        = link_to tag.name, blog_tagged_posts_path(tag.id, tag.name)
+
+
+

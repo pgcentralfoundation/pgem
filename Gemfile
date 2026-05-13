@@ -345,5 +345,6 @@ end
 gem "delayed_job_web"
 
 gem 'spina', '~> 2.20.0'
+gem 'spina-blog', github: 'SpinaCMS/spina-blog', ref: '855a576'
 
 

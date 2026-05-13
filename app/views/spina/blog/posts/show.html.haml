@@ -1,0 +1,28 @@
+
+- flash.each do |key, value|
+  #flash{:class => "flash flash_#{key}"}
+    = value
+
+%article
+  .row.blog-banner.hidden
+  .row.blog-head
+    .col-md-12
+      %header.text-center
+        %h1= @post.title
+        %section.details.h4
+          = @post.user&.name
+          &nbsp;&nbsp;
+          = '|'
+          &nbsp;&nbsp;
+          = @post.published_at.strftime("%B %d, %Y")
+.container
+  = render 'post'
+
+
+- unless @post.image.blank?
+  - content_for :javascripts do
+    :javascript
+      $(window).load(function () {
+        $('.blog-banner').removeClass('hidden').css('background-image', 'url(#{@post.image.url})');
+      });
+

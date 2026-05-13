@@ -1,0 +1,62 @@
+.container
+  Blog
+
+.container.blog-body
+  - if @posts.any?
+    .row
+      .col-md-8
+        = render :partial => 'spina/blog/posts/post', collection: @posts
+      / Blog Sidebar Widgets Column
+      .col-md-4
+        / Blog Categories and Tags
+        - @categories = Spina::Blog::Category.joins(:posts).group('spina_blog_categories.id').select('spina_blog_categories.*, count(spina_blog_posts.id) as post_count')
+        - if @categories.any? || @tags.any?
+          .card
+            - if @categories.any?
+              .card-block
+                %h4.card-title Blog Categories
+                .row
+                  .col-lg-6
+                    - @categories.each do |category|
+                      = link_to blog_category_path(category) do
+                        = category.name.titleize 
+                        %span.badge
+                          = category.post_count
+                        &nbsp;
+            / Tags
+            - @tags = Spina::Blog::Post.all_tag_counts
+            - if @tags.any?
+              .card-block
+                %h4.card-title Tags
+                %nav#tags
+                  - tag_cloud(@tags, %w(tag1 tag2 tag3 tag4)) do |tag, css_class|
+                    = link_to tag.name, blog_tagged_posts_path(tag.id, tag.name), class: 'label label-default'
+
+        / Latest Posts
+        - if @posts.many?
+          .card
+            .card-block
+              %h4.card-title
+                %span
+                  Latest Posts
+                  = link_to blog_rss_feed_path do
+                    %span.fa.fa-rss.icon-rss
+
+              .row
+                .col-lg-12
+                  %ul.media-list
+                    - @posts[0..4].each do |blog_post|
+                      %li.media
+                        .media-body
+                          .h4.media-hading
+                            = link_to blog_post.title, spina.blog_post_url(blog_post)
+                          .text-muted
+                            = truncate(strip_tags(blog_post.content), length: 200)
+        -# TODO: implement archive links
+        -# = blog_archive_widget
+
+    .row
+      .col-md-12.text-center
+        = will_paginate @posts, renderer: BootstrapPagination::Rails
+  - else
+    %p= t('.no_blog_articles_yet')
