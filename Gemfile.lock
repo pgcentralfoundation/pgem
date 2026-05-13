@@ -920,7 +920,7 @@ DEPENDENCIES
   prawn-qrcode
   prawn_rails
   puma
-  rails (~> 8.0)
+  rails (~> 8.1)
   rails-assets-bootstrap-markdown!
   rails-assets-chartjs!
   rails-assets-date.format!

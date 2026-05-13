@@ -6,7 +6,7 @@ if Gem::Version.new(Bundler::VERSION) < Gem::Version.new('1.8.4')
 end
 
 # as web framework
-gem 'rails', '~> 8.0'
+gem 'rails', '~> 8.1'
 
 # required by sprockets, pinned because newer versions were breaking assets:precompile
 gem 'concurrent-ruby', '1.3.4'
