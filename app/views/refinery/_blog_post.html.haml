@@ -1,8 +1,0 @@
-.news-item-wrapper
-  %h3.link-effect
-    = link_to item.title, refinery.blog_post_path(item)
-
-  %p
-    = item.published_at.strftime("%B %d, %Y")
-  %p
-    = truncate(strip_tags(item.body), length: 350)
