@@ -1,12 +1,7 @@
-
-- flash.each do |key, value|
-  #flash{:class => "flash flash_#{key}"}
-    = value
-
 %article
   .row.blog-banner.hidden
   .row.blog-head
-    .col-md-12
+    .col-md-10.col-md-offset-1
       %header.text-center
         %h1= @post.title
         %section.details.h4
@@ -15,9 +10,9 @@
           = '|'
           &nbsp;&nbsp;
           = @post.published_at.strftime("%B %d, %Y")
-.container
-  = render 'post'
 
+  .container.blog-body
+    = post.content&.html_safe
 
 - unless @post.image.blank?
   - content_for :javascripts do

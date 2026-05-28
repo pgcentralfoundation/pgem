@@ -1,8 +1,9 @@
 /*
  *= require bootstrap   
  *= require formtastic-bootstrap
- *= require ./newsite
 */
+
+@import 'newsite';
 
 .icon-rss {
   color: darkorange;
@@ -22,10 +23,15 @@
     font-size: 60px !important;
   }
 }
+body {
+  background-color: $background_color;
+  color: #ffffff;
+}
 
 .blog-head {
+  margin-top: 75px;
   padding-bottom: 20px;
-  background: white;
+  // background: white;
 }
 
 .blog-banner {
@@ -37,6 +43,7 @@
 }
 
 .blog-body {
+  background-color: $background_color;
   padding-top: 20px;
   font-size: 2rem;
   h1 {
