@@ -39,6 +39,10 @@ module Osem
     # like in other Active Record callbacks.
     # config.active_record.raise_in_transactional_callbacks = true
     config.active_job.queue_adapter = :delayed_job
+    # Rails defaults to :vips, but libvips isn't installed in this environment
+    # (LoadError: Could not open library 'vips.so.42'). mini_magick/ImageMagick is already a
+    # dependency (Spina itself uses it), so use that for ActiveStorage variants instead.
+    config.active_storage.variant_processor = :mini_magick
     config.autoloader = :classic
     config.autoload_paths << "#{Rails.root}/app/classes"
     config.exceptions_app = self.routes

@@ -1,0 +1,107 @@
+<%= render Spina::UserInterface::HeaderComponent.new do |header| %>
+  <% header.with_actions do %>
+    <% if @team_member.persisted? %>
+      <%= render Spina::UserInterface::DropdownComponent.new do |dropdown| %>
+        <% dropdown.with_button(classes: "btn btn-default px-3") do %>
+          <%= heroicon('dots-horizontal', style: :solid, class: "w-5 h-5 text-gray-600") %>
+        <% end %>
+
+        <% dropdown.with_menu do %>
+          <%= button_to 'Permanently delete', spina.admin_team_member_path(@team_member), method: :delete, class: "block w-full text-left px-4 py-2 text-sm leading-5 font-medium text-red-500 cursor-pointer bg-white hover:bg-red-100 hover:bg-opacity-50 hover:text-red-500 focus:outline-none focus:bg-gray-100 focus:text-gray-900", form: {data: {controller: "confirm", confirm_message: "Delete #{@team_member.fullname}?"}} %>
+        <% end %>
+      <% end %>
+    <% end %>
+
+    <%= button_tag type: :submit, form: dom_id(@team_member), class: 'btn btn-primary', data: {controller: "button", action: "button#loading", loading_message: "Saving..."} do %>
+      <%= heroicon('check', style: :solid, class: 'w-5 h-5 mr-1 -ml-2') %>
+      Save
+    <% end %>
+  <% end %>
+<% end %>
+
+<div class="p-8">
+  <%= form_with model: @team_member, url: @team_member.new_record? ? spina.admin_team_members_path : spina.admin_team_member_path(@team_member), id: dom_id(@team_member) do |f| %>
+    <%= render Spina::Forms::GroupComponent.new(label: Spina::TeamMember.human_attribute_name(:firstname)) do %>
+      <%= render Spina::Forms::LabelComponent.new(f, :firstname) %>
+      <%= render Spina::Forms::TextFieldComponent.new(f, :firstname, autofocus: @team_member.firstname.blank?) %>
+    <% end %>
+
+    <div class="mt-6">
+      <%= render Spina::Forms::GroupComponent.new(label: Spina::TeamMember.human_attribute_name(:middlename)) do %>
+        <%= render Spina::Forms::LabelComponent.new(f, :middlename) %>
+        <%= render Spina::Forms::TextFieldComponent.new(f, :middlename) %>
+      <% end %>
+    </div>
+
+    <div class="mt-6">
+      <%= render Spina::Forms::GroupComponent.new(label: Spina::TeamMember.human_attribute_name(:lastname)) do %>
+        <%= render Spina::Forms::LabelComponent.new(f, :lastname) %>
+        <%= render Spina::Forms::TextFieldComponent.new(f, :lastname) %>
+      <% end %>
+    </div>
+
+    <div class="mt-6">
+      <%= render Spina::Forms::GroupComponent.new(label: Spina::TeamMember.human_attribute_name(:role), description: "e.g. Co-Chair, Organizer") do %>
+        <%= render Spina::Forms::LabelComponent.new(f, :role) %>
+        <%= render Spina::Forms::TextFieldComponent.new(f, :role) %>
+      <% end %>
+    </div>
+
+    <div class="mt-6">
+      <%= render Spina::Forms::GroupComponent.new(label: Spina::TeamMember.human_attribute_name(:description), description: "Limited to 50 words.") do %>
+        <%= render Spina::Forms::LabelComponent.new(f, :description) %>
+        <%= f.text_area :description, rows: 4, class: "mt-1 form-textarea font-medium block w-full max-w-5xl" %>
+      <% end %>
+    </div>
+
+    <div class="mt-6">
+      <%= render Spina::Forms::GroupComponent.new(label: Spina::TeamMember.human_attribute_name(:twitter)) do %>
+        <%= render Spina::Forms::LabelComponent.new(f, :twitter) %>
+        <%= render Spina::Forms::TextFieldComponent.new(f, :twitter) %>
+      <% end %>
+    </div>
+
+    <div class="mt-6">
+      <%= render Spina::Forms::GroupComponent.new(label: Spina::TeamMember.human_attribute_name(:linkedin)) do %>
+        <%= render Spina::Forms::LabelComponent.new(f, :linkedin) %>
+        <%= render Spina::Forms::TextFieldComponent.new(f, :linkedin) %>
+      <% end %>
+    </div>
+
+    <div class="mt-6">
+      <%= render Spina::Forms::GroupComponent.new(label: Spina::TeamMember.human_attribute_name(:show_on_homepage), description: "Feature this person outside the About page too.") do %>
+        <%= render Spina::Forms::LabelComponent.new(f, :show_on_homepage) %>
+        <%= render Spina::Forms::SwitchComponent.new(f, :show_on_homepage) %>
+      <% end %>
+    </div>
+
+    <div class="mt-6 relative" data-controller="media-picker" id="<%= dom_id(f.object, f.object.object_id) %>" data-action="media-picker:done->media-picker#handleDone">
+      <label class="block text-sm leading-5 font-medium text-gray-700">
+        <%= Spina::TeamMember.human_attribute_name(:photo) %>
+      </label>
+
+      <%= f.hidden_field :photo_id, data: {media_picker_target: "imageId"} %>
+
+      <button class="absolute mt-3 ml-2 z-10 cursor-pointer flex items-center h-9 px-2 rounded-md bg-gray-700 bg-opacity-50 border-gray-300 active:shadow-inner text-gray-200 hover:text-white text-sm font-medium leading-none shadow-sm" data-action="media-picker#removeImage" data-media-picker-target="clearButton" type="button">
+        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+        </svg>
+      </button>
+
+      <%= link_to spina.admin_media_picker_path(target: dom_id(f.object, f.object.object_id)), class: "block relative mt-1 w-full", data: {turbo_frame: "modal"} do %>
+        <div class="w-36 h-36 bg-transparent border-2 border-dashed border-gray-300 rounded-lg flex items-center flex-col justify-center">
+          <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+            <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          <div class="text-gray-400 font-medium text-sm">Choose image</div>
+        </div>
+
+        <div class="border absolute inset-0 w-36 h-36 bg-gray-100 rounded-lg shadow-md overflow-hidden" data-media-picker-target="thumbnail">
+          <% if f.object.photo.present? %>
+            <%= image_tag thumbnail_url(f.object.photo), class: 'object-contain h-36 w-full', data: {controller: "image-fade-in"} %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>

@@ -30,14 +30,16 @@ Spina::Theme.register do |theme|
   # by referencing them from the theme.parts configuration above.
   theme.view_templates = [
     {name: "home", title: "Home", parts: %w[]},
-    {name: "show", title: "Page", parts: %w[text]}
+    {name: "show", title: "Page", parts: %w[text]},
+    {name: "about", title: "About", parts: %w[text]}
   ]
 
   # Custom pages
   # Some pages should not be created by the user, but generated automatically.
   # By naming them you can reference them in your code.
   theme.custom_pages = [
-    {name: "homepage", title: "Home", deletable: false, view_template: "home"}
+    {name: "homepage", title: "Home", deletable: false, view_template: "home"},
+    {name: "about", title: "About", deletable: false, view_template: "about"}
   ]
 
   # Navigations (optional)
@@ -60,7 +62,7 @@ Spina::Theme.register do |theme|
   theme.resources = []
 
   # Plugins (optional)
-  theme.plugins = ['blog']
+  theme.plugins = ['blog', 'team_members']
 
   # Embeds (optional)
   theme.embeds = []

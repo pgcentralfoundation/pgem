@@ -1,0 +1,11 @@
+.container-fluid
+  .row
+    .col-md-10.col-md-offset-1
+      - if has_content?('text')
+        = content.html('text')
+
+  %section.about-section.team
+    .h2.text-center
+      Our Team
+    .row
+      = render partial: '/spina/shared/team_members'

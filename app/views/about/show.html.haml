@@ -44,13 +44,13 @@
     .h2.text-center
       Our Team
     - @team_members = @conference.conference_team_members
-      - @team_members.each_slice(3) do |slice|
+    - @team_members.each_slice(3) do |slice|
       .row.row-centered
         - slice.each do |team_member|
           .col-md-4.col-centered.col-top.team-member.text-center
             .member-photo
-              -unless team_member.photo.blank?
-                =image_fu team_member.photo, '200x200'
+              - if team_member.photo.present?
+                = image_tag thumbnail_url(team_member.photo), class: 'img-responsive'
             .team-detail
               %h4
                 =team_member.fullname

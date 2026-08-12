@@ -55,7 +55,7 @@ module Admin
     private
 
     def conference_team_member_params
-      params.require(:conference_team_member).permit(:position, :conference_id, :refinery_team_member_id)
+      params.require(:conference_team_member).permit(:position, :conference_id, :team_member_id)
     end
 
     def conference_params

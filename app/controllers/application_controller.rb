@@ -16,14 +16,6 @@ class ApplicationController < ActionController::Base
   # Ensure every controller authorizes resource or skips authorization (skip_authorization_check)
   check_authorization unless: :unauthable_controller?
 
-  # helps will_paginate to find routes in spina-blog
-  helper  Spina::Engine.routes.url_helpers
-  include Spina::Engine.routes.url_helpers
-
-  def root_path
-    '/'
-  end
-
   def store_location
     # store last url - this is needed for post-login redirect to whatever the user last visited.
     return unless request.get?

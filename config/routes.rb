@@ -301,6 +301,10 @@ Osem::Application.routes.draw do
   get '/2017' => 'conferences#show'
   get '/my_proposals' => 'proposals#my_proposals'
 
+  # / is the CMS homepage. Declared here (not left to Spina's own internal root route) so the
+  # main app gets a real root_path/root_url helper. Must stay above the Spina mount below.
+  root to: 'spina/pages#homepage'
+
   Spina::Engine.routes.draw do
     # These routes are now part of the Spina namespace
     scope module: 'blog', path: 'blog' do
@@ -308,6 +312,15 @@ Osem::Application.routes.draw do
       get 'feed', to: 'posts#index', defaults: { format: 'atom' }, as: :blog_feed
 
       get 'tagged/:id/:tag', to: 'posts#tagged', as: :blog_tagged_posts
+    end
+
+    # Scoped under the CMS backend path (not bare /admin) to avoid colliding with the main
+    # application's own /admin/* namespace (Admin::BaseController etc.) - matches how Spina
+    # core itself scopes its own admin routes (config/routes.rb in the spina gem).
+    namespace :admin, path: Spina.config.backend_path do
+      resources :team_members do
+        collection { post :sort }
+      end
     end
   end
 

@@ -1,0 +1,18 @@
+<div class="bg-white border-b border-gray-200 flex items-center justify-between space-x-8 pr-2" data-id="<%= team_member.id %>">
+  <div data-sortable-handle class="p-4 text-gray-300 hover:text-gray-600 cursor-move">
+    <%= heroicon("menu-alt-4", style: :solid, class: "w-4 h-4") %>
+  </div>
+
+  <%= link_to spina.edit_admin_team_member_path(team_member.id), class: 'flex-1 block text-spina text-sm p-4 hover:text-spina-dark font-medium' do %>
+    <%= team_member.fullname %>
+    <small class="font-normal ml-2 text-gray-500"><%= team_member.role %></small>
+  <% end %>
+
+  <div class="flex-1"></div>
+
+  <div>
+    <%= link_to spina.edit_admin_team_member_path(team_member.id), class: "btn btn-default px-3" do %>
+      <%= heroicon('pencil', style: :solid, class: 'w-4 h-4') %>
+    <% end %>
+  </div>
+</div>

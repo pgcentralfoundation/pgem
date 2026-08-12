@@ -36,6 +36,11 @@ Rails.application.configure do
     config.cache_store = :null_store
   end
   
+  # Active Storage (used by Spina::Image) - not previously configured for development,
+  # which broke on any Spina::Image touch (e.g. team member/blog post photo pickers).
+  # Matches production's :local service.
+  config.active_storage.service = :local
+
   # Don't care if the mailer can't send
   config.action_mailer.raise_delivery_errors = false
 
