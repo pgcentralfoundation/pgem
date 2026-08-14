@@ -76,11 +76,12 @@ namespace :spina_blog do
       )
     end
 
-    # 2017-2018 posts were transferred raw from a different blogging system and carry inline
-    # style="..." and legacy classes (kix-line-break, tr-caption, separator, etc.) that spill
-    # past the .blog-body template container. Posts from 2019 onward are clean and untouched.
+    # Posts pasted in from Google Docs/Word (not just the 2017-2018 batch - this runs through
+    # 2025) carry inline style="..." that overrides .blog-body's own type sizing. 'center' is
+    # added to the default allowlist rather than left to the sanitizer's unwrap-on-strip
+
     sanitizer = Rails::Html::SafeListSanitizer.new
-    allowed_tags = Rails::Html::SafeListSanitizer.allowed_tags + ['iframe']
+    allowed_tags = Rails::Html::SafeListSanitizer.allowed_tags + ['iframe', 'center']
     allowed_attrs = %w[href src alt title width height target frameborder allowfullscreen]
     youtube_hosts = %w[youtube.com www.youtube.com youtube-nocookie.com www.youtube-nocookie.com]
 
@@ -119,14 +120,26 @@ namespace :spina_blog do
             img['src'] = embedded_url.call(spina_image) if spina_image
           end
 
-          legacy_import = ((oldpost.published_at || oldpost.created_at)&.year.to_i) <= 2018
-          if legacy_import
-            strip_non_youtube_iframes.call(doc)
-            sanitized = sanitizer.sanitize(doc.to_html, tags: allowed_tags, attributes: allowed_attrs)
+          strip_non_youtube_iframes.call(doc)
+          sanitized = sanitizer.sanitize(doc.to_html, tags: allowed_tags, attributes: allowed_attrs)
 
-            doc = Nokogiri::HTML::DocumentFragment.parse(sanitized)
-            doc.css('img').each { |img| img['class'] = 'img-responsive' }
-          end
+          doc = Nokogiri::HTML::DocumentFragment.parse(sanitized)
+          doc.css('img').each { |img| img['class'] = 'img-responsive' }
+
+          # Hand-typed blank-line spacer divs (<div>&nbsp;</div>, <div><br></div>) used to fake
+          # paragraph spacing before pasting - .blog-body's own div padding already provides it.
+          # Innermost-first (reverse document order), repeated until stable, so a div left
+          # empty only after its own empty child div was removed still gets caught.
+          begin
+            removed_any = false
+            doc.css('div').reverse_each do |div|
+              next if div.children.any? { |c| c.element? && c.name != 'br' }
+              next unless div.text.tr(" ", '').strip.empty?
+
+              div.remove
+              removed_any = true
+            end
+          end while removed_any
 
           body_html = doc.to_html
         end
