@@ -57,7 +57,13 @@
         Manage
         %span.notranslate
           = @conference.short_title
-  
+
+  -if Spina and current_user.is_admin?
+    %li
+      = link_to '/cms' do
+        %span.fa.fa-newspaper-o
+        Website CMS
+
   -if DelayedJobWeb and current_user.is_admin?
     %li
       = link_to '/delayed_job' do
