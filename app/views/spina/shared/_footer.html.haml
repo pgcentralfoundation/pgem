@@ -1,0 +1,12 @@
+%footer.footer
+  .container-fluid
+    .row
+      .col-xs-2.col-xs-offset-4
+        - if footer_nav = Spina::Navigation.find_by(name: 'footer')
+          - footer_nav.navigation_items.live.sorted.each do |item|
+            %p
+              = link_to item.menu_title, item.materialized_path
+      .col-xs-3
+        .copyright-wrapper
+          %p.text-muted
+            = "Copyright © #{Date.today.year} Postgres Conference"

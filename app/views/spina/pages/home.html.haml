@@ -120,17 +120,6 @@
           - @community_events.each do |item|
             = render partial: '/spina/shared/home/community_event', locals: { item: item }
 
-%footer.footer
-  .container-fluid
-    .row
-      .col-xs-2.col-xs-offset-4
-        %p
-          = link_to "Privacy Statement", '/privacy-statement', class: 'text-muted'
-      .col-xs-3
-        .copyright-wrapper
-          %p.text-muted
-            = "Copyright © #{Date.today.year} Postgres Conference"
-
 :javascript
   $("#help_link").click(function(e){$('#navbar-devise-help').collapse('toggle'); e.stopPropagation();})
   $("#user_remember_me").click(function(e){e.stopPropagation();})
