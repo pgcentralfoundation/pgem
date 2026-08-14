@@ -1,33 +1,27 @@
+- featured = local_assigns.fetch(:featured, false)
 
-%article.card
-  -unless post.image.blank?
-    %img.img-responsive.card-img-top{alt: post.image.alt, src: post.image.url}
-
-  .card-block
+%article.card{class: ('card-featured' if featured)}
+  .card-media{class: ('has-image' if post.image.present?)}
+    -unless post.image.blank?
+      %img.img-responsive.card-img-top{alt: post.title, src: main_app.url_for(post.image.file)}
     %h2.card-title
       = link_to post.title, spina.blog_post_url(post)
-  .card-block
-    .card-text
-    - if post.excerpt.present?
-      = post.excerpt.html_safe
-      = link_to spina.blog_post_url(post), class: 'btn btn-primary btn-outline btn-sm' do
-        Read more
-        %span.fa.fa-chevron-right
-    - else
-      %p
-        = post.content&.html_safe
+
   .card-header.text-muted
-    %span.fa.fa-user
-    = post.user&.name
-    &nbsp;&nbsp;&nbsp;
-    %span.fa.fa-clock-o
-    = post.published_at.strftime("%B %d, %Y")
-
+    .byline-meta
+      = post.user&.name
+      &nbsp;&nbsp;|&nbsp;&nbsp;
+      = post.published_at.strftime("%B %d, %Y")
     - if post.tags.any?
-      &nbsp;&nbsp;&nbsp;
-      %span.fa.fa-tags
-      - post.tags.each_with_index do |tag, index|
-        = link_to tag.name, blog_tagged_posts_path(tag.id, tag.name)
+      .card-tags
+        - post.tags.each do |tag|
+          = link_to tag.name, blog_tagged_posts_path(tag.name), class: 'tag-pill'
 
-
-
+  .card-block
+    %p.card-text
+      - excerpt_source = post.excerpt.presence || post.content
+      - unfeatured_excerpt_length = 260
+      - excerpt_length = featured ? unfeatured_excerpt_length * 2 : unfeatured_excerpt_length
+      = sanitize(excerpt_source, tags: []).truncate(excerpt_length, separator: ' ').html_safe
+    = link_to spina.blog_post_url(post), class: 'read-more' do
+      Read more →

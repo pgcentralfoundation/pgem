@@ -1,14 +1,15 @@
 /*
- *= require bootstrap   
- *= require formtastic-bootstrap
+ *= require bootstrap
 */
 
 @import 'newsite';
 
-.icon-rss {
-  color: darkorange;
+// Base size for the 993px-1199px gap the two media queries below don't
+// cover - without it, .huge falls through to the ambient font-size (10px
+// here) in that range instead of scaling smoothly between 40px and 60px.
+.huge {
+  font-size: 50px;
 }
-
 
 /* Medium devices (desktops, 992px and up) */
 @media (max-width: 992px) {
@@ -28,24 +29,436 @@ body {
   color: #ffffff;
 }
 
+// Blog + generic-page palette.
+$blog-link: #9ea7e0;
+$blog-muted: #b3b3b3;
+$blog-gold: #ffcd85;
+
+// Tint steps for pill backgrounds — quiet/common tag tiers, a post's own
+// tags, and pagination. Named so future adjustments are a one-line change.
+$tint-light: rgba($blog-link, .15);
+$tint-medium: rgba($blog-link, .25);
+$tint-strong: rgba($blog-link, .3);
+$gold-tint: rgba(196, 127, 29, .2);
+
+// Any value at least half the element's own height fully rounds it into a
+// pill - the browser clamps border-radius per side, so this doesn't need
+// to track actual pill sizes. Same idiom as Bootstrap's .rounded-pill
+// (border-radius: 50rem) and Tailwind's rounded-full (9999px).
+$radius-pill: 999px;
+
+.text-muted {
+  color: $blog-muted;
+}
+// Shared shape for every pill-style component below (tags, pagination).
+%pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: $radius-pill;
+  border: none;
+}
+
+// .blog-content marks the two raw rich-text templates (blog post show,
+// generic page show) so this rule never has to know about or exclude the
+// index page's card-title/read-more/tag-pill/pagination markup - none of
+// that exists in this context, so no :not() is needed.
+// Same "line drops in on hover" mechanic as the homepage's .link-effect
+// (newsite.scss) - reused via @extend instead of duplicating its shell,
+// just with the blog's own link color for the dropped-in line.
+.blog-content a {
+  @extend .link-effect;
+  color: $blog-link;
+
+  &:after {
+    background: $blog-link;
+  }
+}
+
+// Bootstrap's default pre/code (light gray bg, dark text) is built for a
+// light page and clashes hard against the blog's dark theme.
+.blog-content {
+  pre, code {
+    background: rgba(255, 255, 255, .05);
+    color: #e8ecf5;
+  }
+  pre {
+    // Bootstrap's own `border: 1px solid #ccc` would otherwise still ring
+    // the whole box - zero it out; no left accent here, that's reserved
+    // for blockquote below so the two read as visually distinct.
+    border: none;
+    border-radius: 6px;
+    padding: 16px 20px;
+  }
+  code {
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+  // pre already provides the box - an inline <code> nested inside it
+  // shouldn't double up its own background/padding/radius on top.
+  pre code {
+    padding: 0;
+    background: none;
+    border-radius: 0;
+  }
+
+  // Bootstrap's default blockquote border-left is #eee - all but invisible
+  // on this dark background. Same accent color/weight as .card's own left
+  // border, so it reads as a deliberate quote marker.
+  blockquote {
+    border-left: 3px solid $blog-link;
+    background: rgba(255, 255, 255, .03);
+  }
+}
+
+// .footer's text inherits newsite.scss's global `p { font-size: 16px; }`.
+.footer {
+  margin-top: 36px;
+  a, p {
+    font-size: 1.5rem;
+    line-height: 20px;
+  }
+  a {
+    color: #ffffff;
+  }
+}
+
+// Tag pill — used by the sidebar frequency cloud (#tags) and a post's own
+// tags on its card (.card-tags). Frequency/emphasis is conveyed by the
+// .tag-quiet/.tag-common/.tag-peak background tint, not size.
+// :hover/:focus reassert color — Bootstrap's global `a:hover { color:
+// #23527c }` otherwise wins on specificity and flips every tier's color.
+.tag-pill {
+  @extend %pill;
+  padding: 4px 12px;
+  font-size: 11px;
+  line-height: 16px;
+  color: $blog-link;
+
+  &:hover, &:focus {
+    color: $blog-link;
+  }
+}
+// Deliberately under WCAG AA (~3.6:1 at .tag-common) — tags are secondary
+// metadata, not the content people are reading; kept quiet on purpose.
+.tag-quiet  { background: $tint-light; }
+.tag-common { background: $tint-medium; }
+.tag-peak {
+  background: $gold-tint;
+  color: $blog-gold;
+  font-weight: 600;
+
+  &:hover, &:focus {
+    background: $gold-tint;
+    color: $blog-gold;
+    font-weight: 600;
+  }
+}
+
+.sidebar-title {
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: bold;
+  line-height: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0 0 16px;
+}
+
+#tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+// .card/.card-block/.card-title are Bootstrap 4 names with no styling in
+// this Bootstrap 3 app — reused here deliberately, styled from scratch.
+// Scoped to .blog-body so this never reaches the homepage's own
+// (differently-styled) .digital-events .card.
+.blog-body .card {
+  background: rgba(255, 255, 255, .035);
+  border-left: 3px solid $blog-link;
+  border-radius: 6px;
+  // without this, .card-media's bled image corners aren't clipped to match
+  // — most visible top-right, where there's no border-left to mask it.
+  overflow: hidden;
+  padding: 24px 28px;
+  // newsite.scss has a bare `.card { margin-top: 8rem }` under max-width:
+  // 991px meant for .digital-events; this counters it leaking in here.
+  margin-top: 0;
+  margin-bottom: 24px;
+
+  // &-x below compiles to .card-x (a suffix on .card's own selector, not a
+  // descendant of it) - matches how these are named/used as .card's own
+  // child components.
+  //
+  // wraps the card image (if any) + title. With an image, the title overlays
+  // it (bled to the card's outer edge, undoing the card's own padding);
+  // without one, this is just a plain block and nothing changes visually.
+  &-media {
+    position: relative;
+
+    &.has-image {
+      margin: -24px -28px 16px;
+      overflow: hidden;
+
+      img {
+        display: block;
+        width: 100%;
+        height: 220px;
+        object-fit: cover;
+      }
+      &::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to top, rgba(17, 30, 52, .9), rgba(17, 30, 52, .25) 65%);
+      }
+      // cross-references .card-title (defined below), not a name derived
+      // from &-media - stays a literal class, not another &-suffix.
+      .card-title {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: 0;
+        padding: 16px 20px;
+        // extra legibility insurance against light image backgrounds, on
+        // top of the gradient above.
+        text-shadow: 0 1px 4px rgba(0, 0, 0, .55);
+      }
+    }
+  }
+  &-title {
+    font-size: 22px;
+    line-height: 28px; // 1.27x — inside the 1.1-1.4x heading ratio
+    // Tight on purpose - title and byline/tags are one functional unit,
+    // so they read as grouped rather than sitting equidistant between
+    // title and excerpt below.
+    margin: 0 0 4px;
+
+    // title stays white; only inline body links and "Read more" are $blog-link.
+    a {
+      @extend .link-effect;
+      color: #ffffff;
+      text-decoration: none;
+
+      &:after {
+        background: #ffffff;
+      }
+    }
+  }
+  // rich-text post bodies render each paragraph as a bare, classless <div>
+  // (Trix/ActionText output) — catch those too, or they'd keep the
+  // inherited article-body sizing below and lose paragraph spacing.
+  &-text,
+  &-block > div,
+  .read-more,
+  p {
+    font-size: 16px;
+    line-height: 24px; // 1.5x — inside the 1.5-1.6x body-text ratio
+    margin-bottom: 16px; // 1em — the typography guide's paragraph-spacing minimum
+  }
+  &-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
+    font-size: 13px;
+    line-height: 20px;
+    margin-bottom: 16px;
+  }
+  // a post's own tags, inline with the byline — a flat tint, not the
+  // sidebar cloud's frequency tiers.
+  &-tags {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 8px;
+    .tag-pill {
+      background: $tint-light;
+    }
+  }
+  // text link, not a button; sizing matches .card-text above. Applies
+  // .link-effect directly since this is markup we fully control.
+  .read-more {
+    @extend .link-effect;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-weight: 600;
+    color: $blog-link;
+    margin-bottom: 0;
+
+    &:after {
+      background: $blog-link;
+    }
+  }
+  .media-list {
+    .h4 { font-size: 16px; line-height: 20px; margin-bottom: 4px; }
+    .text-muted { font-size: 13px; line-height: 20px; margin-bottom: 0; }
+  }
+
+  // Pinned post at the top of the index - same gold used by the sidebar's
+  // .tag-peak pill ($gold-tint background, $blog-gold accents), just
+  // applied to the whole card instead of a small pill.
+  &.card-featured {
+    background: $gold-tint;
+    border-left-color: $blog-gold;
+
+    .read-more {
+      color: $blog-gold;
+
+      &:after {
+        background: $blog-gold;
+      }
+    }
+  }
+}
+
+// Bootstrap's default pagination is a light widget; restyle for the dark theme.
+.blog-body .pagination {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+
+  li {
+    a, span {
+      @extend %pill;
+      min-width: 40px; // 8px-grid; also a reasonable tap target
+      height: 40px;
+      padding: 0 12px;
+      background: $tint-light;
+      color: $blog-link;
+      font-size: 14px;
+    }
+    a:hover {
+      background: $tint-strong;
+      text-decoration: none;
+    }
+    &.active span {
+      background: lighten($blog-link, 15%);
+      color: #111e34;
+      font-weight: 600;
+    }
+    &.disabled span {
+      background: rgba(255, 255, 255, .04);
+      color: $blog-muted;
+    }
+    // prev/next read as plain text links, not pills.
+    &.prev, &.next {
+      a, span {
+        background: transparent;
+        padding: 0 8px;
+        min-width: auto;
+      }
+    }
+  }
+}
+
 .blog-head {
   margin-top: 75px;
   padding-bottom: 20px;
-  // background: white;
+}
+
+// Post show page: title/byline overlay the header image instead of sitting
+// below it. .blog-banner is absolutely positioned to fill this wrapper;
+// .blog-head's own top margin is dropped here to avoid doubling up with
+// .blog-hero's (which exists so an imageless post still clears the navbar).
+.blog-hero {
+  position: relative;
+  // padding, not margin — an absolutely positioned child's offsets (used by
+  // .blog-banner/::before below) resolve against the padding edge either
+  // way, so the image still fills flush to the very top behind the fixed
+  // navbar; margin-top instead left a visible gap above the image.
+  padding-top: 75px;
+  min-height: 320px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: rgba(17, 30, 52, .6);
+  }
+  // no explicit width here — it would override Bootstrap's own responsive
+  // .container width (more specific than Bootstrap's plain, unnested rule);
+  // the auto margins it already sets still center it fine as a flex item.
+  > .container {
+    position: relative;
+    z-index: 2;
+  }
+  .blog-head {
+    margin-top: 0;
+  }
+  // extra legibility insurance against light image backgrounds, on top of
+  // the dark overlay above.
+  &.has-image .blog-head {
+    h1, .details {
+      text-shadow: 0 1px 4px rgba(0, 0, 0, .55);
+    }
+  }
 }
 
 .blog-banner {
-  min-height: 300px;
-  max-height: 500px;
-  margin-bottom: 0px;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
   background-color: whitesmoke;
   background-size: cover;
+  background-position: center;
 }
 
 .blog-body {
   background-color: $background_color;
   padding-top: 20px;
   font-size: 2rem;
+
+  // Vertical rhythm lives in each block's own padding, not margin - this
+  // sidesteps margin-collapse entirely, so spacing between any two blocks
+  // (div -> div, div -> heading, heading -> div) is deterministic instead
+  // of depending on which pair of margins happens to be adjacent. A
+  // heading's padding-bottom matches a paragraph's own padding-top (12px),
+  // so text right under a heading keeps the same rhythm as paragraph-to-
+  // paragraph; its larger padding-top (36px) is what creates the
+  // section-break gap from whatever came before it.
+  // Direct children only (`>`) - .blog-body also wraps the blog index's
+  // .row/.col-md-8 grid and each post .card (an h2 title among them), and
+  // this must never bleed into those. On the actual content templates
+  // (blog post show, generic page show) rich-text output has no wrapper,
+  // so every paragraph/heading/list IS a direct child here regardless.
+  > :first-child {
+    padding-top: 0;
+  }
+  > :last-child {
+    padding-bottom: 0;
+  }
+
+  > div, > ul, > ol {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+
+  > div {
+    line-height: 3.25rem;
+  }
+
+  > h1, > h2, > h3 {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-top: 36px;
+    padding-bottom: 12px;
+  }
   h1 {
     font-size: 5rem;
   }
@@ -58,34 +471,38 @@ body {
   ul {
     font-size: 2rem;
   }
-
-  div {
-    margin-bottom: 20px;
-    line-height: 3.25rem;
-  }
 }
 
-nav#next_prev_article {
-  font-size: 1.5rem;
+.about-intro {
+  margin-top: 75px;
 }
-
-nav#tags {
-  font-size: 1.5rem;
-}
-
-
 
 // refinery team members on about page, also managed in main pgem
 .team-member {
   text-align: center !important;
-  margin-bottom: 60px;
+  margin-bottom: 64px;
+
+  h4 {
+    line-height: 24px; // not a 4px-grid multiple otherwise
+  }
+  // role (e.g. "Co-Chair") and bio - same secondary/body-text sizes used
+  // on the blog (.card-header/.card-text).
+  .team-detail > span.text-muted {
+    font-size: 13px;
+    line-height: 20px;
+  }
+  .team-detail > span:not(.text-muted) {
+    font-size: 16px;
+    line-height: 24px;
+  }
+
   .team-detail {
-    margin-right: 30px;
-    margin-left: 30px;
+    margin-right: 32px;
+    margin-left: 32px;
   }
 
   .member-photo {
-    margin: 0 0 20px 0;
+    margin: 0 0 24px 0;
     img {
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
@@ -98,24 +515,24 @@ nav#tags {
 
   .social {
       margin: 0;
-      padding: 10px;
+      padding: 8px;
     ul  {
       margin: 0;
-      padding: 5px;
+      padding: 4px;
       li {
-      margin: 5px;
+      margin: 4px;
       list-style: none outside none;
       display: inline-block;
       }
     }
 
     i {
-      width: 35px;
-      height: 35px;
+      width: 36px;
+      height: 36px;
       color: #FFF;
       background-color: #ccc;
       text-align:center;
-      padding-top: 10px;
+      padding-top: 8px;
 
       border-radius: 50%;
       -moz-border-radius: 50%;
@@ -157,19 +574,24 @@ nav#tags {
 }
 
 .about-section {
-  margin-bottom: 60px;
+  margin-bottom: 64px;
 
-    .img-sponsor {
-      max-height: 100px;
-      margin: 2% auto;
-    }
-    .img-sponsor-1 {
-      max-height: 200px;
-    }
-    .img-sponsor-2 {
-      max-height: 150px;
-    }
-    .img-sponsor-3 {
-      max-height: 120px;
-    }
+  &.team .h2 {
+    font-size: 30px;
+    line-height: 36px; // 1.2x — inside the 1.1-1.4x heading ratio
+  }
+
+  .img-sponsor {
+    max-height: 100px;
+    margin: 2% auto;
+  }
+  .img-sponsor-1 {
+    max-height: 200px;
+  }
+  .img-sponsor-2 {
+    max-height: 150px;
+  }
+  .img-sponsor-3 {
+    max-height: 120px;
+  }
 }

@@ -310,8 +310,7 @@ Osem::Application.routes.draw do
     scope module: 'blog', path: 'blog' do
       # moves atom feed above other spina routes, by default posts#show tries to handle it
       get 'feed', to: 'posts#index', defaults: { format: 'atom' }, as: :blog_feed
-
-      get 'tagged/:id/:tag', to: 'posts#tagged', as: :blog_tagged_posts
+      get 'tagged/:tag', to: 'posts#tagged', as: :blog_tagged_posts
     end
 
     # Scoped under the CMS backend path (not bare /admin) to avoid colliding with the main
@@ -325,5 +324,5 @@ Osem::Application.routes.draw do
   end
 
   mount Spina::Engine => '/'
- 
+
 end
