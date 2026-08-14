@@ -1,0 +1,10 @@
+%article
+  .container
+    .row.blog-head
+      .col-md-10.col-md-offset-1
+        %header.text-center
+          %h1= current_page.title
+
+  .container.blog-body.blog-content
+    - if has_content?('text')
+      = content.html('text')
