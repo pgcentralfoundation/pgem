@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="<%= I18n.locale %>">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <meta name="turbo-cache-control" content="no-preview" />
+    <%= csrf_meta_tags %>
+
+    <link rel="icon" href="<%= image_url('spina/favicon.png') %>" />
+
+    <title><%= Spina.config.backend_title %></title>
+
+    <!-- Fonts -->
+    <% if defined?(Propshaft) %>
+      <%= stylesheet_link_tag "spina/fonts-propshaft", data: {turbo_track: "reload"} %>
+    <% elsif defined?(Sprockets) %>
+      <%= stylesheet_link_tag "spina/fonts-sprockets", data: {turbo_track: "reload"} %>
+    <% end %>
+
+    <!-- Stylesheets -->
+    <%= stylesheet_link_tag "spina/tailwind", "spina/animate", "data-turbo-track": "reload" %>
+
+    <!-- Spina's importmap -->
+    <%= spina_importmap_tags %>
+
+    <!-- Plugins & Hooks -->
+    <%= yield(:head) %>
+    <%= render Spina::Hooks::HookComponent.new(partial: "head") %>
+  </head>
+
+  <body>
+    <%= render "spina/admin/shared/version" %>
+    <%= content_for?(:body) ? yield(:body) : yield %>
+
+    <script>
+      // TrixToolbarComponent bakes literal `${Trix.config.lang.X}` into
+      // static ERB HTML, so tooltips never evaluate. heading2-4 also lack
+      // any lang entry (added via libraries/trix.js without translations).
+      // Fixed post-load, since Trix is an async ES module.
+      document.addEventListener('trix-initialize', (event) => {
+        Trix.config.lang.heading2 = Trix.config.lang.heading2 || "Heading 2"
+        Trix.config.lang.heading3 = Trix.config.lang.heading3 || "Heading 3"
+        Trix.config.lang.heading4 = Trix.config.lang.heading4 || "Heading 4"
+
+        const toolbar = event.target.toolbarElement
+        if (!toolbar) return
+
+        toolbar.querySelectorAll('[title]').forEach((el) => {
+          const match = el.title.match(/^\$\{Trix\.config\.lang\.(\w+)\}$/)
+          if (match && Trix.config.lang[match[1]]) {
+            el.title = Trix.config.lang[match[1]]
+          }
+        })
+      })
+    </script>
+  </body>
+</html>
