@@ -283,6 +283,8 @@ gem 'akami', '~> 1.3', '>= 1.3.1'
 
 # Use guard and spring for testing in development
 group :development do
+  # speeds up boot by caching expensive require/load-path lookups to disk
+  gem 'bootsnap', require: false
   # to launch specs when files are modified
   gem 'guard-rspec', '~> 4.2.8'
   gem 'spring-commands-rspec'
@@ -344,7 +346,7 @@ end
 
 gem "delayed_job_web"
 
-gem 'spina', '~> 2.20.0'
+gem 'spina', '~> 2.21.0'
 gem 'spina-blog', github: 'SpinaCMS/spina-blog', ref: '855a576'
 
 
