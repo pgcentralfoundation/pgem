@@ -1,4 +1,4 @@
-class AddLodgingDescriptionToConference < ActiveRecord::Migration
+class AddLodgingDescriptionToConference < ActiveRecord::Migration[4.2]
   def change
     add_column :conferences, :lodging_description, :text
   end

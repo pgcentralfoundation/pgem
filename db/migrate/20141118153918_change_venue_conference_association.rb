@@ -1,4 +1,7 @@
-class ChangeVenueConferenceAssociation < ActiveRecord::Migration
+class ChangeVenueConferenceAssociation < ActiveRecord::Migration[4.2]
+  # See 20140801164901_move_conference_media_to_commercial.rb for why this is needed.
+  disable_ddl_transaction!
+
   class TempConference < ActiveRecord::Base
     self.table_name = 'conferences'
   end
@@ -15,7 +18,7 @@ class ChangeVenueConferenceAssociation < ActiveRecord::Migration
     TempConference.all.each do |conference|
       if TempVenue.exists?(id: conference.venue_id)
         venue = TempVenue.find_by(id: conference.venue_id)
-        venue.update_attributes(conference_id: conference.id)
+        venue.update(conference_id: conference.id)
       end
     end
 

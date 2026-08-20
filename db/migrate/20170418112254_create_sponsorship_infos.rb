@@ -1,4 +1,4 @@
-class CreateSponsorshipInfos < ActiveRecord::Migration
+class CreateSponsorshipInfos < ActiveRecord::Migration[4.2]
   def change
     create_table :sponsorship_infos do |t|
       t.text :description

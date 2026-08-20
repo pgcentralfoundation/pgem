@@ -1,4 +1,4 @@
-class CreateSponsorshipLevels < ActiveRecord::Migration
+class CreateSponsorshipLevels < ActiveRecord::Migration[4.2]
   def change
     create_table :sponsorship_levels do |t|
       t.string :title

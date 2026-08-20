@@ -1,4 +1,4 @@
-class AddShortNameToSponsors < ActiveRecord::Migration
+class AddShortNameToSponsors < ActiveRecord::Migration[4.2]
   def change
     add_column :sponsors, :short_name, :string
 

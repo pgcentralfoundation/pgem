@@ -1,4 +1,4 @@
-class UndoWrongMigration20140801080705AddUsersToEvents < ActiveRecord::Migration
+class UndoWrongMigration20140801080705AddUsersToEvents < ActiveRecord::Migration[4.2]
   class TempEvent < ActiveRecord::Base
     self.table_name = 'events'
   end
@@ -9,8 +9,8 @@ class UndoWrongMigration20140801080705AddUsersToEvents < ActiveRecord::Migration
 
   class TempEventUser < ActiveRecord::Base
     self.table_name = 'event_users'
-    belongs_to :temp_event
-    belongs_to :temp_user
+    belongs_to :temp_event, optional: true
+    belongs_to :temp_user, optional: true
   end
 
   class Version < ActiveRecord::Base
@@ -18,7 +18,7 @@ class UndoWrongMigration20140801080705AddUsersToEvents < ActiveRecord::Migration
   end
 
   def up
-    if ActiveRecord::Migrator.get_all_versions.include? 20140801080705
+    if ActiveRecord::Base.connection_pool.schema_migration.integer_versions.include? 20140801080705
       user_deleted = TempUser.find_by(email: 'deleted@localhost.osem')
 
       TempEvent.all.each do |event|

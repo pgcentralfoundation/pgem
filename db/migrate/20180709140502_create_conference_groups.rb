@@ -1,4 +1,4 @@
-class CreateConferenceGroups < ActiveRecord::Migration
+class CreateConferenceGroups < ActiveRecord::Migration[4.2]
   def self.up
     create_table :conference_groups do |t|
       t.string :name, null: false

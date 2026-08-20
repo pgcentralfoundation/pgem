@@ -1,4 +1,4 @@
-class MoveEventMediaToCommercial < ActiveRecord::Migration
+class MoveEventMediaToCommercial < ActiveRecord::Migration[4.2]
   class TempEvent < ActiveRecord::Base
     self.table_name = 'events'
   end

@@ -1,4 +1,4 @@
-class CreateTicketGroups < ActiveRecord::Migration
+class CreateTicketGroups < ActiveRecord::Migration[4.2]
   def self.up
     create_table :ticket_groups do |t|
       t.references :conference

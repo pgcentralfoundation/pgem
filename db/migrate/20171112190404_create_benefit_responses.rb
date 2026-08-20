@@ -1,4 +1,4 @@
-class CreateBenefitResponses < ActiveRecord::Migration
+class CreateBenefitResponses < ActiveRecord::Migration[4.2]
   def self.up
     create_table :benefit_responses do |t|
       t.references :conference

@@ -1,5 +1,5 @@
 # This migration comes from refinery_sponsors (originally 3)
-class CreateSponsorsSponsorshipLevels < ActiveRecord::Migration
+class CreateSponsorsSponsorshipLevels < ActiveRecord::Migration[4.2]
 
   def up
     create_table :refinery_sponsors_sponsorship_levels do |t|

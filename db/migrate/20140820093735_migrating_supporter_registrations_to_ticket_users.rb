@@ -1,4 +1,7 @@
-class MigratingSupporterRegistrationsToTicketUsers < ActiveRecord::Migration
+class MigratingSupporterRegistrationsToTicketUsers < ActiveRecord::Migration[4.2]
+  # See 20140801164901_move_conference_media_to_commercial.rb for why this is needed.
+  disable_ddl_transaction!
+
   class TempSupporterRegistrations < ActiveRecord::Base
     self.table_name = 'supporter_registrations'
   end

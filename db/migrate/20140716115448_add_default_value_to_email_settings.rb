@@ -1,4 +1,4 @@
-class AddDefaultValueToEmailSettings < ActiveRecord::Migration
+class AddDefaultValueToEmailSettings < ActiveRecord::Migration[4.2]
   def up
     change_column :email_settings, :send_on_registration, :boolean, default: false
     change_column :email_settings, :send_on_accepted, :boolean, default: false

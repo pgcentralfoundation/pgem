@@ -1,4 +1,4 @@
-class CreateCodes < ActiveRecord::Migration
+class CreateCodes < ActiveRecord::Migration[4.2]
   def self.up
     create_table :codes do |t|
       t.string :name

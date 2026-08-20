@@ -1,4 +1,9 @@
-class MoveConferenceMediaToCommercial < ActiveRecord::Migration
+class MoveConferenceMediaToCommercial < ActiveRecord::Migration[4.2]
+  # Modern pg driver caches the preceding data-migration queries' prepared plans; running
+  # the later remove_column DDL in the same transaction then hits "cached plan must not
+  # change result type". Splitting them into separate transactions avoids it.
+  disable_ddl_transaction!
+
   class TempConference < ActiveRecord::Base
     self.table_name = 'conferences'
   end

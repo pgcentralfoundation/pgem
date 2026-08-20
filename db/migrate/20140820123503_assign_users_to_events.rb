@@ -1,4 +1,4 @@
-class AssignUsersToEvents < ActiveRecord::Migration
+class AssignUsersToEvents < ActiveRecord::Migration[4.2]
   class TempEvent < ActiveRecord::Base
     self.table_name = 'events'
   end
@@ -9,8 +9,8 @@ class AssignUsersToEvents < ActiveRecord::Migration
 
   class TempEventUser < ActiveRecord::Base
     self.table_name = 'event_users'
-    belongs_to :temp_event
-    belongs_to :temp_user
+    belongs_to :temp_event, optional: true
+    belongs_to :temp_user, optional: true
   end
 
   def up

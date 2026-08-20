@@ -1,4 +1,4 @@
-class AddSubjectsToEmailSettings < ActiveRecord::Migration
+class AddSubjectsToEmailSettings < ActiveRecord::Migration[4.2]
   def change
     add_column :email_settings, :registration_subject, :string
     add_column :email_settings, :accepted_subject, :string

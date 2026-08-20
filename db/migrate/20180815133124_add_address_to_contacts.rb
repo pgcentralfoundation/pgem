@@ -1,4 +1,4 @@
-class AddAddressToContacts < ActiveRecord::Migration
+class AddAddressToContacts < ActiveRecord::Migration[4.2]
   def self.up
     add_column :contacts, :name, :string
     add_column :contacts, :street1, :string

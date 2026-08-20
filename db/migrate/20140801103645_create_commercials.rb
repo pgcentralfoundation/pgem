@@ -1,4 +1,4 @@
-class CreateCommercials < ActiveRecord::Migration
+class CreateCommercials < ActiveRecord::Migration[4.2]
   def change
     create_table :commercials do |t|
       t.string :commercial_id

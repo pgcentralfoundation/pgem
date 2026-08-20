@@ -1,4 +1,4 @@
-class SetRegistrationDefaultsToFalse < ActiveRecord::Migration
+class SetRegistrationDefaultsToFalse < ActiveRecord::Migration[4.2]
   def up
     change_column :registrations, :using_affiliated_lodging, :boolean, default: false
   end

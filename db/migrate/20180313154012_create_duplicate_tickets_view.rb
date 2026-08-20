@@ -1,4 +1,4 @@
-class CreateDuplicateTicketsView < ActiveRecord::Migration
+class CreateDuplicateTicketsView < ActiveRecord::Migration[4.2]
   def self.up
     execute <<-SQL
       CREATE VIEW duplicate_tickets AS

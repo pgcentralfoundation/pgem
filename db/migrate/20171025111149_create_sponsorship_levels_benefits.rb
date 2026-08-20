@@ -1,4 +1,4 @@
-class CreateSponsorshipLevelsBenefits < ActiveRecord::Migration
+class CreateSponsorshipLevelsBenefits < ActiveRecord::Migration[4.2]
   def self.up
     create_table :sponsorship_levels_benefits do |t|
       t.references :sponsorship_level

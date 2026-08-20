@@ -1,4 +1,4 @@
-class AddImportedToSurveyQuestions < ActiveRecord::Migration
+class AddImportedToSurveyQuestions < ActiveRecord::Migration[4.2]
   def self.up
     change_table(:survey_questions) do |t|
       t.boolean :imported, :default => false

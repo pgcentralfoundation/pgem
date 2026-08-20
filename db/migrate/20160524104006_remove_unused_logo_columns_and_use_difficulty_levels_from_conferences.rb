@@ -1,4 +1,4 @@
-class RemoveUnusedLogoColumnsAndUseDifficultyLevelsFromConferences < ActiveRecord::Migration
+class RemoveUnusedLogoColumnsAndUseDifficultyLevelsFromConferences < ActiveRecord::Migration[4.2]
   def up
     remove_column :conferences, :logo_updated_at
     remove_column :conferences, :logo_file_size

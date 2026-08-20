@@ -1,5 +1,5 @@
 # This migration comes from refinery_dynamicfields (originally 1)
-class CreateDynamicfieldsDynamicfields < ActiveRecord::Migration
+class CreateDynamicfieldsDynamicfields < ActiveRecord::Migration[4.2]
 
   def up
     create_table :refinery_dynamicfields_dynamicfields do |t|

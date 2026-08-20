@@ -1,5 +1,5 @@
 # This migration comes from refinery_blog (originally 20110803223524)
-class ActsAsTaggableOnMigration < ActiveRecord::Migration
+class ActsAsTaggableOnMigration < ActiveRecord::Migration[4.2]
   def up
     create_table :tags do |t|
       t.string :name

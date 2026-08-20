@@ -1,4 +1,4 @@
-class AddWeekToRegistration < ActiveRecord::Migration
+class AddWeekToRegistration < ActiveRecord::Migration[4.2]
   class Registration < ActiveRecord::Base
   end
 

@@ -1,4 +1,4 @@
-class SplitSponsorsSponsorships < ActiveRecord::Migration
+class SplitSponsorsSponsorships < ActiveRecord::Migration[4.2]
   def change
     execute <<-SQL.squish
         DO $$

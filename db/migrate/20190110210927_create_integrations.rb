@@ -1,4 +1,4 @@
-class CreateIntegrations < ActiveRecord::Migration
+class CreateIntegrations < ActiveRecord::Migration[4.2]
   def self.up
     create_table :integrations do |t|
       t.belongs_to :conference

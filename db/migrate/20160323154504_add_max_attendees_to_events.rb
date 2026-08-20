@@ -1,4 +1,4 @@
-class AddMaxAttendeesToEvents < ActiveRecord::Migration
+class AddMaxAttendeesToEvents < ActiveRecord::Migration[4.2]
   def change
     add_column :events, :max_attendees, :integer
   end

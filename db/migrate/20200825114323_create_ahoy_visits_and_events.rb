@@ -1,4 +1,4 @@
-class CreateAhoyVisitsAndEvents < ActiveRecord::Migration
+class CreateAhoyVisitsAndEvents < ActiveRecord::Migration[4.2]
   def change
     create_table :ahoy_visits do |t|
       t.string :visit_token

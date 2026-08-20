@@ -1,4 +1,4 @@
-class CreateEventsRegistrationsTable < ActiveRecord::Migration
+class CreateEventsRegistrationsTable < ActiveRecord::Migration[4.2]
   def up
     create_table :events_registrations, id: false do |t|
       t.references :registration, :event

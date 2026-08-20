@@ -1,4 +1,4 @@
-class AddEarlyBirdPriceToTickets < ActiveRecord::Migration
+class AddEarlyBirdPriceToTickets < ActiveRecord::Migration[4.2]
   def self.up
     add_monetize :tickets, :early_bird_price
   end

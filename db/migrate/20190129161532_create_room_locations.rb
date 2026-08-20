@@ -1,4 +1,4 @@
-class CreateRoomLocations < ActiveRecord::Migration
+class CreateRoomLocations < ActiveRecord::Migration[4.2]
   def self.up
     create_table :room_locations do |t|
       t.belongs_to :venue

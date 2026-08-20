@@ -1,4 +1,4 @@
-class AddSponsorToCampaign < ActiveRecord::Migration
+class AddSponsorToCampaign < ActiveRecord::Migration[4.2]
   def change
     add_reference :campaigns, :sponsor, index: true, foreign_key: true
   end

@@ -1,5 +1,5 @@
 # This migration comes from refinery_search (originally 1)
-class CreateSearchPage < ActiveRecord::Migration
+class CreateSearchPage < ActiveRecord::Migration[4.2]
 
   def up
   end

@@ -1,4 +1,4 @@
-class CreatePaymentMethods < ActiveRecord::Migration
+class CreatePaymentMethods < ActiveRecord::Migration[4.2]
   def self.up
     create_table :payment_methods do |t|
       t.references :conference, null: false

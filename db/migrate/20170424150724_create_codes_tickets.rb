@@ -1,4 +1,4 @@
-class CreateCodesTickets < ActiveRecord::Migration
+class CreateCodesTickets < ActiveRecord::Migration[4.2]
   def self.up
     create_table :codes_tickets, id: false do |t|
       t.references :code

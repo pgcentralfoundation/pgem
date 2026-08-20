@@ -1,4 +1,4 @@
-class CreateConferenceTeamMembers < ActiveRecord::Migration
+class CreateConferenceTeamMembers < ActiveRecord::Migration[4.2]
   def self.up
     create_table :conference_team_members do |t|
       t.references :conference, null: false

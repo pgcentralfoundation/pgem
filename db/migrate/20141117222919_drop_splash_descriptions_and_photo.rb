@@ -1,4 +1,4 @@
-class DropSplashDescriptionsAndPhoto < ActiveRecord::Migration
+class DropSplashDescriptionsAndPhoto < ActiveRecord::Migration[4.2]
   def change
     remove_column :splashpages, :ticket_description
     remove_column :splashpages, :sponsor_description

@@ -1,4 +1,4 @@
-class CreateGetEventTimeRangeFunction < ActiveRecord::Migration
+class CreateGetEventTimeRangeFunction < ActiveRecord::Migration[4.2]
  def self.up
     execute <<-__EOI
 CREATE OR REPLACE FUNCTION get_event_time_range(p_schedule_id int, p_event_id int, padding int DEFAULT 0)

@@ -1,4 +1,4 @@
-class CreateTicketGroupBenefitsTickets < ActiveRecord::Migration
+class CreateTicketGroupBenefitsTickets < ActiveRecord::Migration[4.2]
   def self.up
     create_table :ticket_group_benefits_tickets, id: false do |t|
       t.references :ticket_group_benefit, null: false

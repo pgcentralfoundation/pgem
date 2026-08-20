@@ -1,8 +1,11 @@
-class AddStayingAtSuggestedHotelToQuestions < ActiveRecord::Migration
+class AddStayingAtSuggestedHotelToQuestions < ActiveRecord::Migration[4.2]
+  # See 20140801164901_move_conference_media_to_commercial.rb for why this is needed.
+  disable_ddl_transaction!
+
   class TempRegistration < ActiveRecord::Base
     self.table_name = 'registrations'
 
-    belongs_to :temp_conference
+    belongs_to :temp_conference, optional: true
   end
 
   class TempConference < ActiveRecord::Base
@@ -23,7 +26,7 @@ class AddStayingAtSuggestedHotelToQuestions < ActiveRecord::Migration
 
     has_many :temp_qanswers
     has_many :temp_answers, through: :temp_qanswers
-    belongs_to :temp_question_type
+    belongs_to :temp_question_type, optional: true
     has_and_belongs_to_many :temp_conferences
   end
 
@@ -37,8 +40,8 @@ class AddStayingAtSuggestedHotelToQuestions < ActiveRecord::Migration
   class TempQanswer < ActiveRecord::Base
     self.table_name = 'qanswers'
 
-    belongs_to :temp_question
-    belongs_to :temp_answer
+    belongs_to :temp_question, optional: true
+    belongs_to :temp_answer, optional: true
   end
 
   class TempConferencesQuestions < ActiveRecord::Base

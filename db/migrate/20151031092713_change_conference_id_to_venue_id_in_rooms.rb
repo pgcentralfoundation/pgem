@@ -1,4 +1,7 @@
-class ChangeConferenceIdToVenueIdInRooms < ActiveRecord::Migration
+class ChangeConferenceIdToVenueIdInRooms < ActiveRecord::Migration[4.2]
+  # See 20140801164901_move_conference_media_to_commercial.rb for why this is needed.
+  disable_ddl_transaction!
+
   class TempConference < ActiveRecord::Base
     self.table_name = 'conferences'
 
@@ -8,14 +11,14 @@ class ChangeConferenceIdToVenueIdInRooms < ActiveRecord::Migration
   class TempVenue < ActiveRecord::Base
     self.table_name = 'venues'
 
-    belongs_to :temp_conference
+    belongs_to :temp_conference, optional: true
     has_many :temp_rooms
   end
 
   class TempRoom < ActiveRecord::Base
     self.table_name = 'rooms'
 
-    belongs_to :temp_venue
+    belongs_to :temp_venue, optional: true
   end
 
   def up

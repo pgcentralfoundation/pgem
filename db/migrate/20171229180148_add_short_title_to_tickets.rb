@@ -1,4 +1,4 @@
-class AddShortTitleToTickets < ActiveRecord::Migration
+class AddShortTitleToTickets < ActiveRecord::Migration[4.2]
   def self.up
     add_column :tickets, :short_title, :string
   end

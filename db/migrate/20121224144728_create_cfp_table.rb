@@ -1,4 +1,4 @@
-class CreateCfpTable < ActiveRecord::Migration
+class CreateCfpTable < ActiveRecord::Migration[4.2]
   def up
     create_table :call_for_papers do |t|
       t.date :start_date, null: false

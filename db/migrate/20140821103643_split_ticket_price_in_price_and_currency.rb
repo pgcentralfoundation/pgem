@@ -1,4 +1,7 @@
-class SplitTicketPriceInPriceAndCurrency < ActiveRecord::Migration
+class SplitTicketPriceInPriceAndCurrency < ActiveRecord::Migration[4.2]
+  # See 20140801164901_move_conference_media_to_commercial.rb for why this is needed.
+  disable_ddl_transaction!
+
   class TempTicket < ActiveRecord::Base
     self.table_name = 'tickets'
   end

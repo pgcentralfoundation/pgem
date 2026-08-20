@@ -1,4 +1,4 @@
-class CreateRoomsTable < ActiveRecord::Migration
+class CreateRoomsTable < ActiveRecord::Migration[4.2]
   def up
     create_table :rooms do |t|
       t.string :guid, null: false

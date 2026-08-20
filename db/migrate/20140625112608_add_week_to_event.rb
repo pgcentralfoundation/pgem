@@ -1,4 +1,4 @@
-class AddWeekToEvent < ActiveRecord::Migration
+class AddWeekToEvent < ActiveRecord::Migration[4.2]
   class Event < ActiveRecord::Base
   end
 

@@ -1,5 +1,5 @@
 # This migration comes from refinery_team_members (originally 1)
-class CreateTeamMembersTeamMembers < ActiveRecord::Migration
+class CreateTeamMembersTeamMembers < ActiveRecord::Migration[4.2]
 
   def up
     create_table :refinery_team_members do |t|

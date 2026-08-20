@@ -1,4 +1,4 @@
-class AddPersonAttributesToUser < ActiveRecord::Migration
+class AddPersonAttributesToUser < ActiveRecord::Migration[4.2]
   def change
     add_column :users, :name, :string
     add_column :users, :email_public, :boolean

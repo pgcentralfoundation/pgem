@@ -1,4 +1,4 @@
-class ChangeArrivalRegistrationsDateToDatetime < ActiveRecord::Migration
+class ChangeArrivalRegistrationsDateToDatetime < ActiveRecord::Migration[4.2]
   def up
     change_column :registrations, :arrival, :datetime
     change_column :registrations, :departure, :datetime

@@ -1,4 +1,4 @@
-class CreateDaysScheduleFunctions < ActiveRecord::Migration
+class CreateDaysScheduleFunctions < ActiveRecord::Migration[4.2]
   def self.up
     execute <<-__EOI
     CREATE TYPE day_schedule AS (

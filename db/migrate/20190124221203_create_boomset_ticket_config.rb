@@ -1,4 +1,4 @@
-class CreateBoomsetTicketConfig < ActiveRecord::Migration
+class CreateBoomsetTicketConfig < ActiveRecord::Migration[4.2]
   def self.up
     create_table :boomset_ticket_configs do |t|
       t.belongs_to :conference

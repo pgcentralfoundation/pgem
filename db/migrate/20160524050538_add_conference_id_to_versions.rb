@@ -1,4 +1,4 @@
-class AddConferenceIdToVersions < ActiveRecord::Migration
+class AddConferenceIdToVersions < ActiveRecord::Migration[4.2]
   def change
     add_column :versions, :conference_id, :integer
   end

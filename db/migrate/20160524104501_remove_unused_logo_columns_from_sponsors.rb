@@ -1,4 +1,4 @@
-class RemoveUnusedLogoColumnsFromSponsors < ActiveRecord::Migration
+class RemoveUnusedLogoColumnsFromSponsors < ActiveRecord::Migration[4.2]
   def up
     remove_column :sponsors, :logo_updated_at
     remove_column :sponsors, :logo_file_size

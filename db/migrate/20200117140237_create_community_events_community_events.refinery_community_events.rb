@@ -1,5 +1,5 @@
 # This migration comes from refinery_community_events (originally 1)
-class CreateCommunityEventsCommunityEvents < ActiveRecord::Migration
+class CreateCommunityEventsCommunityEvents < ActiveRecord::Migration[4.2]
 
   def up
     create_table :refinery_community_events do |t|

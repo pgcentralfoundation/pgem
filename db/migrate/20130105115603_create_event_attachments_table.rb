@@ -1,4 +1,4 @@
-class CreateEventAttachmentsTable < ActiveRecord::Migration
+class CreateEventAttachmentsTable < ActiveRecord::Migration[4.2]
   def up
     create_table :event_attachments do |t|
       t.references :event

@@ -1,4 +1,4 @@
-class RemovePhotos < ActiveRecord::Migration
+class RemovePhotos < ActiveRecord::Migration[4.2]
   def change
     drop_table :photos do |t|
       t.text :description

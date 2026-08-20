@@ -1,4 +1,4 @@
-class RemoveSocialEventsTable < ActiveRecord::Migration
+class RemoveSocialEventsTable < ActiveRecord::Migration[4.2]
   class TempConference < ActiveRecord::Base
     self.table_name = 'conferences'
 
@@ -8,14 +8,14 @@ class RemoveSocialEventsTable < ActiveRecord::Migration
   class TempSocialEvent < ActiveRecord::Base
     self.table_name = 'social_events'
 
-    belongs_to :temp_conference
+    belongs_to :temp_conference, optional: true
     has_and_belongs_to_many :temp_registrations
   end
 
   class TempRegistration < ActiveRecord::Base
     self.table_name = 'registrations'
 
-    belongs_to :temp_conference
+    belongs_to :temp_conference, optional: true
     has_and_belongs_to_many :temp_social_events
     has_and_belongs_to_many :temp_qanswers
   end
@@ -23,8 +23,8 @@ class RemoveSocialEventsTable < ActiveRecord::Migration
   class TempRegistrationsSocialEvent < ActiveRecord::Base
     self.table_name = 'registrations_social_events'
 
-    belongs_to :temp_registrations
-    belongs_to :temp_social_events
+    belongs_to :temp_registrations, optional: true
+    belongs_to :temp_social_events, optional: true
   end
 
   class TempQuestionType < ActiveRecord::Base
@@ -38,7 +38,7 @@ class RemoveSocialEventsTable < ActiveRecord::Migration
 
     has_many :temp_qanswers
     has_many :temp_answers, through: :temp_qanswers
-    belongs_to :temp_question_type
+    belongs_to :temp_question_type, optional: true
     has_and_belongs_to_many :temp_conferences
   end
 
@@ -52,8 +52,8 @@ class RemoveSocialEventsTable < ActiveRecord::Migration
   class TempQanswer < ActiveRecord::Base
     self.table_name = 'qanswers'
 
-    belongs_to :temp_question
-    belongs_to :temp_answer
+    belongs_to :temp_question, optional: true
+    belongs_to :temp_answer, optional: true
     has_and_belongs_to_many :temp_registrations
   end
 

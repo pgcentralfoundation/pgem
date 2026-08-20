@@ -1,4 +1,4 @@
-class AddPictures < ActiveRecord::Migration
+class AddPictures < ActiveRecord::Migration[4.2]
   def change
     add_column :conferences, :picture, :string
     add_column :lodgings, :picture, :string

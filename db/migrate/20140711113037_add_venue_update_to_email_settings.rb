@@ -1,4 +1,4 @@
-class AddVenueUpdateToEmailSettings < ActiveRecord::Migration
+class AddVenueUpdateToEmailSettings < ActiveRecord::Migration[4.2]
   def change
     add_column :email_settings, :send_on_venue_update, :boolean, default: true
     add_column :email_settings, :venue_update_subject, :string

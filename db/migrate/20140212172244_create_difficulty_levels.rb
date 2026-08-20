@@ -1,4 +1,4 @@
-class CreateDifficultyLevels < ActiveRecord::Migration
+class CreateDifficultyLevels < ActiveRecord::Migration[4.2]
   def change
     create_table :difficulty_levels do |t|
       t.references :conference

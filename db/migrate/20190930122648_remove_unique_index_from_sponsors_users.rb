@@ -1,4 +1,4 @@
-class RemoveUniqueIndexFromSponsorsUsers < ActiveRecord::Migration
+class RemoveUniqueIndexFromSponsorsUsers < ActiveRecord::Migration[4.2]
   def change
     remove_index('sponsors_users', name: 'index_sponsors_users_on_user_id')
   end

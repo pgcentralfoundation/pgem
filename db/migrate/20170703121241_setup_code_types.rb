@@ -1,4 +1,4 @@
-class SetupCodeTypes < ActiveRecord::Migration
+class SetupCodeTypes < ActiveRecord::Migration[4.2]
   def up
       CodeType.find_or_create_by(id: 1, title: "Discount")
       CodeType.find_or_create_by(id: 2, title: "Access")

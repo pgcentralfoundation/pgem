@@ -1,4 +1,4 @@
-class AddPhotoToVenue < ActiveRecord::Migration
+class AddPhotoToVenue < ActiveRecord::Migration[4.2]
   def change
     add_column :venues, :photo_file_name, :string
     add_column :venues, :photo_content_type, :string

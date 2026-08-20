@@ -1,4 +1,4 @@
-class CreateSponsorshipEventsView < ActiveRecord::Migration
+class CreateSponsorshipEventsView < ActiveRecord::Migration[4.2]
   def self.up 
     execute <<-SQL
       CREATE VIEW sponsorship_events AS

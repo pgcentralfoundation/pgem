@@ -1,5 +1,5 @@
 # This migration comes from refinery_meetups (originally 1)
-class CreateMeetupsMeetups < ActiveRecord::Migration
+class CreateMeetupsMeetups < ActiveRecord::Migration[4.2]
 
   def up
     create_table :refinery_meetups do |t|

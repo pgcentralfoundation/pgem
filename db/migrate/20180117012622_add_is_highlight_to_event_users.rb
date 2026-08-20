@@ -1,4 +1,4 @@
-class AddIsHighlightToEventUsers < ActiveRecord::Migration
+class AddIsHighlightToEventUsers < ActiveRecord::Migration[4.2]
   def self.up
     add_column :event_users, :is_highlight, :boolean, default: false
   end

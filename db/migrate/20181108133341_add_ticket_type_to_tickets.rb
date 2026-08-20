@@ -1,4 +1,4 @@
-class AddTicketTypeToTickets < ActiveRecord::Migration
+class AddTicketTypeToTickets < ActiveRecord::Migration[4.2]
   def self.up
     add_column :tickets, :ticket_type, :integer, default: 0
     add_column :tickets, :start_date, :date

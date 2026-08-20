@@ -1,4 +1,4 @@
-class AddRegistrationToPhysicalTicket < ActiveRecord::Migration
+class AddRegistrationToPhysicalTicket < ActiveRecord::Migration[4.2]
   def change
     add_reference :physical_tickets, :user, null: false, index: true
     add_reference :physical_tickets, :event

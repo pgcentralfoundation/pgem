@@ -1,4 +1,4 @@
-class AddTicketTemplatesToEmailSettings < ActiveRecord::Migration
+class AddTicketTemplatesToEmailSettings < ActiveRecord::Migration[4.2]
   def change
     add_column :email_settings, :purchase_confirmation_subject, :string
     add_column :email_settings, :purchase_confirmation_body, :text

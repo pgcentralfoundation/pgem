@@ -1,4 +1,4 @@
-class ActsAsCommentableUpgradeMigration < ActiveRecord::Migration
+class ActsAsCommentableUpgradeMigration < ActiveRecord::Migration[4.2]
   def self.up
     rename_column :comments, :comment, :body
     add_column :comments, :subject, :string

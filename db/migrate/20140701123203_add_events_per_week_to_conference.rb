@@ -1,7 +1,7 @@
-class AddEventsPerWeekToConference < ActiveRecord::Migration
+class AddEventsPerWeekToConference < ActiveRecord::Migration[4.2]
   class TempVersion < ActiveRecord::Base
     self.table_name = 'versions'
-    serialize :object_changes, HashWithIndifferentAccess
+    serialize :object_changes, type: HashWithIndifferentAccess
   end
 
   class TempEvent < ActiveRecord::Base
@@ -10,7 +10,7 @@ class AddEventsPerWeekToConference < ActiveRecord::Migration
 
   class TempConference < ActiveRecord::Base
     self.table_name = 'conferences'
-    serialize :events_per_week, Hash
+    serialize :events_per_week, type: Hash
   end
 
   def up

@@ -1,4 +1,4 @@
-class RemoveHardDeadlineFromCallForPapers < ActiveRecord::Migration
+class RemoveHardDeadlineFromCallForPapers < ActiveRecord::Migration[4.2]
   def up
     remove_column :call_for_papers, :hard_deadline
   end

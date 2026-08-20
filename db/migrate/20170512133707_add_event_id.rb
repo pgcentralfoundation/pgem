@@ -1,4 +1,4 @@
-class AddEventId < ActiveRecord::Migration
+class AddEventId < ActiveRecord::Migration[4.2]
   def change
     add_reference :ticket_purchases, :event
 

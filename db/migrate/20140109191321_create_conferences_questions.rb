@@ -1,4 +1,4 @@
-class CreateConferencesQuestions < ActiveRecord::Migration
+class CreateConferencesQuestions < ActiveRecord::Migration[4.2]
   def change
     create_table :conferences_questions, id: false do |t|
       t.references :conference

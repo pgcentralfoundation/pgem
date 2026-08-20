@@ -1,4 +1,4 @@
-class RemoveDescriptionFromCallForPaper < ActiveRecord::Migration
+class RemoveDescriptionFromCallForPaper < ActiveRecord::Migration[4.2]
   def change
     remove_column :call_for_papers, :description, :text
   end

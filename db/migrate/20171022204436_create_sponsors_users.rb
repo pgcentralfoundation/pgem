@@ -1,4 +1,4 @@
-class CreateSponsorsUsers < ActiveRecord::Migration
+class CreateSponsorsUsers < ActiveRecord::Migration[4.2]
   def self.up
     create_table :sponsors_users, id: false do |t|
       t.references :sponsor

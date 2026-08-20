@@ -1,4 +1,4 @@
-class GenerateUsername < ActiveRecord::Migration
+class GenerateUsername < ActiveRecord::Migration[4.2]
   class TempUser < ActiveRecord::Base
     self.table_name = 'users'
   end
@@ -10,7 +10,7 @@ class GenerateUsername < ActiveRecord::Migration
         if TempUser.find_by(username: username)
           username = username + user.id.to_s
         end
-        user.update_attributes(username: username)
+        user.update(username: username)
       end
     end
   end

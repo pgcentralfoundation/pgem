@@ -1,4 +1,7 @@
-class MoveBannerDescriptionToConference < ActiveRecord::Migration
+class MoveBannerDescriptionToConference < ActiveRecord::Migration[4.2]
+  # See 20140801164901_move_conference_media_to_commercial.rb for why this is needed.
+  disable_ddl_transaction!
+
   class TempConference < ActiveRecord::Base
     self.table_name = 'conferences'
   end
@@ -15,7 +18,7 @@ class MoveBannerDescriptionToConference < ActiveRecord::Migration
     TempConference.all.each do |conference|
       if TempSplashpage.exists?(conference_id: conference.id)
         splash = TempSplashpage.find_by(conference_id: conference.id)
-        conference.update_attributes(description: splash.banner_description)
+        conference.update(description: splash.banner_description)
       end
     end
 

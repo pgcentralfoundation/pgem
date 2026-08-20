@@ -1,4 +1,4 @@
-class CreateSpeakerInvitations < ActiveRecord::Migration
+class CreateSpeakerInvitations < ActiveRecord::Migration[4.2]
   def change
     create_table :speaker_invitations do |t|
       t.references :event, index: true, foreign_key: true

@@ -1,4 +1,4 @@
-class CreateSponsorships < ActiveRecord::Migration
+class CreateSponsorships < ActiveRecord::Migration[4.2]
   def self.up
     create_table :sponsorships do |t|
       t.references :conference, null: false

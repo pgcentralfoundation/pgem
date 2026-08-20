@@ -1,4 +1,4 @@
-class RemoveCfpAndRegBooleansFromConferences < ActiveRecord::Migration
+class RemoveCfpAndRegBooleansFromConferences < ActiveRecord::Migration[4.2]
   def up
     remove_column :conferences, :cfp_open
     remove_column :conferences, :registration_open

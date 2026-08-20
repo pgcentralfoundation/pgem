@@ -1,5 +1,5 @@
 # This migration comes from refinery_pages (originally 20100913234708)
-class CreateRefinerycmsPagesSchema < ActiveRecord::Migration
+class CreateRefinerycmsPagesSchema < ActiveRecord::Migration[4.2]
   def up
     create_table :refinery_page_parts do |t|
       t.integer  :refinery_page_id
@@ -39,38 +39,35 @@ class CreateRefinerycmsPagesSchema < ActiveRecord::Migration
     add_index :refinery_pages, :parent_id
     add_index :refinery_pages, :rgt
 
-    begin
-      ::Refinery::PagePart.create_translation_table!({
-        :body => :text
-      })
-    rescue NameError
-      warn "Refinery::PagePart was not defined!"
+    # Refinery::Page/PagePart no longer exist (gem removed), so these translation tables are
+    # created directly rather than via the removed globalize create_translation_table! - shape
+    # confirmed against the already-populated pgconforg.refinery_page(_part)_translations.
+    create_table :refinery_page_part_translations do |t|
+      t.text :body
+      t.string :locale, null: false
+      t.integer :refinery_page_part_id, null: false
+      t.timestamps null: false
     end
+    add_index :refinery_page_part_translations, :locale
+    add_index :refinery_page_part_translations, :refinery_page_part_id
 
-    begin
-      ::Refinery::Page.create_translation_table!({
-        :title => :string,
-        :custom_slug => :string,
-        :menu_title => :string,
-        :slug => :string
-      })
-    rescue NameError
-      warn "Refinery::Page was not defined!"
+    create_table :refinery_page_translations do |t|
+      t.string :custom_slug
+      t.string :locale, null: false
+      t.string :menu_title
+      t.integer :refinery_page_id, null: false
+      t.string :slug
+      t.string :title
+      t.timestamps null: false
     end
+    add_index :refinery_page_translations, :locale
+    add_index :refinery_page_translations, :refinery_page_id
   end
 
   def down
     drop_table :refinery_page_parts
     drop_table :refinery_pages
-    begin
-      ::Refinery::PagePart.drop_translation_table!
-    rescue NameError
-      warn "Refinery::PagePart was not defined!"
-    end
-    begin
-      ::Refinery::Page.drop_translation_table! if defined?(::Refinery::Page)
-    rescue NameError
-      warn "Refinery::Page was not defined!"
-    end
+    drop_table :refinery_page_part_translations
+    drop_table :refinery_page_translations
   end
 end

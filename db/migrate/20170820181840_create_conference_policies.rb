@@ -1,4 +1,4 @@
-class CreateConferencePolicies < ActiveRecord::Migration
+class CreateConferencePolicies < ActiveRecord::Migration[4.2]
   def self.up
     create_table :conferences_policies, id: false do |t|
       t.references :conference

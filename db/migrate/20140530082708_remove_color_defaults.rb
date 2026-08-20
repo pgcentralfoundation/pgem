@@ -1,4 +1,4 @@
-class RemoveColorDefaults < ActiveRecord::Migration
+class RemoveColorDefaults < ActiveRecord::Migration[4.2]
   def change
     change_column_default(:tracks, :color, nil)
     change_column_default(:conferences, :color, nil)

@@ -1,4 +1,4 @@
-class CreateAdvantages < ActiveRecord::Migration
+class CreateAdvantages < ActiveRecord::Migration[4.2]
   def self.up
     create_table :advantages do |t|
       t.string :name

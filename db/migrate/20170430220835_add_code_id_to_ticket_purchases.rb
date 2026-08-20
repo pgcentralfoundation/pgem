@@ -1,4 +1,4 @@
-class AddCodeIdToTicketPurchases < ActiveRecord::Migration
+class AddCodeIdToTicketPurchases < ActiveRecord::Migration[4.2]
   def change
     add_reference :ticket_purchases, :code
 

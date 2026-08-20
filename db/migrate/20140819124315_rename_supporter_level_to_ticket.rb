@@ -1,4 +1,4 @@
-class RenameSupporterLevelToTicket < ActiveRecord::Migration
+class RenameSupporterLevelToTicket < ActiveRecord::Migration[4.2]
   def up
     rename_table :supporter_levels, :tickets
   end

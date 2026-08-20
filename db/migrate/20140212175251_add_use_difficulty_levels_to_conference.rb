@@ -1,4 +1,4 @@
-class AddUseDifficultyLevelsToConference < ActiveRecord::Migration
+class AddUseDifficultyLevelsToConference < ActiveRecord::Migration[4.2]
   def change
     add_column :conferences, :use_difficulty_levels, :boolean, default: false
   end

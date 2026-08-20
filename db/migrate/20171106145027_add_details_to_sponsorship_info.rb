@@ -1,4 +1,4 @@
-class AddDetailsToSponsorshipInfo < ActiveRecord::Migration
+class AddDetailsToSponsorshipInfo < ActiveRecord::Migration[4.2]
   def change
     add_column :sponsorship_infos, :liaison_email, :string
     add_column :sponsorship_infos, :manual, :string

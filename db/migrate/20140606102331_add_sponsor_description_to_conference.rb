@@ -1,4 +1,4 @@
-class AddSponsorDescriptionToConference < ActiveRecord::Migration
+class AddSponsorDescriptionToConference < ActiveRecord::Migration[4.2]
   def change
     add_column :conferences, :sponsor_description, :text
   end

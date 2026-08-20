@@ -1,4 +1,4 @@
-class CreatePollResultsView < ActiveRecord::Migration
+class CreatePollResultsView < ActiveRecord::Migration[4.2]
   def self.up
     execute <<-__EOI
     CREATE EXTENSION tablefunc;

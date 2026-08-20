@@ -1,4 +1,4 @@
-class CreateBoomsetGuests < ActiveRecord::Migration
+class CreateBoomsetGuests < ActiveRecord::Migration[4.2]
   def self.up
     create_table :boomset_guests do |t|
       t.belongs_to :conference

@@ -1,4 +1,4 @@
-class RemoveLogoAndProgressAndTimeSlotsFromEvents < ActiveRecord::Migration
+class RemoveLogoAndProgressAndTimeSlotsFromEvents < ActiveRecord::Migration[4.2]
   def up
     remove_column :events, :logo_file_name
     remove_column :events, :logo_updated_at
