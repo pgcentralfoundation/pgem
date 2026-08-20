@@ -35,33 +35,3 @@ end
 
 # CodeType.find_or_create_by!(name: 'Discount')
 # CodeType.find_or_create_by!(name: 'Access')
-
-# Added by Refinery CMS Pages extension
-Refinery::Pages::Engine.load_seed
-
-# Added by Refinery CMS Blog engine
-Refinery::Blog::Engine.load_seed
-
-# Added by Refinery CMS Search engine
-Refinery::Search::Engine.load_seed
-
-# # Added by Refinery CMS News engine
-# Refinery::News::Engine.load_seed
-
-# Added by Refinery CMS Dynamicfields extension
-Refinery::Dynamicfields::Engine.load_seed
-
-# Added by Refinery CMS TeamMembers extension
-Refinery::TeamMembers::Engine.load_seed
-
-# Added by Refinery CMS Sponsors extension
-Refinery::Sponsors::Engine.load_seed
-
-# Added by Refinery CMS Meetups extension
-Refinery::Meetups::Engine.load_seed
-
-# Added by Refinery CMS Communities extension
-Refinery::Communities::Engine.load_seed
-
-# Added by Refinery CMS CommunityEvents extension
-Refinery::CommunityEvents::Engine.load_seed
