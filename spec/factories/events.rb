@@ -3,16 +3,20 @@
 FactoryBot.define do
   factory :event do
     title { Faker::Hipster.sentence }
-    abstract { Faker::Hipster.paragraph(2) }
+    abstract { Faker::Hipster.paragraph(sentence_count: 2) }
 
     program
 
     after(:build) do |event|
-      event.event_users << build(:submitter) unless event.submitter # so that we don't have two submitters
-      # set an event_type if none is passed to the factory.
-      # needs to be created here because otherwise it doesn't belong to the
-      # same conference as the event
+      event.event_users << build(:submitter, event: event) unless event.submitter # so that we don't have two submitters
+      event.speakers << build(:speaker, event: event).user unless event.speakers.any?
+      # set an event_type/track/difficulty_level/ticket if none is passed to
+      # the factory. needs to be created here because otherwise it doesn't
+      # belong to the same conference/program as the event.
       event.event_type ||= build(:event_type, program: event.program)
+      event.track ||= build(:track, program: event.program)
+      event.difficulty_level ||= build(:difficulty_level, program: event.program)
+      event.ticket ||= build(:ticket, conference: event.program.conference)
     end
 
     factory :event_full do
@@ -28,7 +32,10 @@ FactoryBot.define do
       end
 
       factory :event_scheduled do
-        hour { nil }
+        transient do
+          hour { nil }
+        end
+
         after(:build) do |event|
           event.state = 'confirmed'
           event.event_schedules << build(:event_schedule, event: event)

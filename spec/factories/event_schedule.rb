@@ -8,6 +8,14 @@ FactoryBot.define do
       unless (venue = program.conference.venue)
         venue = create(:venue, conference: program.conference)
       end
+      # Persisting the conference above (if it wasn't already) fires
+      # Conference#create_program, whose has_one :program, dependent: :destroy
+      # replaces any in-memory program already built for it - destroying this
+      # build's `program` as a side effect. Re-fetch the live one when that happens.
+      if program.destroyed?
+        program = program.conference.reload.program
+        event_schedule.event.program = program
+      end
       (event_schedule.room = create(:room, venue: venue)) unless event_schedule.room.present?
       (event_schedule.start_time = program.conference.start_date.to_time) unless event_schedule.start_time.present?
       unless event_schedule.schedule.present?

@@ -16,6 +16,6 @@ class Role < ActiveRecord::Base
 
   # Needed to ensure that removing all user from role doesn't remove role.
   def cancel
-    false
+    throw(:abort)
   end
 end

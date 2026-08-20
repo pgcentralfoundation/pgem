@@ -6,5 +6,6 @@ FactoryBot.define do
     target_count { 100 }
     unit { Target.units[:submissions] }
     conference
+    campaign { create(:campaign, conference: conference) }
   end
 end

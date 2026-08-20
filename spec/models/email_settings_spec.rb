@@ -18,7 +18,8 @@ describe EmailSettings do
       'cfp_end_date' => 'Unknown',
       'cfp_start_date' => 'Unknown',
       'venue' => 'Unknown',
-      'venue_address' => 'Unknown'
+      'venue_address' => 'Unknown',
+      'my_tickets_link' => 'http://localhost:3000/conferences/goto/physical_ticket'
     }
   end
 
@@ -97,7 +98,7 @@ describe EmailSettings do
     end
   end
 
-  describe '#generate_event_mail' do
+  describe '#expand_event_template' do
     let(:event_template) do
       "Dear {name}\n\nWe are very pleased" \
       'to inform you that your submission {eventtitle} has been accepted for the conference {conference}.'
@@ -106,16 +107,16 @@ describe EmailSettings do
     it 'replaces fillers in template' do
       expected_text = "Dear John Doe\n\nWe are very pleased" \
         "to inform you that your submission Talk about talks has been accepted for the conference #{conference.title}."
-      expect(conference.email_settings.generate_event_mail(event, event_template)).to eq expected_text
+      expect(conference.email_settings.expand_event_template(event, user, event_template)).to eq expected_text
     end
   end
 
-  describe '#generate_email_on_conf_updates' do
+  describe '#expand_conf_template' do
     let(:conf_update_template) { "Dear {name},\n\nThank you for Registering for the conference {conference}." }
 
     it 'replaces fillers in template' do
       expected_text = "Dear John Doe,\n\nThank you for Registering for the conference #{conference.title}."
-      expect(conference.email_settings.generate_email_on_conf_updates(conference, user, conf_update_template)).to eq expected_text
+      expect(conference.email_settings.expand_conf_template(conference, user, conf_update_template)).to eq expected_text
     end
   end
 end

@@ -18,6 +18,16 @@ require 'shoulda/matchers'
 # all migrations applied
 ActiveRecord::Migration.maintain_test_schema!
 
+# Without this, shoulda's matchers (have_many, validate_presence_of, etc.)
+# never register with RSpec, so e.g. have_many silently falls back to
+# RSpec's own generic dynamic-predicate matcher instead.
+Shoulda::Matchers.configure do |config|
+  config.integrate do |with|
+    with.test_framework :rspec
+    with.library :rails
+  end
+end
+
 # Add poltergeist to use it as JS driver
 require 'capybara/poltergeist'
 require 'phantomjs'
@@ -57,7 +67,6 @@ RSpec.configure do |config|
 
   config.around(:each) do |example|
     DatabaseCleaner.cleaning do
-      Rails.application.load_seed
       example.run
     end
   end
@@ -72,11 +81,11 @@ RSpec.configure do |config|
   # Includes helpers and connect them to specific types of tests
   config.include FactoryBot::Syntax::Methods
   config.include OmniauthMacros
-  config.include Devise::TestHelpers, type: :controller
+  config.include Devise::Test::ControllerHelpers, type: :controller
   config.include LoginMacros, type: :feature
   config.include Flash, type: :feature
   config.include Sidebar, type: :view
-  config.include Devise::TestHelpers, type: :view
+  config.include Devise::Test::ControllerHelpers, type: :view
 
   # As we start from scratch in April 2014, let's forbid the old :should syntax
   config.expect_with :rspec do |c|

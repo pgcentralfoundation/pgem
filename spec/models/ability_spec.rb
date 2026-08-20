@@ -212,8 +212,8 @@ describe 'User' do
       it{ should_not be_able_to(:manage, conference_public.venue) }
       it{ should be_able_to(:manage, my_conference.lodgings.first) }
       it{ should_not be_able_to(:manage, conference_public.lodgings.first) }
-      it{ should be_able_to(:manage, my_conference.sponsors.first) }
-      it{ should_not be_able_to(:manage, conference_public.sponsors.first) }
+      it{ should be_able_to(:manage, my_conference.sponsorships.first) }
+      it{ should_not be_able_to(:manage, conference_public.sponsorships.first) }
       it{ should be_able_to(:manage, my_conference.sponsorship_levels.first) }
       it{ should_not be_able_to(:manage, conference_public.sponsorship_levels.first) }
       it{ should be_able_to(:manage, my_conference.tickets.first) }
@@ -281,8 +281,8 @@ describe 'User' do
       it{ should_not be_able_to(:manage, conference_public.venue) }
       it{ should_not be_able_to(:manage, my_conference.lodgings.first) }
       it{ should_not be_able_to(:manage, conference_public.lodgings.first) }
-      it{ should_not be_able_to(:manage, my_conference.sponsors.first) }
-      it{ should_not be_able_to(:manage, conference_public.sponsors.first) }
+      it{ should_not be_able_to(:manage, my_conference.sponsorships.first) }
+      it{ should_not be_able_to(:manage, conference_public.sponsorships.first) }
       it{ should_not be_able_to(:manage, my_conference.sponsorship_levels.first) }
       it{ should_not be_able_to(:manage, conference_public.sponsorship_levels.first) }
       it{ should_not be_able_to(:manage, my_conference.tickets.first) }
@@ -343,8 +343,8 @@ describe 'User' do
       it{ should_not be_able_to(:manage, conference_public.venue) }
       it{ should_not be_able_to(:manage, my_conference.lodgings.first) }
       it{ should_not be_able_to(:manage, conference_public.lodgings.first) }
-      it{ should_not be_able_to(:manage, my_conference.sponsors.first) }
-      it{ should_not be_able_to(:manage, conference_public.sponsors.first) }
+      it{ should_not be_able_to(:manage, my_conference.sponsorships.first) }
+      it{ should_not be_able_to(:manage, conference_public.sponsorships.first) }
       it{ should_not be_able_to(:manage, my_conference.sponsorship_levels.first) }
       it{ should_not be_able_to(:manage, conference_public.sponsorship_levels.first) }
       it{ should_not be_able_to(:manage, my_conference.tickets.first) }
@@ -405,8 +405,8 @@ describe 'User' do
       it{ should_not be_able_to(:manage, conference_public.venue) }
       it{ should_not be_able_to(:manage, my_conference.lodgings.first) }
       it{ should_not be_able_to(:manage, conference_public.lodgings.first) }
-      it{ should_not be_able_to(:manage, my_conference.sponsors.first) }
-      it{ should_not be_able_to(:manage, conference_public.sponsors.first) }
+      it{ should_not be_able_to(:manage, my_conference.sponsorships.first) }
+      it{ should_not be_able_to(:manage, conference_public.sponsorships.first) }
       it{ should_not be_able_to(:manage, my_conference.sponsorship_levels.first) }
       it{ should_not be_able_to(:manage, conference_public.sponsorship_levels.first) }
       it{ should_not be_able_to(:manage, my_conference.tickets.first) }

@@ -2,6 +2,7 @@
 
 FactoryBot.define do
   factory :email_settings do
+    conference
     send_on_registration { true }
     send_on_accepted { false }
     send_on_rejected { false }

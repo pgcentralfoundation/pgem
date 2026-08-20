@@ -3,6 +3,9 @@ FactoryBot.define do
     user
     conference
     ticket
+    code
+    event
+    payment
     quantity { 10 }
   end
 end

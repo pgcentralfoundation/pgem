@@ -28,6 +28,13 @@ module Osem
     config.active_record.observers = :revision_observer
     config.encoding = 'utf-8'
 
+    # Matches upstream OSEM (config.load_defaults there predates Rails 5's
+    # flip of this to true) - several belongs_to associations across the app
+    # (TicketPurchase#event/#code/#payment, Program#selected_schedule, etc.)
+    # were written under the old optional-by-default assumption and never
+    # updated when this app's own load_defaults moved past Rails 5.
+    config.active_record.belongs_to_required_by_default = false
+
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password, :token]
 

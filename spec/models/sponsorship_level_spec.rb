@@ -14,7 +14,9 @@ describe SponsorshipLevel do
 
   describe 'association' do
     it { is_expected.to belong_to(:conference) }
-    it { is_expected.to have_many(:sponsors) }
+    # SponsorshipLevel<->Sponsor goes through the Sponsorship join model, not
+    # a direct association.
+    it { is_expected.to have_many(:sponsorships) }
   end
 
   describe 'acts_as_list' do

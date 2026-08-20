@@ -367,7 +367,8 @@ describe Conference do
   describe 'program hours and minutes' do
     before(:each) do
       @long = create(:event_type, length: 120)
-      @short = create(:event_type, length: 15)
+      # EventType#length must be a multiple of LENGTH_STEP (10)
+      @short = create(:event_type, length: 20)
     end
 
     describe '#actual_program_minutes' do
@@ -377,7 +378,7 @@ describe Conference do
         create(:event, program: subject.program, event_type: @short)
         create(:event, program: subject.program, event_type: @short)
         result_in_hours = 5
-        result_in_minutes = 270
+        result_in_minutes = 280
         expect(subject.current_program_hours).to eq(result_in_hours)
         expect(subject.current_program_minutes).to eq(result_in_minutes)
       end
@@ -397,7 +398,7 @@ describe Conference do
         create(:event, program: subject.program, event_type: @short, created_at: Time.now - 3.days)
         create(:event, program: subject.program, event_type: @short)
         result_in_hours = 2
-        result_in_minutes = 135
+        result_in_minutes = 140
         expect(subject.new_program_hours(Time.now - 5.minutes)).to eq(result_in_hours)
         expect(subject.new_program_minutes(Time.now - 5.minutes)).to eq(result_in_minutes)
       end
@@ -809,12 +810,12 @@ describe Conference do
       canceled.cancel!
 
       @result = {}
-      @result['New'] = { 'value' => 1, 'color' => '#0000FF' }
-      @result['Withdrawn'] = { 'value' => 1, 'color' => '#FF8000' }
-      @result['Unconfirmed'] = { 'value' => 1, 'color' => '#FFFF00' }
-      @result['Rejected'] = { 'value' => 1, 'color' => '#FF0000' }
-      @result['Confirmed'] = { 'value' => 1, 'color' => '#00FF00' }
-      @result['Canceled'] = { 'value' => 1, 'color' => '#848484' }
+      @result['New'] = { 'value' => 1, 'color' => '#4E79A7' }
+      @result['Withdrawn'] = { 'value' => 1, 'color' => '#F28E2C' }
+      @result['Unconfirmed'] = { 'value' => 1, 'color' => '#EDC949' }
+      @result['Rejected'] = { 'value' => 1, 'color' => '#E15759' }
+      @result['Confirmed'] = { 'value' => 1, 'color' => '#59A14F' }
+      @result['Canceled'] = { 'value' => 1, 'color' => '#999999' }
     end
 
     it '#event_distribution does calculate correct values with events' do
@@ -829,7 +830,7 @@ describe Conference do
     it 'event_distribution does calculate correct values with just a new event' do
       conference = create(:conference)
       create(:event, program: conference.program)
-      result = { 'New' => { 'value' => 1, 'color' => '#0000FF' } }
+      result = { 'New' => { 'value' => 1, 'color' => '#4E79A7' } }
       expect(conference.event_distribution).to eq(result)
     end
 
@@ -837,7 +838,7 @@ describe Conference do
       conference = create(:conference)
       event = create(:event, program: conference.program)
       event.withdraw!
-      result = { 'Withdrawn' => { 'value' => 1, 'color' => '#FF8000' } }
+      result = { 'Withdrawn' => { 'value' => 1, 'color' => '#F28E2C' } }
       expect(conference.event_distribution).to eq(result)
     end
 
@@ -845,7 +846,7 @@ describe Conference do
       conference = create(:conference)
       event = create(:event, program: conference.program)
       event.accept!(@options)
-      result = { 'Unconfirmed' => { 'value' => 1, 'color' => '#FFFF00' } }
+      result = { 'Unconfirmed' => { 'value' => 1, 'color' => '#EDC949' } }
       expect(conference.event_distribution).to eq(result)
     end
 
@@ -853,7 +854,7 @@ describe Conference do
       conference = create(:conference)
       event = create(:event, program: conference.program)
       event.reject!(@options)
-      result = { 'Rejected' =>  { 'value' => 1, 'color' => '#FF0000' } }
+      result = { 'Rejected' =>  { 'value' => 1, 'color' => '#E15759' } }
       expect(conference.event_distribution).to eq(result)
     end
 
@@ -863,7 +864,7 @@ describe Conference do
       event = create(:event, program: conference.program)
       event.accept!(@options)
       event.confirm!
-      result = { 'Confirmed' =>  { 'value' => 1, 'color' => '#00FF00' } }
+      result = { 'Confirmed' =>  { 'value' => 1, 'color' => '#59A14F' } }
       expect(conference.event_distribution).to eq(result)
     end
 
@@ -872,7 +873,7 @@ describe Conference do
       event = create(:event, program: conference.program)
       event.accept!(@options)
       event.cancel!
-      result = { 'Canceled' =>  { 'value' => 1, 'color' => '#848484' } }
+      result = { 'Canceled' =>  { 'value' => 1, 'color' => '#999999' } }
       expect(conference.event_distribution).to eq(result)
     end
 
@@ -888,14 +889,14 @@ describe Conference do
     it 'self#event_distribution does calculate correct values with just a new event' do
       @conference.program.events.clear
       create(:event, program: @conference.program)
-      result = { 'New' => { 'value' => 1, 'color' => '#0000FF' } }
+      result = { 'New' => { 'value' => 1, 'color' => '#4E79A7' } }
       expect(Conference.event_distribution).to eq(result)
     end
 
     it 'self#event_distribution does calculate correct values
                       with just a new events from different conferences' do
       create(:event, program: @conference.program)
-      @result['New'] = { 'value' => 2, 'color' => '#0000FF' }
+      @result['New'] = { 'value' => 2, 'color' => '#4E79A7' }
       expect(Conference.event_distribution).to eq(@result)
     end
   end
@@ -1438,7 +1439,9 @@ describe Conference do
     context 'open cfp' do
 
       before do
-        subject.program.cfp = create(:cfp)
+        # explicit dates: the default factory's end_date (6.days.from_now)
+        # would land after this conference's hardcoded 2014-06-30 end_date
+        subject.program.cfp = create(:cfp, start_date: Date.today - 2.days, end_date: Date.today + 2.days)
       end
 
       it '#registration_open? is true' do

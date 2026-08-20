@@ -5,6 +5,7 @@ FactoryBot.define do
     size { 4 }
 
     venue
+    room_location { create(:room_location, venue: venue) }
 
     factory :room_for_100 do
       name { 'Room for 100' }

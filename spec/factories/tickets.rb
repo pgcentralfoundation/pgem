@@ -1,5 +1,7 @@
 FactoryBot.define do
   factory :ticket do
+    conference
+    ticket_group
     title { "#{Faker::Hipster.word} Ticket" }
     price_cents { 1000 }
     price_currency { 'USD' }

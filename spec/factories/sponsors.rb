@@ -5,8 +5,7 @@ FactoryBot.define do
     name { Faker::Company.name }
     website_url { Faker::Internet.url }
     description { Faker::Lorem.paragraph }
-
-    sponsorship_level
+    sequence(:short_name) { |n| "sponsor#{n}" }
 
     after(:create) do |sponsor|
       File.open("spec/support/logos/#{1 + rand(13)}.png") do |file|

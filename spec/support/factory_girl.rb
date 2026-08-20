@@ -5,7 +5,10 @@ RSpec.configure do |config|
   config.before(:suite) do
     if ENV['OSEM_FACTORY_LINT'] != 'false'
       mock_commercial_request
-      FactoryBot.lint
+      # :commercial is an intentional abstract base (matches upstream OSEM) -
+      # only its conference_commercial/event_commercial subtypes, which set
+      # commercialable, are ever built directly.
+      FactoryBot.lint(FactoryBot.factories.reject { |f| f.name == :commercial })
     end
   end
 

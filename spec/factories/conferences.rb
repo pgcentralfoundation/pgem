@@ -2,6 +2,7 @@
 
 FactoryBot.define do
   factory :conference do
+    conference_group
     title { Faker::Book.title }
     short_title { SecureRandom.urlsafe_base64(4) }
     timezone { Faker::Address.time_zone }
@@ -18,6 +19,14 @@ FactoryBot.define do
       Role.where(name: 'cfp', resource: conference).first_or_create(description: 'For the members of the CfP team')
       Role.where(name: 'info_desk', resource: conference).first_or_create(description: 'For the members of the Info Desk team')
       Role.where(name: 'volunteers_coordinator', resource: conference).first_or_create(description: 'For the people in charge of volunteers')
+
+      # Conference's own create_program (called from its model after_create)
+      # can't satisfy Program's required selected_schedule at creation time
+      # and fails silently, leaving conference.program nil - build a real one.
+      unless conference.program
+        create(:program, conference: conference)
+        conference.reload
+      end
     end
 
     factory :full_conference do
@@ -41,9 +50,9 @@ FactoryBot.define do
         create_list(:activity, 4, conference: conference)
 
         create_list(:sponsorship_level, 3, conference: conference)
-        create(:sponsor, sponsorship_level: conference.sponsorship_levels.first, conference: conference)
-        create_list(:sponsor, 2, sponsorship_level: conference.sponsorship_levels.second, conference: conference)
-        create_list(:sponsor, 3, sponsorship_level: conference.sponsorship_levels.third, conference: conference)
+        create(:sponsorship, sponsorship_level: conference.sponsorship_levels.first, conference: conference)
+        create_list(:sponsorship, 2, sponsorship_level: conference.sponsorship_levels.second, conference: conference)
+        create_list(:sponsorship, 3, sponsorship_level: conference.sponsorship_levels.third, conference: conference)
 
         create(:campaign, conference: conference)
         create(:target, conference: conference)

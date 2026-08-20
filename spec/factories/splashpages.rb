@@ -2,6 +2,7 @@
 
 FactoryBot.define do
   factory :splashpage do
+    conference
     public  { false }
 
     factory :full_splashpage do

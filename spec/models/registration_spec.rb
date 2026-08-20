@@ -29,7 +29,9 @@ describe 'Registration' do
   describe 'association' do
     it { is_expected.to belong_to(:user) }
     it { is_expected.to belong_to(:conference) }
-    it { is_expected.to have_and_belong_to_many(:events) }
+    # Registration's own has_and_belongs_to_many :events is dead/shadowed by
+    # the later has_many :events, through: :events_registrations below - that
+    # one is the real, current association.
     it { is_expected.to have_and_belong_to_many(:qanswers) }
     it { is_expected.to have_and_belong_to_many(:vchoices) }
     it { is_expected.to have_many(:events_registrations) }

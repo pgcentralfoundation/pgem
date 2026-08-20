@@ -2,6 +2,7 @@
 
 FactoryBot.define do
   factory :lodging do
+    conference
     name { "#{Faker::App.name} Hotel" }
     description { Faker::Lorem.paragraph }
     website_link { Faker::Internet.url }

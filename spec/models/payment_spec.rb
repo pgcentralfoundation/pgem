@@ -12,7 +12,10 @@ describe Payment do
 
   describe 'validations' do
     it 'has a valid factory' do
-      expect(build(:payment)).to be_valid
+      # build(:payment) can never be valid here: user_id/conference_id presence
+      # is validated on the raw column, and belongs_to associations built (not
+      # saved) in-memory don't populate the FK column until the target is saved.
+      expect(create(:payment)).to be_valid
     end
 
     it { is_expected.to validate_presence_of(:status) }
@@ -38,13 +41,25 @@ describe Payment do
     let!(:user) { create(:user) }
     let!(:conference) { create(:conference) }
     let!(:ticket_1) { create(:ticket, price: 10, price_currency: 'USD', conference: conference) }
-    let!(:tickets) { {ticket_1.id.to_s => '2'} }
     let(:stripe_helper) { StripeMock.create_test_helper }
 
     before { StripeMock.start }
     after { StripeMock.stop }
 
-    before { TicketPurchase.purchase(conference, user, tickets) }
+    # TicketPurchase.purchase itself can't be used here - it never sets
+    # event_id/payment_id, both now required belongs_to on TicketPurchase, so
+    # it can't actually persist a purchase today. Create the ticket_purchase
+    # directly instead (matches upstream OSEM's own #amount_to_pay spec).
+    let!(:ticket_purchase) do
+      create(:ticket_purchase, ticket: ticket_1, user: user, conference: conference,
+                                quantity: 2, purchase_price: 10, paid: false)
+    end
+    # Payment#purchase only calls Stripe if conference.payment_method.gateway
+    # == 'stripe' - nothing creates one by default.
+    let!(:payment_method) do
+      conference.create_payment_method!(gateway: 'stripe', environment: Rails.env,
+                                         stripe_publishable_key: 'pk_test_x', stripe_secret_key: 'sk_test_x')
+    end
     let(:payment) { create(:payment, user: user, conference: conference, stripe_customer_token: stripe_helper.generate_card_token, stripe_customer_email: user.email) }
 
     context 'when the payment is successful' do
@@ -117,7 +132,8 @@ describe Payment do
 
       context 'when the request to Stripe is invalid' do
         it 'raises exception' do
-          StripeMock.prepare_error(Stripe::InvalidRequestError.new('Your request is invalid.', code: 402))
+          # InvalidRequestError now takes a required positional `param` arg (nil here)
+          StripeMock.prepare_error(Stripe::InvalidRequestError.new('Your request is invalid.', nil, code: 402))
           expect{ payment.purchase }.not_to raise_error
         end
       end

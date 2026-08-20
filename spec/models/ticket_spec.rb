@@ -6,6 +6,8 @@ describe Ticket do
   let(:user) { create(:user) }
 
   describe 'validation' do
+    subject { build(:ticket) }
+
     it 'has a valid factory' do
       expect(build(:ticket)).to be_valid
     end
@@ -22,8 +24,9 @@ describe Ticket do
       should validate_presence_of(:price_currency)
     end
 
-    it 'is not valid with a price_cents equals zero' do
-      should_not allow_value(0).for(:price_cents)
+    it 'is valid with a price_cents equals zero' do
+      # free tickets are allowed - Ticket validates greater_than_or_equal_to: 0
+      should allow_value(0).for(:price_cents)
     end
 
     it 'is not valid with a price_cents smaller than zero' do
