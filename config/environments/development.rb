@@ -66,10 +66,11 @@ Rails.application.configure do
   # Raise exception on mass assignment protection for Active Record models
   # config.active_record.mass_assignment_sanitizer = :strict
   config.active_record.yaml_column_permitted_classes = [
-    Symbol, 
-    Date, 
-    Time, 
-    ActiveSupport::TimeWithZone, 
+    Symbol,
+    Date,
+    DateTime,
+    Time,
+    ActiveSupport::TimeWithZone,
     ActiveSupport::TimeZone,
     ActiveSupport::HashWithIndifferentAccess
   ]
