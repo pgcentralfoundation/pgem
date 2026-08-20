@@ -278,6 +278,9 @@ gem "nokogiri", ">= 1.11.0"
 
 #To make SOAP calls to the PayU API
 gem 'httpclient', '~> 2.8', '>= 2.8.3'
+# mutex_m was removed from Ruby's default gems in 3.4; httpclient still
+# assumes it's implicitly available, so it must be declared explicitly now.
+gem 'mutex_m'
 gem 'lolsoap', '~> 0.9.0'
 gem 'akami', '~> 1.3', '>= 1.3.1'
 

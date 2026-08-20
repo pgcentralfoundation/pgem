@@ -50,7 +50,6 @@ module Osem
     # (LoadError: Could not open library 'vips.so.42'). mini_magick/ImageMagick is already a
     # dependency (Spina itself uses it), so use that for ActiveStorage variants instead.
     config.active_storage.variant_processor = :mini_magick
-    config.autoloader = :classic
     config.autoload_paths << "#{Rails.root}/app/classes"
     config.exceptions_app = self.routes
 

@@ -2,6 +2,8 @@
 config/config.yml
 config/secrets.yml
 config/piwik.yml
+config/master.key
+config/credentials.yml.enc
 /vendor/cache
 /vendor/cache-old
 /storage/*
@@ -27,13 +29,17 @@ pickle-email-*.html
 /public/assets
 /bundle
 /doc/app
-.ruby-version
 .vagrant/
 .env
 .env.production
 .env.development
 .env.test
 .env.local
+.envrc
+docker-compose.override.yml
+.buildconfig
+.ackrc
+.vscode
 # Rails
 .bundle
 db/*.sqlite3
