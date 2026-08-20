@@ -8,8 +8,8 @@ Osem::Application.configure do
   config.cache_classes = true
 
   # Configure static asset server for tests with Cache-Control for performance
-  config.serve_static_files = true
-  config.static_cache_control = 'public, max-age=3600'
+  config.public_file_server.enabled = true
+  config.public_file_server.headers = { 'Cache-Control' => 'public, max-age=3600' }
 
   # Do not eager load code on boot.
   config.eager_load = false
@@ -32,6 +32,24 @@ Osem::Application.configure do
   # Raise exception on mass assignment protection for Active Record models
   # config.active_record.mass_assignment_sanitizer = :strict
 
+  # Schema is kept current via migrations/db:schema:dump, not auto-checked at
+  # boot - required so the Timecop-traveled clock below (2014) doesn't make
+  # Rails 8's migration-timestamp check reject this app's later migrations.
+  config.active_record.maintain_test_schema = false
+
+  # Required since Rails 7.1 dropped the implicit YAML default for `serialize`
+  # (Conference#events_per_week etc.) - development.rb already sets this.
+  config.active_record.default_column_serializer = YAML
+  config.active_record.yaml_column_permitted_classes = [
+    Symbol,
+    Date,
+    DateTime,
+    Time,
+    ActiveSupport::TimeWithZone,
+    ActiveSupport::TimeZone,
+    ActiveSupport::HashWithIndifferentAccess
+  ]
+
   # Print deprecation notices to the stderr
   config.active_support.deprecation = :stderr
 
@@ -46,9 +64,11 @@ Osem::Application.configure do
 
   config.after_initialize do
     ActiveRecord::Base.logger = nil
-    # Set Time.now to May 1, 2014 00:01:00 AM (at this instant), but allow it to move forward
-#    t = Time.local(2014, 05, 01, 00, 01, 00)
-#    Timecop.travel(t)
-    ActiveSupport::Deprecation.silenced = true
+    # Set Time.now to May 1, 2014 00:01:00 AM (at this instant), but allow it to move forward.
+    # Rails 8's stricter migration-timestamp check (InvalidMigrationTimestampError, absent in
+    # upstream OSEM's Rails 7.2) would otherwise reject this app's post-2014 migrations once
+    # "now" travels back - maintain_test_schema is off below so that check never runs here.
+    t = Time.local(2014, 05, 01, 00, 01, 00)
+    Timecop.travel(t)
   end
 end
