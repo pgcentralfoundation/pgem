@@ -79,8 +79,12 @@ gem 'haml-rails'
 # gem 'sass-rails', '5.0.8'
 gem 'sassc'
 
-# as compressor for JavaScript assets
+# as compressor for JavaScript assets - uglifier can't parse the ES6+
+# (class/extends/import/export) syntax Spina and its own controllers ship,
+# so production uses terser instead (config/environments/production.rb).
+# uglifier kept in case anything else still references it directly.
 gem 'uglifier', '>= 1.3.0'
+gem 'terser'
 
 # as the front-end framework
 # gem 'mini_racer'

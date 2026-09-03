@@ -28,8 +28,12 @@ Osem::Application.configure do
   config.public_file_server.enabled = ENV["RAILS_SERVE_STATIC_FILES"].present?
 
   # Compress JavaScripts and CSS.
-  config.assets.js_compressor = Uglifier.new(harmony: true)
-  # config.assets.css_compressor = :sass
+  # Uglifier (harmony mode included) does not support es6, replaced by terser
+  config.assets.js_compressor = :terser
+  # sassc-rails auto-sets css_compressor = :sass in any non-development env
+  # unless this key is already present (sassc/rails/railtie.rb).
+  # settings this to :sass fails asset precompilation when working with plain .css
+  config.assets.css_compressor = nil
 
   # Do not fallback to assets pipeline if a precompiled asset is missed.
   config.assets.compile = false
