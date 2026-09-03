@@ -28,5 +28,5 @@
  *= arequire bootstrap-social
  *= require pretty.min
  *= require color-picker
- require bootstrap-select.min
+ *= require bootstrap-select.min
 */
