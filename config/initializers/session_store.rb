@@ -1,6 +1,6 @@
 # Be sure to restart your server when you modify this file.
 
-Osem::Application.config.session_store :cookie_store, key: '_osem_session'
+Osem::Application.config.session_store :cookie_store, key: '_osem_session', secure: Rails.env.production?
 
 # Use the database for sessions instead of the cookie-based default,
 # which shouldn't be used to store highly confidential information
