@@ -1081,6 +1081,7 @@ DEPENDENCIES
   prawn (~> 1.3.0)
   prawn-qrcode (~> 0.5.2)
   prawn_rails
+  pry
   puma
   rails (~> 6.1.7)
   rails-assets-bootstrap-markdown!

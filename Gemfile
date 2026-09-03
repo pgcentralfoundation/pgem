@@ -143,6 +143,9 @@ gem 'groupdate'
 gem 'hightop'
 gem "chartkick"
 gem 'rails_pdf'
+# rails_pdf's railtie unconditionally `require 'pry'`; it was only ever present
+# transitively via guard (dev group), so production had no pry on the load path.
+gem 'pry', require: false
 
 # for displaying maps
 gem 'leaflet-rails'
