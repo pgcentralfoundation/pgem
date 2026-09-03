@@ -1,6 +1,5 @@
 class EventheroAttendeeRegisterJob < ActiveJob::Base
   require 'rest-client'
-  require 'eventhero'
 
   queue_as :default
 
