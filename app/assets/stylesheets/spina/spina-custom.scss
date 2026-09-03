@@ -475,35 +475,76 @@ $radius-pill: 999px;
 
 .about-intro {
   margin-top: 75px;
+
+  max-width: 960px;
+  margin-left: auto;
+  margin-right: auto;
+
+
+  > .row > div div, > .row > div p {
+    font-size: 20px;
+    font-weight: normal;
+    line-height: 32.5px;
+    margin-bottom: 24px;
+  }
+
+  > .row > div h4 {
+    font-size: 25px;
+    line-height: 27.5px;
+    margin-bottom: 24px;
+  }
 }
 
-// refinery team members on about page, also managed in main pgem
+.row-centered {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
 .team-member {
   text-align: center !important;
-  margin-bottom: 64px;
+  margin-bottom: 32px;
 
-  h4 {
-    line-height: 24px; // not a 4px-grid multiple otherwise
-  }
-  // role (e.g. "Co-Chair") and bio - same secondary/body-text sizes used
-  // on the blog (.card-header/.card-text).
-  .team-detail > span.text-muted {
-    font-size: 13px;
-    line-height: 20px;
-  }
-  .team-detail > span:not(.text-muted) {
-    font-size: 16px;
-    line-height: 24px;
+  .team-card {
+    height: 100%;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    background: rgba(255, 255, 255, .035);
+    border-left: 3px solid $blog-link;
+    border-radius: 6px;
+    padding: 24px 28px;
   }
 
   .team-detail {
-    margin-right: 32px;
-    margin-left: 32px;
+    h4 {
+      font-size: 22px;
+      line-height: 28px; // 1.27x — inside the 1.1-1.4x heading ratio
+      margin: 0 0 4px;
+    }
+    > span.text-muted {
+      display: block;
+      font-size: 13px;
+      line-height: 20px;
+      margin-bottom: 16px;
+    }
+    > span:not(.text-muted) {
+      display: block;
+      font-size: 16px;
+      line-height: 24px; // 1.5x — inside the 1.5-1.6x body-text ratio
+    }
+
+    margin-right: 0;
+    margin-left: 0;
   }
 
   .member-photo {
-    margin: 0 0 24px 0;
+    width: 200px;
+    height: 200px;
+    margin: 0 auto 24px;
     img {
+    display: block;
+    margin: 0 auto;
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
     border-radius: 50%;
@@ -514,7 +555,8 @@ $radius-pill: 999px;
   }
 
   .social {
-      margin: 0;
+      height: 52px;
+      margin: 0 0 16px;
       padding: 8px;
     ul  {
       margin: 0;
@@ -529,10 +571,12 @@ $radius-pill: 999px;
     i {
       width: 36px;
       height: 36px;
+
+      font-size: 20px;
+      line-height: 36px;
       color: #FFF;
-      background-color: #ccc;
+      background-color: $tint-light;
       text-align:center;
-      padding-top: 8px;
 
       border-radius: 50%;
       -moz-border-radius: 50%;
@@ -574,11 +618,12 @@ $radius-pill: 999px;
 }
 
 .about-section {
-  margin-bottom: 64px;
+  margin-bottom: 32px;
 
   &.team .h2 {
-    font-size: 30px;
-    line-height: 36px; // 1.2x — inside the 1.1-1.4x heading ratio
+    font-size: 40px;
+    line-height: 44px;
+    margin: 0 0 36px;
   }
 
   .img-sponsor {

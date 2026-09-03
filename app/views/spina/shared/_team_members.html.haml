@@ -2,21 +2,22 @@
   .row.row-centered
     - slice.each do |team_member|
       .col-md-4.col-centered.col-top.team-member.text-center
-        .member-photo
-          - if team_member.photo.present?
-            = image_tag thumbnail_url(team_member.photo), class: 'img-responsive'
-        .team-detail
-          %h4
-            = team_member.fullname
-          %span.text-muted
-            = team_member.role
-          .social
-            - if team_member.twitter.present?
-              = link_to team_member.twitter, target: '_blank' do
-                %i.fa.fa-twitter.fa-lg
-            &nbsp;&nbsp;
-            - if team_member.linkedin.present?
-              = link_to team_member.linkedin, target: '_blank' do
-                %i.fa.fa-linkedin.fa-lg
-          %span
-            = raw team_member.description
+        .team-card
+          .member-photo
+            - if team_member.photo.present?
+              = image_tag thumbnail_url(team_member.photo), class: 'img-responsive'
+          .team-detail
+            %h4
+              = team_member.fullname
+            %span.text-muted
+              = team_member.role
+            .social
+              - if team_member.twitter.present?
+                = link_to team_member.twitter, target: '_blank' do
+                  %i.fa.fa-twitter.fa-lg
+              &nbsp;&nbsp;
+              - if team_member.linkedin.present?
+                = link_to team_member.linkedin, target: '_blank' do
+                  %i.fa.fa-linkedin.fa-lg
+            %span
+              = raw team_member.description
