@@ -1016,6 +1016,7 @@ DEPENDENCIES
   poltergeist
   prawn-qrcode
   prawn_rails
+  pry
   puma
   rails (~> 8.1)
   rails-assets-bootstrap-markdown!
