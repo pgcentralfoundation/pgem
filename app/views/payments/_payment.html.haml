@@ -21,6 +21,7 @@
 - if @conference.payment_method.gateway == 'stripe'
   = form_tag conference_payments_path do
     - if @total_amount_to_pay.cents > 0
+      -# No integrity hash: Stripe requires checkout.js loaded live (not self-hosted/pinned), it's part of their fraud detection.
       %script.stripe-button{ src: "https://checkout.stripe.com/checkout.js",
             data: { amount: @total_amount_to_pay.cents, label: "Pay #{humanized_money_with_symbol @total_amount_to_pay}",
               email: current_user.email, currency: @total_amount_to_pay.currency, name: ENV['OSEM_NAME'] || 'OSEM',
@@ -37,7 +38,7 @@
     = hidden_field_tag("payment_method_nonce", nil, :id => "nonce")
     %button{id:'submit-button' ,class:'stripe-button-el',display:'none'} Pay #{humanized_money_with_symbol @total_amount_to_pay}
 
-    %script{src: "https://js.braintreegateway.com/web/dropin/1.6.1/js/dropin.min.js"}
+    %script{crossorigin: "anonymous", integrity: "sha384-uj3YIneVwtlMbVgCIG1SqsO8CxxQ/MNZ2/z7QtRNNx7Eycu4xa9AGH6FMhL1WWn9", src: "https://js.braintreegateway.com/web/dropin/1.6.1/js/dropin.min.js"}
 
     :javascript
       var form = document.querySelector('#payment-form');
