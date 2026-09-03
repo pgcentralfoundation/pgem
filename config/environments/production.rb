@@ -113,6 +113,18 @@ Osem::Application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 
+  # Required since Rails 7.1 dropped the implicit YAML default for `serialize`
+  config.active_record.default_column_serializer = YAML
+  config.active_record.yaml_column_permitted_classes = [
+    Symbol,
+    Date,
+    DateTime,
+    Time,
+    ActiveSupport::TimeWithZone,
+    ActiveSupport::TimeZone,
+    ActiveSupport::HashWithIndifferentAccess
+  ]
+
 # crash notifications
 Rails.application.config.middleware.use ExceptionNotification::Rack,
   :email => {
