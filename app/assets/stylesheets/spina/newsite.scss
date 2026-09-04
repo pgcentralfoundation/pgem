@@ -546,10 +546,20 @@ a:focus {
         box-shadow: $shadow;
         margin-bottom: 35px;
         background-color: #ffffff;
+        color: #333;
     }
 
     .conference-item h2 {
         color: $main_color;
+    }
+
+    .conference-info > p a {
+        @extend .link-effect;
+        color: $main_color;
+
+        &:after {
+            background: $main_color;
+        }
     }
 
     .poster-conference {
@@ -611,6 +621,15 @@ a:focus {
 
             p {
                 overflow-wrap: break-word;
+
+                a {
+                    @extend .link-effect;
+                    color: $main_color;
+
+                    &:after {
+                        background: $main_color;
+                    }
+                }
             }
         }
         .card-footer {
