@@ -16,7 +16,7 @@
             = conference.venue.city
             = '/'
             = conference.venue.country_name
-        %p.conference-description
+        .conference-description
           - unless conference.description.blank?
             = markdown(conference.description.truncate(350))
 

@@ -10,7 +10,7 @@
       = conference.title
     %p.date-place
       = date_string(conference.start_date, conference.end_date)
-    %p
+    .card-description
       - unless conference.description.blank?
         = markdown(conference.description.truncate(350))
 

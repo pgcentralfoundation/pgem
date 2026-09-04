@@ -110,6 +110,15 @@ a:focus {
     font-weight: 700;
     text-decoration: none;
     font-size: 16px;
+
+    // Bootstrap's global a:hover/a:focus color otherwise wins here.
+    &:hover, &:focus {
+        color: $main_color;
+    }
+
+    &.link-effect:after {
+        background-color: $main_color;
+    }
 }
 
 .link-effect {
@@ -553,7 +562,7 @@ a:focus {
         color: $main_color;
     }
 
-    .conference-info > p a {
+    .conference-description a {
         @extend .link-effect;
         color: $main_color;
 
@@ -619,7 +628,7 @@ a:focus {
                 margin-top: 4vh;
             }
 
-            p {
+            .card-description {
                 overflow-wrap: break-word;
 
                 a {
