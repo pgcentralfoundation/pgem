@@ -285,6 +285,11 @@ a:focus {
 .conferences,
 .meetups {
     background-color: $light-background;
+    // body's global white text (spina-custom.scss) leaves this section's
+    // title unreadable on its light-grey background.
+    .section-title {
+        color: #333;
+    }
 }
 .central-blocks {
     padding-top: 53px;
@@ -594,9 +599,18 @@ a:focus {
             flex-direction: column;
             flex-grow: 1;
             position: relative;
+            // Flex items default to min-width: auto, refusing to shrink below
+            // their content's intrinsic width - a description containing a
+            // long unbroken string (e.g. a raw URL) then forces this wider
+            // than the card's own fixed width instead of wrapping.
+            min-width: 0;
 
             h3 {
                 margin-top: 4vh;
+            }
+
+            p {
+                overflow-wrap: break-word;
             }
         }
         .card-footer {
