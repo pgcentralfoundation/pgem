@@ -6,6 +6,7 @@ module Admin
 
       def index
         @poll_results = PollResult.joins(:survey_question)
+                                   .where(survey_questions: { survey_id: @poll.survey_id })
       end
     end
   end
