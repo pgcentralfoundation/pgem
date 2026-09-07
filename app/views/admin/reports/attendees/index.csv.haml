@@ -4,7 +4,7 @@
              'Job Title',
              'Email',
              'Type']
-= CSV.generate_line headers
+= CSV.generate_line(headers, row_sep: ?\r)
 - @attendees.each do |attendee|
   = CSV.generate_line([attendee.last_name, attendee.first_name, attendee.affiliation,
-  attendee.title, attendee.email, attendee.type]).html_safe
+  attendee.title, attendee.email, attendee.type], row_sep: ?\r).html_safe

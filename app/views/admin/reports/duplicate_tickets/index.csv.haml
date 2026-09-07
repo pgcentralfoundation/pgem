@@ -3,7 +3,7 @@
              'Ticket',
              'Quantity',
              'Pending Assignments']
-= CSV.generate_line headers
+= CSV.generate_line(headers, row_sep: ?\r)
 - @duplicates.each do |dup|
   = CSV.generate_line([dup.user.name, dup.user.email, dup.ticket.title,
-    dup.ticket_count, dup.pending_assignments]).html_safe
+    dup.ticket_count, dup.pending_assignments], row_sep: ?\r).html_safe
