@@ -1,7 +1,7 @@
 wb = xlsx_package.workbook
 wb.add_worksheet(name: 'registrations') do |sheet|
   bold_style = wb.styles.add_style(b: true)
-  row = ['Attended', 'Name', 'Nickname', 'Affilιation', 'Email', 'Arrival', 'Departure']
+  row = ['Attended', 'First Name', ' Last Name', 'Nickname', 'Affilιation', 'Title', 'Email', 'Mobile', 'Arrival', 'Departure']
 
   @conference.questions.each do |question|
     row << question.title

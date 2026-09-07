@@ -1,4 +1,17 @@
-- headers = ['Name', 'Email']
-= CSV.generate_line headers
+- headers = ['Attended', 'First Name', ' Last Name', 'Nickname', 'Affilιation', 'Title', 'Email', 'Mobile', 'Arrival', 'Departure'] + @conference.questions.map(&:title)
+= CSV.generate_line(headers, row_sep: ?\r)
 - @registrations.each do |registration|
-  = CSV.generate_line([registration.name, registration.email])
+  - row = [registration.attended ? 'X' : '',
+           registration.first_name,
+           registration.last_name,
+           registration.nickname,
+           registration.affiliation,
+           registration.title,
+           registration.email,
+           registration.mobile,
+           registration.arrival.to_s,
+           registration.departure.to_s]
+  - @conference.questions.each do |question|
+    - qa = registration.qanswers.find_by(question: question)
+    - row << (qa ? qa.answer.title : '')
+  = CSV.generate_line(row, row_sep: ?\r).html_safe
