@@ -183,7 +183,7 @@
 
             %td
               .btn-group
-                %button{:type=>"button", :class=>"btn btn-link dropdown-toggle", "data-toggle"=>"dropdown"}
+                %button{:type=>"button", :class=>"btn btn-link dropdown-toggle event-dropdown-toggle", "data-toggle"=>"dropdown", title: event.event_type.try(:title)}
                   - if event.event_type.nil?
                     Event Type
                   - else
@@ -198,7 +198,7 @@
                     method: :patch
             %td
               .btn-group
-                %button{:type=>"button", :class=>"btn btn-link dropdown-toggle", "data-toggle"=>"dropdown"}
+                %button{:type=>"button", :class=>"btn btn-link dropdown-toggle event-dropdown-toggle", "data-toggle"=>"dropdown", title: event.track.try(:name)}
                   - if event.track.nil?
                     Track
                   - else
@@ -213,7 +213,7 @@
                     method: :patch
             %td
               .btn-group
-                %button{:type=>"button", :class=>"btn btn-link dropdown-toggle", "data-toggle"=>"dropdown"}
+                %button{:type=>"button", :class=>"btn btn-link dropdown-toggle event-dropdown-toggle", "data-toggle"=>"dropdown", title: event.difficulty_level.try(:title)}
                   - if event.difficulty_level.nil?
                     Difficulty
                   - else
