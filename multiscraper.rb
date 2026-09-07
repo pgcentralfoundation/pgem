@@ -9,14 +9,14 @@ include ActionView::Helpers::SanitizeHelper
 
 def scrape_planet
     url = 'https://planet.postgresql.org/rss20_short.xml'
-    rss = open(url).read
-    feed = Feedjira::Feed.parse rss
+    rss = URI.open(url).read
+    feed = Feedjira.parse rss
     posts = feed.entries
 
     @logger.info('Planet importer starting')
 
     posts.each do |post|
-        Refinery::CommunityEvents::CommunityEvent.find_or_initialize_by({url: post.url}) do |post_record|
+        Spina::CommunityEvent.find_or_initialize_by({url: post.url}) do |post_record|
             # planet postgres prepends author name and semicolon to each of their feed posts
             title_split = post.title.split(':')
             if title_split.size > 1
@@ -41,8 +41,8 @@ AUTHOR_MAP = {'Linuxhiker' => 'jd@commandprompt.com', 'Joshua Drake' => 'jd@comm
 
 def scrape_blogs
     url = 'https://blog.pgconf.us/feeds/posts/default'
-    rss = open(url).read
-    feed = Feedjira::Feed.parse rss
+    rss = URI.open(url).read
+    feed = Feedjira.parse rss
     posts = feed.entries
 
     @logger.info('Blog importer starting')
@@ -50,11 +50,11 @@ def scrape_blogs
     posts.each do |post|
         post_author = User.find_by_email(AUTHOR_MAP[post.author])
 
-        post_record = Refinery::Blog::Post.find_or_initialize_by({title: post.title})
+        post_record = Spina::Blog::Post.find_or_initialize_by({title: post.title})
         post_record.title = post.title
-        post_record.body = post.content
+        post_record.content = post.content
         post_record.published_at = post.published
-        post_record.author = post_author
+        post_record.user = post_author
         post_record.draft = false
 
         if post_record.new_record?
@@ -66,24 +66,36 @@ end
 
 
 def get_group_event_ids(url)
-    doc = Nokogiri::HTML(open("#{url}/events/"))
-    event_ids = []
-    res = doc.css('.eventCard--link').each do |link|
-        eid = link.attribute('href').value.split('/').last
-        event_ids << eid if eid
-    end
-    event_ids
+    # meetup.com now 308-redirects mixed-case group slugs to their lowercase
+    # canonical form; Ruby's open-uri doesn't follow 308s, so downcase first.
+    doc = Nokogiri::HTML(URI.open("#{url.downcase}/events/"))
+    datajson = JSON.parse(doc.css('script[id="__NEXT_DATA__"]').children.first.to_s)
+    apollo_state = datajson["props"]["pageProps"]["__APOLLO_STATE__"]
+
+    # meetup.com no longer renders event links as plain <a> tags (client-side
+    # hydrated React app), so event ids have to come out of the Apollo cache
+    # embedded in __NEXT_DATA__ instead of CSS-selecting anchor tags.
+    root_query = apollo_state["ROOT_QUERY"] || {}
+    group_key = root_query.keys.find { |k| k.start_with?('groupByUrlname') }
+    return [] unless group_key
+    group = apollo_state[root_query[group_key]['__ref']]
+    return [] unless group
+
+    upcoming_key = group.keys.find { |k| k.start_with?('events({"filter":{"afterDateTime"') }
+    return [] unless upcoming_key
+
+    group[upcoming_key]['edges'].map { |edge| edge['node']['__ref'].split(':').last }
 end
 
 def get_event_info(url, event_id)
-    doc = Nokogiri::HTML(open("#{url}/events/#{event_id}/"))
+    doc = Nokogiri::HTML(URI.open("#{url.downcase}/events/#{event_id}/"))
     ret = {}
     datajson = JSON.parse(doc.css('script[id="__NEXT_DATA__"]').children.first.to_s)
     event = datajson["props"]["pageProps"]["event"]
     ret['name'] = event['title']
     ret['description'] = event['description']
     ret['url'] = event['eventUrl']
-    ret['pic_url'] = event['imageUrl']
+    ret['pic_url'] = event.dig('featuredEventPhoto', 'source') || event.dig('displayPhoto', 'source')
     ret['startDate'] = event['dateTime']
     ret['endDate'] = event['endTime']
     location = 'N/A'
@@ -121,7 +133,7 @@ def scrape_meetups
         eids.each do |event_id|
             event = get_event_info(gurl, event_id)
             # byebug
-            meetup = Refinery::Meetups::Meetup.find_or_initialize_by({external_id: event_id})
+            meetup = Spina::Meetup.find_or_initialize_by({external_id: event_id})
             meetup.title = event['name']
             meetup.description = event['description']
             meetup.url = event['url']
@@ -142,5 +154,5 @@ def scrape_meetups
 end
 
 scrape_planet
-scrape_blogs
+# scrape_blogs
 scrape_meetups
