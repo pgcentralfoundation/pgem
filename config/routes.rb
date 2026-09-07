@@ -199,6 +199,7 @@ Osem::Application.routes.draw do
         resources :duplicate_tickets, only: [:index]
         resources :payments, only: [:index]
         resources :poll_results, only: [:index]
+        resources :question_results, only: [:index]
         resources :tickets, only: [:index]
         resources :purchases, only: [:index]
         resources :unregistered_speakers, only: [:index]

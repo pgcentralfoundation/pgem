@@ -1,0 +1,30 @@
+.row
+  .col-md-6
+    .page-header
+      %h1
+        Question Results
+      %p.text-muted
+        Responses collected for this conference's registration questions, including global questions enabled here
+  .col-md-6
+    .btn-group.pull-right.export-buttons
+      = link_to 'Export PDF', admin_conference_reports_question_results_path(@conference.short_title, format: :pdf), class: 'btn btn-success'
+      = link_to 'Export CSV', admin_conference_reports_question_results_path(@conference.short_title, format: :csv), class: 'btn btn-success'
+      = link_to 'Export XLS', admin_conference_reports_question_results_path(@conference.short_title, format: :xlsx), class: 'btn btn-success'
+.row
+  .col-md-12
+    %table.table.table-hover.datatable
+      %thead
+        %th Question
+        %th Type
+        %th Global
+        %th.text-right Answers
+      %tbody
+        - @questions.each do |question|
+          %tr
+            %td= question.title
+            %td= question.question_type.title
+            %td= question.global? ? 'Yes' : 'No'
+            %td.text-right
+              - question.qanswers.each do |qanswer|
+                .row
+                  = "#{qanswer.answer.title}: #{@answer_counts[qanswer.id] || 0}"

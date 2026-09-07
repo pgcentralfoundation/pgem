@@ -1,0 +1,17 @@
+wb = xlsx_package.workbook
+wb.add_worksheet(name: "Question Results for #{@conference.short_title}".truncate(31, omission: '')) do |sheet|
+  bold_style = wb.styles.add_style(b: true)
+  answers_style = wb.styles.add_style(alignment: { horizontal: :right })
+  row = ['Question', 'Type', 'Global', 'Answers']
+  sheet.add_row row, style: bold_style
+
+  @questions.each do |question|
+    answers = question.qanswers.map { |qa| "#{qa.answer.title}: #{@answer_counts[qa.id] || 0}" }.join(', ')
+    row = []
+    row << question.title
+    row << question.question_type.title
+    row << (question.global? ? 'Yes' : 'No')
+    row << answers
+    sheet.add_row row, style: [nil, nil, nil, answers_style]
+  end
+end

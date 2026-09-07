@@ -1,0 +1,8 @@
+- headers = ['Question', 'Type', 'Global', 'Answers']
+= CSV.generate_line(headers, row_sep: ?\r)
+- @questions.each do |question|
+  - answers = question.qanswers.map { |qa| "#{qa.answer.title}: #{@answer_counts[qa.id] || 0}" }.join(', ')
+  = CSV.generate_line([question.title,
+  question.question_type.title,
+  (question.global? ? 'Yes' : 'No'),
+  answers], row_sep: ?\r).html_safe
