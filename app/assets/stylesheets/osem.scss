@@ -246,6 +246,19 @@ fieldset {
   height: 1.7em
 }
 
+// A long event type/track/difficulty name as a dropdown button label forces
+// its whole table column that wide, since all cells in a column share one
+// width - pushing the events table past the viewport. Cap and ellipsize it;
+// the full name is still available via the button's title tooltip.
+.event-dropdown-toggle {
+  display: inline-block;
+  max-width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
 .comment-reply{
   padding-top: 40px;
 }
