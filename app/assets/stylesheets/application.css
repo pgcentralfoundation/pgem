@@ -18,7 +18,7 @@
  *= require osem-errors
  *= require font-awesome
  *= require osem-fonts
- require bootstrap-markdown
+ *= require bootstrap-markdown
  require bootstrap-datetimepicker
  *= require leaflet
  require bootstrap3-switch
