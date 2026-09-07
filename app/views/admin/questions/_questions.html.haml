@@ -17,11 +17,13 @@
       %td
         = q.answers.map {|a| a.title}.join(', ')
 
-      %td
+      %td.actions
         .btn-group
+          - edit_disabled = q.global? || !(can? :update, q)
+          - delete_disabled = q.global? || !(can? :destroy, q)
           = link_to 'Show', admin_conference_question_path(@conference.short_title, q), class: 'btn btn-success'
           = link_to 'Edit', edit_admin_conference_question_path(@conference.short_title, q),
-                    class: 'btn btn-primary', disabled: !(can? :update, q)
+                    class: "btn btn-primary#{' disabled' if edit_disabled}", disabled: edit_disabled
           = link_to 'Delete', admin_conference_question_path(@conference.short_title, q),
-                    method: :delete, remote: true, class: 'btn btn-danger',
-                    confirm: "Delete question '#{q.title}'?", disabled: !(can? :destroy, q)
+                    method: :delete, remote: true, class: "btn btn-danger#{' disabled' if delete_disabled}",
+                    confirm: "Delete question '#{q.title}'?", disabled: delete_disabled

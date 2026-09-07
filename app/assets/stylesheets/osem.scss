@@ -701,3 +701,18 @@ p.comment-body {
     }
   }
 }
+
+// Admin > Conference > Questions index/edit table.
+// The Actions cell wraps its Show/Edit/Delete buttons onto separate lines
+// under the default table layout, since floated .btn-group buttons shrink
+// rather than force the column wide enough. Same fix osem-datatables.scss
+// uses for .datatable tables, applied here since this table isn't one.
+#questions {
+  td.actions {
+    white-space: nowrap;
+
+    .btn-group {
+      display: flex;
+    }
+  }
+}
