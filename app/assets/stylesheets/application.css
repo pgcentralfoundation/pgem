@@ -19,9 +19,9 @@
  *= require font-awesome
  *= require osem-fonts
  *= require bootstrap-markdown
- require bootstrap-datetimepicker
+ *= require bootstrap-datetimepicker
  *= require leaflet
- require bootstrap3-switch
+ *= require bootstrap3-switch
  *= require osem-payments
  *= require selectize
  *= require selectize.bootstrap3
