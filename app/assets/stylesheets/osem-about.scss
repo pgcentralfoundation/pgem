@@ -19,3 +19,73 @@ section.description-blue {
       margin-top: 50px;
     }
 }
+
+.team-member {
+  text-align: center !important;
+  margin-bottom: 60px;
+
+  .team-detail {
+    margin-right: 30px;
+    margin-left: 30px;
+  }
+
+  .member-photo {
+    margin: 0 0 20px 0;
+    img {
+      display: block;
+      margin: 0 auto;
+      border-radius: 50%;
+      object-fit: cover;
+      width: 200px;
+      height: 200px;
+    }
+  }
+
+  .social {
+    margin: 0;
+    padding: 10px;
+    ul {
+      margin: 0;
+      padding: 5px;
+      li {
+        margin: 5px;
+        list-style: none outside none;
+        display: inline-block;
+      }
+    }
+    i {
+      width: 35px;
+      height: 35px;
+      color: #FFF;
+      background-color: #ccc;
+      text-align: center;
+      padding-top: 10px;
+      border-radius: 50%;
+      transition: all ease 0.3s;
+    }
+    i.fa-twitter:hover {
+      background-color: #1DA1F2;
+    }
+    i.fa-linkedin:hover {
+      background-color: #0077B5;
+    }
+  }
+}
+
+.about-section {
+  margin-bottom: 60px;
+
+  .img-sponsor {
+    max-height: 100px;
+    margin: 2% auto;
+  }
+  .img-sponsor-1 {
+    max-height: 200px;
+  }
+  .img-sponsor-2 {
+    max-height: 150px;
+  }
+  .img-sponsor-3 {
+    max-height: 120px;
+  }
+}
