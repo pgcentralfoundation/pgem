@@ -21,6 +21,8 @@ class ApplicationController < ActionController::Base
     return unless request.get?
     # don't save location for static files
     return if request.path.starts_with? '/system'
+    # skip assets and downloads; a nil format (dotted slug like "pgconf.eu") is still a page
+    return unless request.format.nil? || request.format.html?
     if (request.path != '/accounts/sign_in' &&
         request.path != '/accounts/sign_up' &&
         request.path != '/accounts/password/new' &&
