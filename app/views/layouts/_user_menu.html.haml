@@ -19,6 +19,12 @@
       %span.fa.fa-money
       My Purchases
 
+- if @conference && @conference.id && current_user.registrations.exists?(conference_id: @conference.id)
+  %li
+    = link_to(main_app.conference_conference_registration_path(@conference.short_title)) do
+      %span.fa.fa-clipboard
+      My Registration
+
 -if @conference and @conference.program
   %li
     = link_to(main_app.conference_program_proposals_path(@conference.short_title)) do

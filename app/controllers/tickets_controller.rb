@@ -30,6 +30,7 @@ class TicketsController < ApplicationController
   end
 
   def complete
+    @registration = Registration.find_by(conference: @conference, user: current_user)
   end
 
   def check_load_resource

@@ -45,16 +45,26 @@
             %i.fa.fa-square-o.fa-stack-2x
             %i.fa.fa-info.fa-stack-1x
           Additional Info
-        %ul
-          - @conference.questions.each do |q|
-            %li
-              %strong
-                = q.title
-              - if @registration.qanswers.any?
-                - @registration.qanswers.where(:question_id => q.id).each do |qa|
-                  = qa.answer.title
-              - else
-                You haven't answered
+          %button.btn.btn-default.btn-xs.pull-right{ type: 'button', data: { toggle: 'collapse', target: '#answers-view, #answers-form' } }
+            %span.fa.fa-pencil
+            Edit answers
+        #answers-view.collapse.in
+          %ul
+            - @conference.questions.each do |q|
+              - answers = @registration.qanswers.select { |qa| qa.question_id == q.id }
+              %li
+                %strong
+                  = q.title
+                - if answers.any?
+                  = answers.map { |qa| qa.answer.title }.join(', ')
+                - else
+                  You haven't answered
+        #answers-form.collapse
+          = semantic_form_for(@registration, url: conference_conference_registration_path(@conference.short_title), method: :patch) do |f|
+            = render partial: 'conference_registrations/questions', locals: { f: f }
+            = f.action :submit, button_html: { value: 'Save answers', class: 'btn btn-primary' }
+            %button.btn.btn-default{ type: 'button', data: { toggle: 'collapse', target: '#answers-view, #answers-form' } }
+              Cancel
   - if @registration.events.any?
     .row
       .col-md-12

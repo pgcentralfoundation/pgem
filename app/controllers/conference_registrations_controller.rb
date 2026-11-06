@@ -78,6 +78,17 @@ class ConferenceRegistrationsController < ApplicationController
     end
   end
 
+  def update
+    if @registration.update(update_params)
+      redirect_to conference_conference_registration_path(@conference.short_title),
+                  notice: 'Registration was successfully updated.'
+    else
+      redirect_to complete_conference_tickets_path(@conference.short_title),
+                  error: "Could not update your registration for #{@conference.title}: "\
+                         "#{@registration.errors.full_messages.join('. ')}."
+    end
+  end
+
   protected
 
   def set_registration
@@ -105,6 +116,12 @@ class ConferenceRegistrationsController < ApplicationController
   def user_params
     params.require(:user).permit(:first_name, :last_name, :title, :affiliation, :mobile,
       :username, :email, :name, :password, :password_confirmation)
+  end
+
+  # Answers may only reference this conference's questions.
+  def update_params
+    ids = Array(params.require(:registration).permit(qanswer_ids: [])[:qanswer_ids]).compact_blank
+    { qanswer_ids: Qanswer.where(id: ids, question_id: @conference.question_ids).pluck(:id) }
   end
 
   def registration_params
