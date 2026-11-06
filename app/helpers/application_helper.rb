@@ -245,7 +245,7 @@ module ApplicationHelper
 
   # rubocop:disable Lint/EndAlignment
   def word_pluralize(count, singular, plural = nil)
-    word = if (count == 1 || count =~ /^1(\.0+)?$/)
+    word = if (count.to_s.match?(/\A1(\.0+)?\z/))
       singular
     else
       plural || singular.pluralize
