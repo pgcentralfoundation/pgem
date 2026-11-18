@@ -309,7 +309,7 @@ class Event < ActiveRecord::Base
   end
 
   def attendees
-    User.where(id: self.registrations.pluck(:id))
+    User.where(id: registrations.select(:user_id))
   end
 
   private
